@@ -9,10 +9,14 @@ const Sidebar = () => {
 
 
 	var navs = [
-		{ label: "Products", value: "products" },
+		// { label: "Products", value: "products" },
+		{ label: "Dashboard", value: "dashboard" },
+		{ label: "Login", value: "login" },
 		{ label: "Orders", value: "orders" },
 		{ label: "Subscriptions", value: "subscriptions" },
 		{ label: "Licenses", value: "licenses" },
+		{ label: "API Keys", value: "apiKeys" },
+		{ label: "Validation Requests", value: "ValidationRequests" },
 	]
 
 	return (

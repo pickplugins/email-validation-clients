@@ -80,7 +80,7 @@ function Subscriptions() {
 
 					<thead>
 						<tr className="bg-gray-300 border border-solid border-gray-200">
-							<th className=" px-5 py-2">ID</th>
+							<th className=" px-5 py-2 w-30">ID</th>
 							<th className=" px-5 py-2">Order</th>
 							<th className=" px-5 py-2">Email</th>
 							<th className=" px-5 py-2">Setup Fee</th>
@@ -101,7 +101,7 @@ function Subscriptions() {
 						return (
 							<tbody key={index}>
 								<tr className="border-0 border-b border-solid border-gray-200">
-									<td className=" px-5 py-2"><a className="font-bold" href={`/subscriptions/${item.id}`}>Subscription #{item.id}</a></td>
+									<td className=" px-5 py-2"><a className="font-bold" href={`/subscriptions/${item.id}`}>#{item.id}</a></td>
 									<td className=""> {item.order_id}</td>
 									<td className=""> {item.user_email}</td>
 									<td className=""> {item.setup_fee}</td>
