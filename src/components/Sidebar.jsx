@@ -1,10 +1,18 @@
+import { useLocation } from "react-router-dom";
+
+
 const Sidebar = () => {
 
+	const location = useLocation();
+	var currentLocation = location.pathname
+	console.log(location.pathname)
+
+
 	var navs = [
-		{ label: "products", value: "products" },
-		{ label: "orders", value: "orders" },
-		{ label: "subscriptions", value: "subscriptions" },
-		{ label: "licenses", value: "licenses" },
+		{ label: "Products", value: "products" },
+		{ label: "Orders", value: "orders" },
+		{ label: "Subscriptions", value: "subscriptions" },
+		{ label: "Licenses", value: "licenses" },
 	]
 
 	return (
@@ -15,8 +23,8 @@ const Sidebar = () => {
 						<a
 							key={index}
 							href={`/${nav.value}`}
-							className="hover:bg-gray-300 border-0 border-b border-solid border-gray-300 cursor-pointer px-4 py-2 bg-gray-400">
-							{nav.value}
+							className={`${currentLocation == "/" + nav.value ? "bg-gray-500" : "bg-gray-400"} hover:bg-gray-500 border-0 border-b border-solid border-gray-300 cursor-pointer px-4 py-2 `}>
+							{nav.label}
 						</a>
 					);
 				}

@@ -1,10 +1,5 @@
 import Layout from "../components/Layout";
-import OrdersList from "../components/OrdersList";
 import { useState, useEffect } from "react";
-
-var ordersDataDefault = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-
-
 
 
 
@@ -12,8 +7,6 @@ function Orders() {
 
 
 	var [ordersData, setordersData] = useState(null);
-	var [paginations, setpaginations] = useState(null);
-
 	var [queryPrams, setqueryPrams] = useState({ page: 1, limit: 12, first_date: "", last_date: "" });
 
 
