@@ -24,16 +24,16 @@ function App() {
     <AuthProvider>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/apikeys" element={<ApiKeys />} />
-        <Route path="/validationrequests" element={<ValidationRequests />} />
-        <Route path="/licenses" element={<Licenses />} />
-        <Route path="/licenses/:id" element={<LicenseDetail />} />
-        <Route path="/orders" element={<Orders />} />
-        <Route path="/orders/:id" element={<OrderDetail />} />
-        <Route path="/products" element={<Products />} />
-        <Route path="/products/:id" element={<ProductDetail />} />
-        <Route path="/subscriptions" element={<Subscriptions />} />
-        <Route path="/subscriptions/:id" element={<SubscriptionDetail />} />
+        <Route path="/apikeys" element={<PrivateRoute><ApiKeys /></PrivateRoute>} />
+        <Route path="/validationrequests" element={<PrivateRoute><ValidationRequests /></PrivateRoute>} />
+        <Route path="/licenses" element={<PrivateRoute><Licenses /></PrivateRoute>} />
+        <Route path="/licenses/:id" element={<PrivateRoute><LicenseDetail /></PrivateRoute>} />
+        <Route path="/orders" element={<PrivateRoute><Orders /></PrivateRoute>} />
+        <Route path="/orders/:id" element={<PrivateRoute><OrderDetail /></PrivateRoute>} />
+        <Route path="/products" element={<PrivateRoute><Products /></PrivateRoute>} />
+        <Route path="/products/:id" element={<PrivateRoute><ProductDetail /></PrivateRoute>} />
+        <Route path="/subscriptions" element={<PrivateRoute><Subscriptions /></PrivateRoute>} />
+        <Route path="/subscriptions/:id" element={<PrivateRoute><SubscriptionDetail /></PrivateRoute>} />
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
       </Routes>

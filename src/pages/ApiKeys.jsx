@@ -142,16 +142,6 @@ function ApiKeys() {
 	return (
 		<Layout>
 			<div>
-				<div className="flex justify-between bg-gray-200 p-4 mb-5">
-
-					<div>API Keys</div>
-					<div>
-						<div className="p-3 py-2 bg-gray-600 text-white cursor-pointer" onClick={ev => {
-							createApiKey()
-						}}>Create API Key</div>
-					</div>
-
-				</div>
 
 
 				<table className="table-fixed w-full text-center border-collapse">

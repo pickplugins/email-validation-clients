@@ -1,4 +1,5 @@
 import Layout from "../components/Layout";
+import UserAccount from "../components/UserAccount";
 import { useState, useEffect } from "react";
 
 
@@ -59,10 +60,6 @@ function Orders() {
 	}, [queryPrams]);
 
 
-	const handleLogout = () => {
-		localStorage.removeItem("token");
-		window.location.href = "/login";
-	};
 
 
 
@@ -75,22 +72,7 @@ function Orders() {
 	return (
 		<Layout>
 			<div>
-				<div className="flex justify-between bg-gray-200 p-4 mb-5">
 
-					<div>Orders</div>
-
-					<div>
-						<div onClick={ev => {
-							handleLogout()
-						}}>Log-out</div>
-
-
-					</div>
-
-
-
-
-				</div>
 				<div className="mt-5 bg-gray-200 p-3">
 
 					<div className=" flex gap-3">

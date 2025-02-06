@@ -185,15 +185,7 @@ function ValidationRequests() {
 	return (
 		<Layout>
 			<div>
-				<div className="flex justify-between bg-gray-200 p-4 mb-5">
 
-					<div>Validation Requests</div>
-
-					<div></div>
-
-				</div>
-
-				{JSON.stringify(validateMailPrams)}
 
 
 				<div><table className="table-fixed w-full text-center border-collapse">

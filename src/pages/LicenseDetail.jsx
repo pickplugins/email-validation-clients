@@ -80,15 +80,6 @@ function LicenseDetail() {
 
   return (
     <Layout >
-      <div className="flex justify-between bg-gray-200 p-4 mb-5 w-full">
-
-        <div>Subscriptions / #{id}</div>
-        <div></div>
-
-      </div>
-
-
-
 
       <div>
 

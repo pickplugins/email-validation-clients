@@ -9,10 +9,14 @@ function OrderDetail() {
 
 
   var [subscriptionData, setsubscriptionData] = useState(null);
+  var [subscriptionURLs, setsubscriptionURLs] = useState(null);
   var [orderData, setorderData] = useState(null);
 
 
+  useEffect(() => {
 
+
+  }, [subscriptionData]);
 
 
 
@@ -45,8 +49,13 @@ function OrderDetail() {
             setsubscriptionData(subscription)
             setorderData(order)
 
+            var urls = subscription?.urls;
 
+            var urls = JSON.parse(urls)
 
+            setsubscriptionURLs(urls);
+
+            console.log(urls);
 
             //setpaginations(pagination)
 
@@ -80,19 +89,19 @@ function OrderDetail() {
 
   return (
     <Layout >
-      <div className="flex justify-between bg-gray-200 p-4 mb-5 w-full">
-
-        <div>Subscriptions / #{id}</div>
-        <div></div>
-
-      </div>
-
-
-
 
       <div>
 
         <h3 className="text-xl my-5">Subscription </h3>
+
+
+        <div className="flex gap-2 items-center my-5">
+
+          <a target="_blank" className="p-2 hover:bg-gray-400 rounded-sm cursor-pointer px-4 bg-gray-600 text-white" href={subscriptionURLs?.customer_portal}>Customer Portal</a>
+          <a target="_blank" className="p-2 hover:bg-gray-400 rounded-sm cursor-pointer px-4 bg-gray-600 text-white" href={subscriptionURLs?.customer_portal_update_subscription}>Update Subscription</a>
+          <a target="_blank" className="p-2 hover:bg-gray-400 rounded-sm cursor-pointer px-4 bg-gray-600 text-white" href={subscriptionURLs?.update_payment_method}>Update Payment Method</a>
+
+        </div>
 
 
         <div className="bsubscription-0 bsubscription-b bsubscription-solid bsubscription-gray-200 flex gap-3 items-center">

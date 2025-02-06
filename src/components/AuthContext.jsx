@@ -8,8 +8,36 @@ const AuthProvider = ({ children }) => {
 	const [user, setUser] = useState(null);
 	const [loading, setLoading] = useState(true);
 
+	// const checkUser = async () => {
+	// 	const token = localStorage.getItem("token");
+	// 	if (!token) {
+	// 		setUser(null);
+	// 		setLoading(false);
+	// 		return;
+	// 	}
+
+	// 	try {
+	// 		const response = await axios.get(
+	// 			"http://localhost/wordpress/wp-json/wp/v2/users/me",
+	// 			{ headers: { Authorization: `Bearer ${token}` } }
+	// 		);
+	// 		setUser(response.data);
+	// 	} catch (error) {
+	// 		console.error("Invalid Token or Expired");
+	// 		localStorage.removeItem("token");
+	// 		setUser(null);
+	// 	} finally {
+	// 		setLoading(false);
+	// 	}
+	// };
+
+
+
 	const checkUser = async () => {
 		const token = localStorage.getItem("token");
+
+		console.log(token)
+
 		if (!token) {
 			setUser(null);
 			setLoading(false);
@@ -18,18 +46,28 @@ const AuthProvider = ({ children }) => {
 
 		try {
 			const response = await axios.get(
-				"http://localhost/wordpress/wp-json/wp/v2/users/me",
-				{ headers: { Authorization: `Bearer ${token}` } }
+				"http://localhost/wordpress/wp-json/email-validation/v2/validate_token/",
+				{
+					headers: { Authorization: `Bearer ${token}` },
+				}
 			);
-			setUser(response.data);
+			setUser(response.data.user);
 		} catch (error) {
-			console.error("Invalid Token or Expired");
-			localStorage.removeItem("token");
-			setUser(null);
+			console.error("Invalid Token", error);
+			logout();
 		} finally {
 			setLoading(false);
 		}
 	};
+
+
+
+
+
+
+
+
+
 
 	useEffect(() => {
 		checkUser();

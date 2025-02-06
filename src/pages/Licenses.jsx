@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 function Licenses() {
 
 
-	var [subscriptionsData, setsubscriptionsData] = useState(null);
+	var [licensesData, setlicensesData] = useState(null);
 	var [queryPrams, setqueryPrams] = useState({ page: 1, limit: 12, first_date: "", last_date: "" });
 
 
@@ -36,7 +36,7 @@ function Licenses() {
 
 
 						console.log(res);
-						setsubscriptionsData(posts)
+						setlicensesData(posts)
 
 						setTimeout(() => {
 						}, 500);
@@ -66,12 +66,7 @@ function Licenses() {
 	return (
 		<Layout>
 			<div>
-				<div className="flex justify-between bg-gray-200 p-4 mb-5">
 
-					<div>Subscriptions</div>
-					<div></div>
-
-				</div>
 
 
 				<table className="table-fixed w-full text-center border-collapse">
@@ -81,23 +76,23 @@ function Licenses() {
 							<th className=" px-5 py-2">ID</th>
 							<th className=" px-5 py-2">Order</th>
 							<th className=" px-5 py-2">Email</th>
-							<th className=" px-5 py-2">activation_limit</th>
-							<th className=" px-5 py-2">instances_count</th>
-							<th className=" px-5 py-2">license_key</th>
-							<th className=" px-5 py-2">status</th>
+							<th className=" px-5 py-2">Limit</th>
+							<th className=" px-5 py-2">Count</th>
+							<th className=" px-5 py-2">License key</th>
+							<th className=" px-5 py-2">Status</th>
 							<th className=" px-5 py-2">Test Mode</th>
 							<th className=" px-5 py-2">Trial ends</th>
-							<th className=" px-5 py-2">expires_at</th>
+							<th className=" px-5 py-2">Expire Date</th>
 							<th className=" px-5 py-2">Date</th>
 						</tr>
 
 					</thead>
 
-					{subscriptionsData?.map((item, index) => {
+					{licensesData?.map((item, index) => {
 						return (
 							<tbody key={index}>
 								<tr className="border-0 border-b border-solid border-gray-200">
-									<td className=" px-5 py-2"><a className="font-bold" href={`/subscriptions/${item.id}`}>Subscription #{item.id}</a></td>
+									<td className=" px-5 py-2"><a className="font-bold" href={`/licenses/${item.id}`}>#{item.id}</a></td>
 									<td className=""> {item.order_id}</td>
 									<td className=""> {item.user_email}</td>
 									<td className=""> {item.activation_limit}</td>
