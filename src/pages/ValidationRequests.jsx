@@ -1,5 +1,6 @@
 import Layout from "../components/Layout";
 import { useState, useEffect } from "react";
+import EntriesTable from "../components/EntriesTable";
 
 
 
@@ -7,7 +8,7 @@ function ValidationRequests() {
 
 
 	var [requestData, setrequestData] = useState(null);
-	var [queryPrams, setqueryPrams] = useState({ page: 1, limit: 12, first_date: "", last_date: "" });
+	var [queryPrams, setqueryPrams] = useState({ keyword: "", page: 1, order: "DESC", limit: 10, first_date: "", last_date: "" });
 	var [validateMailPrams, setvalidateMailPrams] = useState({ email: '', apikey: 'lWl6^EDwPUbLsrqwPz0&Ki2^VO1038#dqJ1Nf4Ss', testType: "", result: {} });
 
 
@@ -16,7 +17,11 @@ function ValidationRequests() {
 
 
 	function fetchPosts() {
+		const token = localStorage.getItem("token");
 
+		if (!token) {
+			throw new Error("No token found");
+		}
 		var postData = {
 			limit: queryPrams.limit,
 			page: queryPrams.page,
@@ -26,19 +31,26 @@ function ValidationRequests() {
 		fetch("http://localhost/wordpress/wp-json/email-validation/v2/validation_requests", {
 			method: "POST",
 			headers: {
-				"Content-Type": "application/json;charset=utf-8",
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${token}`
 			},
 			body: postData,
 		})
 			.then((response) => {
+
+				if (!response.ok) {
+					throw new Error('Token validation failed');
+				}
+
 				if (response.ok && response.status < 400) {
 					response.json().then((res) => {
 
+
 						var posts = res?.posts;
+						var total = res?.total;
+						var max_pages = res?.max_pages;
 
-
-						console.log(res);
-						setrequestData(posts)
+						setrequestData({ posts: posts, total: total, maxPages: max_pages })
 
 						setTimeout(() => {
 						}, 500);
@@ -53,7 +65,11 @@ function ValidationRequests() {
 	}
 
 	function validateEmail() {
+		const token = localStorage.getItem("token");
 
+		if (!token) {
+			throw new Error("No token found");
+		}
 		var postData = {
 			email: validateMailPrams.email,
 			apikey: validateMailPrams.apikey,
@@ -63,11 +79,17 @@ function ValidationRequests() {
 		fetch("http://localhost/wordpress/wp-json/email-validation/v2/check_email", {
 			method: "POST",
 			headers: {
-				"Content-Type": "application/json;charset=utf-8",
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${token}`
 			},
 			body: postData,
 		})
 			.then((response) => {
+
+				if (!response.ok) {
+					throw new Error('Token validation failed');
+				}
+
 				if (response.ok && response.status < 400) {
 					response.json().then((res) => {
 						console.log(res);
@@ -75,17 +97,7 @@ function ValidationRequests() {
 						//var result = JSON.parse(res);
 						setvalidateMailPrams({ ...validateMailPrams, result: res })
 
-						var requestDataX = [...requestData]
 
-						requestDataX.push({
-							"id": "...",
-							"apikeyid": "...",
-							"email": validateMailPrams.email,
-							"result": JSON.stringify(res)
-						})
-						//setrequestData(posts)
-
-						setrequestData(requestDataX)
 
 						setTimeout(() => {
 						}, 500);
@@ -179,66 +191,31 @@ function ValidationRequests() {
 		},
 	}
 
+	var columns = {
+		id: { label: "ID" },
+		email: { label: "Email" },
+		status: { label: "Status" },
+		datetime: { label: "Datetime" },
+	}
+	function onChangeQueryPrams(queryPrams) {
+		if (queryPrams) {
+			setqueryPrams(queryPrams)
+			fetchPosts();
+		}
 
-
+	}
 
 	return (
 		<Layout>
 			<div>
 
+				<EntriesTable queryPrams={queryPrams} columns={columns} entries={requestData} itemPath={"orders"} onChange={onChangeQueryPrams} />
 
 
-				<div><table className="table-fixed w-full text-center border-collapse">
-
-					<thead>
-						<tr className="bg-gray-300 border border-solid border-gray-200">
-							<th className=" px-5 py-2 w-20">ID</th>
-							<th className=" px-5 py-2">Email							</th>
-							<th className=" px-5 py-2">Status</th>
-							<th className=" px-5 py-2">Date</th>
-						</tr>
-
-					</thead>
-
-					{requestData?.map((item, index) => {
-
-						var result = JSON.parse(item.result);
-
-						console.log(result);
-						console.log(result.status);
-						return (
-							<tbody key={index}>
-								<tr className="border-0 border-b border-solid border-gray-200">
-									<td className=" px-5 py-2">{item.id}</td>
-									<td className=""> {item.email}</td>
-									<td className=""> {result.status.join(", ")}</td>
-									<td className=""> {item.datetime}</td>
-								</tr>
 
 
-							</tbody>
-						);
-					})}
-				</table></div>
 
-
-				<div className="my-4 flex gap-3">
-
-
-					<div className="p-3 py-2 bg-gray-600 text-white cursor-pointer" onClick={ev => {
-						console.log("Hello 1");
-						setqueryPrams({ ...queryPrams, page: queryPrams.page - 1 })
-
-					}} >Previous</div>
-					<div className="p-3 py-2 bg-gray-600 text-white cursor-pointer" onClick={ev => {
-						console.log("Hello 2");
-						setqueryPrams({ ...queryPrams, page: queryPrams.page + 1 })
-
-					}}>Next</div>
-
-				</div>
-
-				<div>
+				<div className="p-5">
 
 					<div className="flex gap-2 items-center">
 						<input type="email"

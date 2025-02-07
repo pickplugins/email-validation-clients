@@ -1,5 +1,6 @@
 import Layout from "../components/Layout";
 import { useState, useEffect } from "react";
+import EntriesTable from "../components/EntriesTable";
 
 
 
@@ -7,14 +8,18 @@ function Licenses() {
 
 
 	var [licensesData, setlicensesData] = useState(null);
-	var [queryPrams, setqueryPrams] = useState({ page: 1, limit: 12, first_date: "", last_date: "" });
+	var [queryPrams, setqueryPrams] = useState({ keyword: "", page: 1, order: "DESC", limit: 10, first_date: "", last_date: "" });
 
 
 
 
 
 	function fetchPosts() {
+		const token = localStorage.getItem("token");
 
+		if (!token) {
+			throw new Error("No token found");
+		}
 		var postData = {
 			limit: queryPrams.limit,
 			page: queryPrams.page,
@@ -24,19 +29,26 @@ function Licenses() {
 		fetch("http://localhost/wordpress/wp-json/combo-payments/v2/get_licenses", {
 			method: "POST",
 			headers: {
-				"Content-Type": "application/json;charset=utf-8",
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${token}`
 			},
 			body: postData,
 		})
 			.then((response) => {
+
+				if (!response.ok) {
+					throw new Error('Token validation failed');
+				}
+
 				if (response.ok && response.status < 400) {
 					response.json().then((res) => {
 
+
 						var posts = res?.posts;
+						var total = res?.total;
+						var max_pages = res?.max_pages;
 
-
-						console.log(res);
-						setlicensesData(posts)
+						setlicensesData({ posts: posts, total: total, maxPages: max_pages })
 
 						setTimeout(() => {
 						}, 500);
@@ -59,72 +71,35 @@ function Licenses() {
 	}, [queryPrams]);
 
 
+	var columns = {
+		id: { label: "ID" },
+		order_id: { label: "Order" },
+		user_email: { label: "Email" },
+		activation_limit: { label: "Activation limit" },
+		instances_count: { label: "Instances count" },
+		license_key: { label: "License key" },
+		status: { label: "Status" },
+		test_mode: { label: "Test Mode" },
+		trial_ends_at: { label: "Trial ends" },
+		expires_at: { label: "Expires" },
+		datetime: { label: "Datetime" },
 
+	}
 
+	function onChangeQueryPrams(queryPrams) {
+		if (queryPrams) {
+			setqueryPrams(queryPrams)
+			fetchPosts();
+		}
 
+	}
 
 	return (
 		<Layout>
 			<div>
 
+				<EntriesTable queryPrams={queryPrams} columns={columns} entries={licensesData} itemPath={"orders"} onChange={onChangeQueryPrams} />
 
-
-				<table className="table-fixed w-full text-center border-collapse">
-
-					<thead>
-						<tr className="bg-gray-300 border border-solid border-gray-200">
-							<th className=" px-5 py-2">ID</th>
-							<th className=" px-5 py-2">Order</th>
-							<th className=" px-5 py-2">Email</th>
-							<th className=" px-5 py-2">Limit</th>
-							<th className=" px-5 py-2">Count</th>
-							<th className=" px-5 py-2">License key</th>
-							<th className=" px-5 py-2">Status</th>
-							<th className=" px-5 py-2">Test Mode</th>
-							<th className=" px-5 py-2">Trial ends</th>
-							<th className=" px-5 py-2">Expire Date</th>
-							<th className=" px-5 py-2">Date</th>
-						</tr>
-
-					</thead>
-
-					{licensesData?.map((item, index) => {
-						return (
-							<tbody key={index}>
-								<tr className="border-0 border-b border-solid border-gray-200">
-									<td className=" px-5 py-2"><a className="font-bold" href={`/licenses/${item.id}`}>#{item.id}</a></td>
-									<td className=""> {item.order_id}</td>
-									<td className=""> {item.user_email}</td>
-									<td className=""> {item.activation_limit}</td>
-									<td className=""> {item.instances_count}</td>
-									<td className=""> {item.license_key}</td>
-									<td className=""> {item.status}</td>
-									<td className=""> {item.test_mode}</td>
-									<td className=""> {item.trial_ends_at}</td>
-									<td className=""> {item.expires_at}</td>
-									<td className=""> {item.datetime}</td>
-								</tr>
-
-
-							</tbody>
-						);
-					})}
-				</table>
-				<div className="my-4 flex gap-3">
-
-
-					<div className="p-3 py-2 bg-gray-600 text-white cursor-pointer" onClick={ev => {
-						console.log("Hello 1");
-						setqueryPrams({ ...queryPrams, page: queryPrams.page - 1 })
-
-					}} >Previous</div>
-					<div className="p-3 py-2 bg-gray-600 text-white cursor-pointer" onClick={ev => {
-						console.log("Hello 2");
-						setqueryPrams({ ...queryPrams, page: queryPrams.page + 1 })
-
-					}}>Next</div>
-
-				</div>
 
 			</div>
 		</Layout>

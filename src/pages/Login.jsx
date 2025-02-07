@@ -14,6 +14,8 @@ const Login = () => {
 	};
 
 	const handleLogin = async (e) => {
+		console.log(e);
+
 		e.preventDefault();
 		try {
 			const response = await axios.post(
@@ -23,9 +25,12 @@ const Login = () => {
 					password: user.password,
 				}
 			);
-			setToken(response.data.token);
 
 			console.log(response);
+
+
+			setToken(response.data.token);
+
 			localStorage.setItem("token", response.data.token);
 		} catch (error) {
 			setError("Invalid credentials. Please try again.");

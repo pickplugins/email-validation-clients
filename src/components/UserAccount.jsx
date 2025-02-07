@@ -5,7 +5,6 @@ const UserAccount = ({ user }) => {
 
 	const token = localStorage.getItem("token");
 
-	console.log(user);
 
 	const handleLogout = () => {
 		localStorage.removeItem("token");

@@ -26,8 +26,8 @@ const GlobalHeader = ({ user }) => {
 	}
 
 	return (
-		<div className="flex justify-between bg-gray-200 p-3 px-5 gap-3">
-			<div className="flex gap-2 items-center">
+		<div className="flex justify-between bg-gray-700 p-3 px-5 gap-3">
+			<div className="flex gap-2 items-center text-white">
 				<a href="/dashboard">Dashboard</a>
 
 				{currentRoutes.map((route, index) => {

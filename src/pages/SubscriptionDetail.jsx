@@ -21,7 +21,11 @@ function OrderDetail() {
 
 
   function fetchPost() {
+    const token = localStorage.getItem("token");
 
+    if (!token) {
+      throw new Error("No token found");
+    }
     var postData = {
       id: id,
     };
@@ -30,11 +34,17 @@ function OrderDetail() {
     fetch("http://localhost/wordpress/wp-json/combo-payments/v2/get_subscription", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json;charset=utf-8",
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
       },
       body: postData,
     })
       .then((response) => {
+
+        if (!response.ok) {
+          throw new Error('Token validation failed');
+        }
+
         if (response.ok && response.status < 400) {
           response.json().then((res) => {
 
@@ -57,7 +67,7 @@ function OrderDetail() {
 
             console.log(urls);
 
-            //setpaginations(pagination)
+
 
             setTimeout(() => {
             }, 500);

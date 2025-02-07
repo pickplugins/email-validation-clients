@@ -1,5 +1,6 @@
 import Layout from "../components/Layout";
 import { useState, useEffect } from "react";
+import EntriesTable from "../components/EntriesTable";
 
 
 
@@ -7,7 +8,7 @@ function ApiKeys() {
 
 
 	var [apiKeysData, setapiKeysData] = useState(null);
-	var [queryPrams, setqueryPrams] = useState({ page: 1, limit: 12, first_date: "", last_date: "" });
+	var [queryPrams, setqueryPrams] = useState({ keyword: "", page: 1, order: "DESC", limit: 10, first_date: "", last_date: "" });
 
 
 	var [getApiKeyPrams, setgetApiKeyPrams] = useState({ adding: false, title: "", email: "public.nurhasan@gmail.com", domain: "", result: null, loading: false }); // Using the hook.
@@ -15,7 +16,11 @@ function ApiKeys() {
 
 
 	function fetchPosts() {
+		const token = localStorage.getItem("token");
 
+		if (!token) {
+			throw new Error("No token found");
+		}
 		var postData = {
 			limit: queryPrams.limit,
 			page: queryPrams.page,
@@ -25,19 +30,27 @@ function ApiKeys() {
 		fetch("http://localhost/wordpress/wp-json/email-validation/v2/get_api_keys", {
 			method: "POST",
 			headers: {
-				"Content-Type": "application/json;charset=utf-8",
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${token}`
 			},
 			body: postData,
 		})
 			.then((response) => {
+
+				if (!response.ok) {
+					throw new Error('Token validation failed');
+				}
+
 				if (response.ok && response.status < 400) {
 					response.json().then((res) => {
 
+
+
 						var posts = res?.posts;
+						var total = res?.total;
+						var max_pages = res?.max_pages;
 
-
-						console.log(res);
-						setapiKeysData(posts)
+						setapiKeysData({ posts: posts, total: total, maxPages: max_pages })
 
 						setTimeout(() => {
 						}, 500);
@@ -122,7 +135,13 @@ function ApiKeys() {
 
 
 
-
+	var columns = {
+		id: { label: "ID" },
+		title: { label: "Title" },
+		apikey: { label: "API key" },
+		status: { label: "Status" },
+		datetime: { label: "Datetime" },
+	}
 
 
 
@@ -135,7 +154,13 @@ function ApiKeys() {
 	}, [queryPrams]);
 
 
+	function onChangeQueryPrams(queryPrams) {
+		if (queryPrams) {
+			setqueryPrams(queryPrams)
+			fetchPosts();
+		}
 
+	}
 
 
 
@@ -143,57 +168,9 @@ function ApiKeys() {
 		<Layout>
 			<div>
 
-
-				<table className="table-fixed w-full text-center border-collapse">
-
-					<thead>
-						<tr className="bg-gray-300 border border-solid border-gray-200">
-							<th className=" px-5 py-2 w-30">ID</th>
-							<th className=" px-5 py-2 w-30">Title</th>
-							<th className=" px-5 py-2">Key</th>
-							<th className=" px-5 py-2">Status</th>
-							<th className=" px-5 py-2">Date</th>
-							<th className=" px-5 py-2"></th>
-						</tr>
-
-					</thead>
-
-					{apiKeysData?.map((item, index) => {
-						return (
-							<tbody key={index}>
-								<tr className="border-0 border-b border-solid border-gray-200">
-									<td className=" px-5 py-2">{item.id}</td>
-									<td className=""> {item.title}</td>
-									<td className=""> {item.apikey}</td>
-									<td className=""> {item.status}</td>
+				<EntriesTable queryPrams={queryPrams} columns={columns} entries={apiKeysData} itemPath={"orders"} onChange={onChangeQueryPrams} />
 
 
-									<td className=""> {item.datetime}</td>
-									<td className=""> <div className="" onClick={ev => {
-										deleteApiKey(item.id)
-									}}>Delete</div></td>
-								</tr>
-
-
-							</tbody>
-						);
-					})}
-				</table>
-				<div className="my-4 flex gap-3">
-
-
-					<div className="p-3 py-2 bg-gray-600 text-white cursor-pointer" onClick={ev => {
-						console.log("Hello 1");
-						setqueryPrams({ ...queryPrams, page: queryPrams.page - 1 })
-
-					}} >Previous</div>
-					<div className="p-3 py-2 bg-gray-600 text-white cursor-pointer" onClick={ev => {
-						console.log("Hello 2");
-						setqueryPrams({ ...queryPrams, page: queryPrams.page + 1 })
-
-					}}>Next</div>
-
-				</div>
 
 			</div>
 		</Layout>

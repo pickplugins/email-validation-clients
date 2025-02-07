@@ -9,27 +9,85 @@ const UserProfileEdit = (user) => {
 	var [userData, setuserData] = useState(user.user);
 	var [editUserData, seteditUserData] = useState({});
 
+	const validateToken = async () => {
+		const token = localStorage.getItem("token");
 
+		if (!token) {
+			throw new Error("No token found");
+		}
+
+		try {
+			const response = await fetch('http://localhost/wordpress/wp-json/email-validation/v2/validate_token', {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					'Authorization': `Bearer ${token}`
+				}
+			});
+
+			console.log(response);
+
+			if (!response.ok) {
+				throw new Error('Token validation failed');
+			}
+
+			return true;
+		} catch (error) {
+			console.error('Token validation error:', error);
+			// You might want to handle token expiration here
+			// For example, redirect to login page
+			//localStorage.removeItem("token");
+			//window.location.href = '/login';
+			return false;
+		}
+	};
+
+	// Example usage with updateUserProfile
+	const handleProfileUpdate = async () => {
+		console.log("handleProfileUpdate");
+		try {
+			const isTokenValid = await validateToken();
+			if (isTokenValid) {
+				await updateUserProfile();
+			}
+		} catch (error) {
+			console.error('Profile update failed:', error);
+			// Handle error appropriately
+		}
+	};
 
 	function updateUserProfile() {
 
+		const token = localStorage.getItem("token");
+
+		if (!token) {
+			throw new Error("No token found");
+		}
 		var postData = {
 			id: userData.id,
 			userData: editUserData,
 
 		};
 
+		console.log(postData);
+		// http://localhost/wordpress/wp-json/email-validation/v2/validate_token
 
 		postData = JSON.stringify(postData);
 
 		fetch("http://localhost/wordpress/wp-json/email-validation/v2/update_user_profile", {
 			method: "POST",
 			headers: {
-				"Content-Type": "application/json;charset=utf-8",
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${token}`
 			},
 			body: postData,
 		})
 			.then((response) => {
+
+				if (!response.ok) {
+					throw new Error('Token validation failed');
+				}
+
 				if (response.ok && response.status < 400) {
 					response.json().then((res) => {
 
@@ -49,6 +107,15 @@ const UserProfileEdit = (user) => {
 	}
 
 	function getUserProfile() {
+
+		const token = localStorage.getItem("token");
+
+		if (!token) {
+			throw new Error("No token found");
+		}
+
+
+
 		var postData = {
 			id: userData.id,
 
@@ -59,7 +126,8 @@ const UserProfileEdit = (user) => {
 		fetch("http://localhost/wordpress/wp-json/email-validation/v2/get_user_profile", {
 			method: "POST",
 			headers: {
-				"Content-Type": "application/json;charset=utf-8",
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${token}`
 			},
 			body: postData,
 		})
@@ -72,7 +140,7 @@ const UserProfileEdit = (user) => {
 
 						seteditUserData({ ...editUserData, ...res })
 
-						//setpaginations(pagination)
+
 
 						setTimeout(() => {
 						}, 500);
@@ -206,7 +274,7 @@ const UserProfileEdit = (user) => {
 									ev.preventDefault();
 
 									updateUserProfile()
-
+									//handleProfileUpdate()
 								}} className="p-2 hover:bg-gray-400 rounded-sm cursor-pointer px-4 bg-gray-600 text-white" />
 							</div>
 

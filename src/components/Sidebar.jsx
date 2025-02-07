@@ -20,7 +20,7 @@ const Sidebar = () => {
 		{ label: "Dashboard", value: "dashboard" },
 		{ label: "Orders", value: "orders" },
 		{ label: "Subscriptions", value: "subscriptions" },
-		{ label: "Licenses", value: "licenses" },
+		// { label: "Licenses", value: "licenses" },
 		{ label: "API Keys", value: "apiKeys" },
 		{ label: "Validation Requests", value: "ValidationRequests" },
 	]

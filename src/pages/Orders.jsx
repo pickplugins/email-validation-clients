@@ -1,5 +1,6 @@
 import Layout from "../components/Layout";
 import UserAccount from "../components/UserAccount";
+import EntriesTable from "../components/EntriesTable";
 import { useState, useEffect } from "react";
 
 
@@ -8,13 +9,34 @@ function Orders() {
 
 
 	var [ordersData, setordersData] = useState(null);
-	var [queryPrams, setqueryPrams] = useState({ page: 1, order: "DESC", limit: 12, first_date: "", last_date: "" });
+	var [queryPrams, setqueryPrams] = useState({ keyword: "", page: 1, order: "DESC", limit: 10, first_date: "", last_date: "" });
 
-
+	var columns = {
+		id: { label: "ID" },
+		status: { label: "Status" },
+		setup_fee: { label: "Setup fee" },
+		tax_total: { label: "Tax" },
+		discount_total: { label: "Discount" },
+		total: { label: "Total" },
+		refunded_total: { label: "Refunded" },
+		datetime: { label: "Datetime" },
+	}
 
 
 
 	function fetchPosts() {
+
+		const token = localStorage.getItem("token");
+
+		if (!token) {
+			throw new Error("No token found");
+		}
+
+		console.log(queryPrams.page);
+
+		if (queryPrams.page < 0) {
+			return;
+		}
 
 		var postData = {
 			limit: queryPrams.limit,
@@ -26,21 +48,29 @@ function Orders() {
 		fetch("http://localhost/wordpress/wp-json/combo-payments/v2/get_orders", {
 			method: "POST",
 			headers: {
-				"Content-Type": "application/json;charset=utf-8",
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${token}`
 			},
 			body: postData,
 		})
 			.then((response) => {
+
+				if (!response.ok) {
+					throw new Error('Token validation failed');
+				}
+
 				if (response.ok && response.status < 400) {
 					response.json().then((res) => {
 
-						var posts = res?.posts;
-						var pagination = res?.pagination;
-
-
 						console.log(res);
-						setordersData(posts)
-						//setpaginations(pagination)
+
+						var posts = res?.posts;
+						var total = res?.total;
+						var max_pages = res?.max_pages;
+
+						setordersData({ posts: posts, total: total, maxPages: max_pages })
+						//setqueryPrams({ ...queryPrams, loading: false })
+
 
 						setTimeout(() => {
 						}, 500);
@@ -56,11 +86,18 @@ function Orders() {
 
 
 	useEffect(() => {
+
 		fetchPosts();
 	}, [queryPrams]);
 
 
+	function onChangeQueryPrams(queryPrams) {
+		if (queryPrams) {
+			setqueryPrams(queryPrams)
+			fetchPosts();
+		}
 
+	}
 
 
 
@@ -73,71 +110,8 @@ function Orders() {
 		<Layout>
 			<div>
 
-				<div className="mt-5 bg-gray-200 p-3">
+				<EntriesTable queryPrams={queryPrams} columns={columns} entries={ordersData} itemPath={"orders"} onChange={onChangeQueryPrams} />
 
-					<div className=" flex gap-3">
-
-						<select name="" id=""
-							className="border rounded-sm border-solid"
-							value={queryPrams.order} onChange={ev => {
-								setqueryPrams({ ...queryPrams, order: ev.target.value })
-
-							}}>
-							<option value="DESC">DESC</option>
-							<option value="ASC">ASC</option>
-						</select>
-
-						<div className="p-3 py-2 bg-gray-600 text-white cursor-pointer" onClick={ev => {
-							console.log("Hello 1");
-							setqueryPrams({ ...queryPrams, page: queryPrams.page - 1 })
-
-						}} >Previous</div>
-						<div className="p-3 py-2 bg-gray-600 text-white cursor-pointer" onClick={ev => {
-							console.log("Hello 2");
-							setqueryPrams({ ...queryPrams, page: queryPrams.page + 1 })
-
-						}}>Next</div>
-
-
-
-					</div>
-				</div>
-
-				<table className="table-fixed w-full text-center border-collapse">
-
-					<thead>
-						<tr className="bg-gray-300 border border-solid border-gray-200">
-							<th className=" px-5 py-2 w-30">ID</th>
-							<th className=" px-5 py-2">Status</th>
-							<th className=" px-5 py-2">Setup Fee</th>
-							<th className=" px-5 py-2">Tax</th>
-							<th className=" px-5 py-2">Discount</th>
-							<th className=" px-5 py-2" >Total</th>
-							<th className=" px-5 py-2">Refunded_total</th>
-							<th className=" px-5 py-2">Date</th>
-						</tr>
-
-					</thead>
-
-					{ordersData?.map((item, index) => {
-						return (
-							<tbody key={index}>
-								<tr className="border-0 border-b border-solid border-gray-200">
-									<td className=" px-5 py-2"><a className="font-bold" href={`/orders/${item.id}`}>#{item.id}</a></td>
-									<td className=""> {item.status}</td>
-									<td className=""> {item.setup_fee}</td>
-									<td className=""> {item.tax_total}</td>
-									<td className=""> {item.discount_total}</td>
-									<td className=""> {item.total}</td>
-									<td className=""> {item.refunded_total}</td>
-									<td className=""> {item.datetime}</td>
-								</tr>
-
-
-							</tbody>
-						);
-					})}
-				</table>
 
 
 			</div>
