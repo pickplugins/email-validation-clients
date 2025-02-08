@@ -6,6 +6,7 @@ function OrderDetail() {
   const { id } = useParams();
 
 
+  var [appData, setappData] = useState(window.appData);
 
 
   var [orderData, setorderData] = useState(null);
@@ -29,7 +30,7 @@ function OrderDetail() {
     };
     postData = JSON.stringify(postData);
 
-    fetch("http://localhost/wordpress/wp-json/combo-payments/v2/get_order", {
+    fetch(appData.serverUrl + "wp-json/combo-payments/v2/get_order", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
@@ -52,9 +53,6 @@ function OrderDetail() {
             var subscription = res?.subscription;
 
 
-            console.log(license);
-            console.log(downloads);
-            console.log(subscription);
 
 
             setorderData(order)

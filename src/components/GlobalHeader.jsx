@@ -19,6 +19,7 @@ const GlobalHeader = ({ user }) => {
 		products: { label: "Products", value: "products" },
 		dashboard: { label: "", value: "dashboard" },
 		orders: { label: "Orders", value: "orders" },
+		tasks: { label: "Tasks", value: "tasks" },
 		subscriptions: { label: "Subscriptions", value: "subscriptions" },
 		licenses: { label: "Licenses", value: "licenses" },
 		apiKeys: { label: "API Keys", value: "apiKeys" },

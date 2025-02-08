@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 
 function Orders() {
 
+	var [appData, setappData] = useState(window.appData);
 
 	var [ordersData, setordersData] = useState(null);
 	var [queryPrams, setqueryPrams] = useState({ keyword: "", page: 1, order: "DESC", limit: 10, first_date: "", last_date: "" });
@@ -32,7 +33,6 @@ function Orders() {
 			throw new Error("No token found");
 		}
 
-		console.log(queryPrams.page);
 
 		if (queryPrams.page < 0) {
 			return;
@@ -45,7 +45,7 @@ function Orders() {
 		};
 		postData = JSON.stringify(postData);
 
-		fetch("http://localhost/wordpress/wp-json/combo-payments/v2/get_orders", {
+		fetch(appData.serverUrl + "wp-json/combo-payments/v2/get_orders", {
 			method: "POST",
 			headers: {
 				'Content-Type': 'application/json',
@@ -62,7 +62,6 @@ function Orders() {
 				if (response.ok && response.status < 400) {
 					response.json().then((res) => {
 
-						console.log(res);
 
 						var posts = res?.posts;
 						var total = res?.total;

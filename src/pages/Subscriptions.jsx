@@ -6,6 +6,7 @@ import EntriesTable from "../components/EntriesTable";
 
 function Subscriptions() {
 
+	var [appData, setappData] = useState(window.appData);
 
 	var [subscriptionsData, setsubscriptionsData] = useState(null);
 	var [queryPrams, setqueryPrams] = useState({ keyword: "", page: 1, order: "DESC", limit: 10, first_date: "", last_date: "" });
@@ -26,7 +27,7 @@ function Subscriptions() {
 		};
 		postData = JSON.stringify(postData);
 
-		fetch("http://localhost/wordpress/wp-json/combo-payments/v2/get_subscriptions", {
+		fetch(appData.serverUrl + "wp-json/combo-payments/v2/get_subscriptions", {
 			method: "POST",
 			headers: {
 				'Content-Type': 'application/json',

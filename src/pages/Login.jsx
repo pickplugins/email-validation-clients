@@ -8,25 +8,24 @@ const Login = () => {
 	const [user, setUser] = useState({ username: "", password: "" });
 	const [error, setError] = useState("");
 	const [token, setToken] = useState("");
+	var [appData, setappData] = useState(window.appData);
 
 	const handleChange = (e) => {
 		setUser({ ...user, [e.target.name]: e.target.value });
 	};
 
 	const handleLogin = async (e) => {
-		console.log(e);
 
 		e.preventDefault();
 		try {
 			const response = await axios.post(
-				"http://localhost/wordpress/wp-json/jwt-auth/v1/token",
+				appData.serverUrl + "wp-json/jwt-auth/v1/token",
 				{
 					username: user.username,
 					password: user.password,
 				}
 			);
 
-			console.log(response);
 
 
 			setToken(response.data.token);
@@ -38,21 +37,27 @@ const Login = () => {
 	};
 
 	return (
-		<Layout>
-			<div>
-				<h2>Login</h2>
-				<form onSubmit={handleLogin}>
-					<div className="flex gap-2 items-center">
+
+		<div>
+			<form onSubmit={handleLogin}>
+				<div className="grid grid-cols-1 gap-5">
+					<div>
+						<label htmlFor="" className="block">User Name</label>
 						<input
-							className="border border-solid rounded-sm py-2 bg-gray-100 px-3"
+							className="p-3 py-[5px] bg-gray-400 border rounded-sm border-solid w-full"
 							type="text"
 							name="username"
 							placeholder="Username"
 							onChange={handleChange}
 							required
 						/>
+					</div>
+
+					<div>
+						<label htmlFor="" className="block">Password</label>
+
 						<input
-							className="border border-solid rounded-sm py-2 bg-gray-100 px-3"
+							className="p-3 py-[5px] bg-gray-400 border rounded-sm border-solid w-full"
 
 							type="password"
 							name="password"
@@ -60,16 +65,17 @@ const Login = () => {
 							onChange={handleChange}
 							required
 						/>
-						<button
-							className="border border-solid rounded-sm py-2 bg-gray-100 px-3"
-
-							type="submit">Login</button>
 					</div>
-				</form>
-				{error && <p>{error}</p>}
-				{token && <Navigate to="/" />}
-			</div>
-		</Layout>
+					<button
+						className="p-3 py-[5px] bg-gray-400 border rounded-sm border-solid w-full"
+
+						type="submit">Login</button>
+				</div>
+			</form>
+			{error && <p>{error}</p>}
+			{token && <Navigate to="/orders" />}
+		</div>
+
 
 	);
 };

@@ -6,6 +6,7 @@ function LicenseDetail() {
   const { id } = useParams();
 
 
+  var [appData, setappData] = useState(window.appData);
 
 
   var [subscriptionData, setsubscriptionData] = useState(null);
@@ -27,7 +28,7 @@ function LicenseDetail() {
     };
     postData = JSON.stringify(postData);
 
-    fetch("http://localhost/wordpress/wp-json/combo-payments/v2/get_subscription", {
+    fetch(appData.serverUrl + "wp-json/combo-payments/v2/get_subscription", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
@@ -44,7 +45,6 @@ function LicenseDetail() {
         if (response.ok && response.status < 400) {
           response.json().then((res) => {
 
-            console.log(res);
 
 
             var subscription = res?.subscription;

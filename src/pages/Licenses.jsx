@@ -6,6 +6,7 @@ import EntriesTable from "../components/EntriesTable";
 
 function Licenses() {
 
+	var [appData, setappData] = useState(window.appData);
 
 	var [licensesData, setlicensesData] = useState(null);
 	var [queryPrams, setqueryPrams] = useState({ keyword: "", page: 1, order: "DESC", limit: 10, first_date: "", last_date: "" });
@@ -26,7 +27,7 @@ function Licenses() {
 		};
 		postData = JSON.stringify(postData);
 
-		fetch("http://localhost/wordpress/wp-json/combo-payments/v2/get_licenses", {
+		fetch(appData.serverUrl + "wp-json/combo-payments/v2/get_licenses", {
 			method: "POST",
 			headers: {
 				'Content-Type': 'application/json',
@@ -62,6 +63,15 @@ function Licenses() {
 
 	}
 
+
+
+
+
+
+
+
+
+
 	// useEffect(() => {
 	// 	fetchPosts();
 	// }, []);
@@ -91,8 +101,8 @@ function Licenses() {
 			setqueryPrams(queryPrams)
 			fetchPosts();
 		}
-
 	}
+
 
 	return (
 		<Layout>

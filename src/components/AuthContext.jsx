@@ -8,35 +8,12 @@ const AuthProvider = ({ children }) => {
 	const [user, setUser] = useState(null);
 	const [loading, setLoading] = useState(true);
 
-	// const checkUser = async () => {
-	// 	const token = localStorage.getItem("token");
-	// 	if (!token) {
-	// 		setUser(null);
-	// 		setLoading(false);
-	// 		return;
-	// 	}
-
-	// 	try {
-	// 		const response = await axios.get(
-	// 			"http://localhost/wordpress/wp-json/wp/v2/users/me",
-	// 			{ headers: { Authorization: `Bearer ${token}` } }
-	// 		);
-	// 		setUser(response.data);
-	// 	} catch (error) {
-	// 		console.error("Invalid Token or Expired");
-	// 		localStorage.removeItem("token");
-	// 		setUser(null);
-	// 	} finally {
-	// 		setLoading(false);
-	// 	}
-	// };
-
 
 
 	const checkUser = async () => {
 		const token = localStorage.getItem("token");
 
-		console.log(token)
+		//console.log(token)
 
 		if (!token) {
 			setUser(null);
@@ -51,9 +28,11 @@ const AuthProvider = ({ children }) => {
 					headers: { Authorization: `Bearer ${token}` },
 				}
 			);
+
+			//console.log(response.data.user);
 			setUser(response.data.user);
 		} catch (error) {
-			console.error("Invalid Token", error);
+			//console.error("Invalid Token", error);
 			logout();
 		} finally {
 			setLoading(false);

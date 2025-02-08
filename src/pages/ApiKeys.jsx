@@ -6,6 +6,7 @@ import EntriesTable from "../components/EntriesTable";
 
 function ApiKeys() {
 
+	var [appData, setappData] = useState(window.appData);
 
 	var [apiKeysData, setapiKeysData] = useState(null);
 	var [queryPrams, setqueryPrams] = useState({ keyword: "", page: 1, order: "DESC", limit: 10, first_date: "", last_date: "" });
@@ -27,7 +28,7 @@ function ApiKeys() {
 		};
 		postData = JSON.stringify(postData);
 
-		fetch("http://localhost/wordpress/wp-json/email-validation/v2/get_api_keys", {
+		fetch(appData.serverUrl + "wp-json/email-validation/v2/get_api_keys", {
 			method: "POST",
 			headers: {
 				'Content-Type': 'application/json',
@@ -65,26 +66,37 @@ function ApiKeys() {
 	}
 
 	function createApiKey() {
+		const token = localStorage.getItem("token");
 
+		if (!token) {
+			throw new Error("No token found");
+		}
 		var postData = {
 			email: getApiKeyPrams.limit,
 		};
 		postData = JSON.stringify(postData);
 
-		fetch("http://localhost/wordpress/wp-json/email-validation/v2/create_api_key", {
+		fetch(appData.serverUrl + "wp-json/email-validation/v2/create_api_key", {
 			method: "POST",
 			headers: {
-				"Content-Type": "application/json;charset=utf-8",
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${token}`
 			},
 			body: postData,
 		})
 			.then((response) => {
+
+				if (!response.ok) {
+					throw new Error('Token validation failed');
+				}
+
+
 				if (response.ok && response.status < 400) {
 					response.json().then((res) => {
 
 
 
-						console.log(res);
+						//console.log(res);
 
 						setTimeout(() => {
 						}, 500);
@@ -100,26 +112,37 @@ function ApiKeys() {
 
 
 	function deleteApiKey(id) {
+		const token = localStorage.getItem("token");
 
+		if (!token) {
+			throw new Error("No token found");
+		}
 		var postData = {
 			id: id,
 		};
 		postData = JSON.stringify(postData);
 
-		fetch("http://localhost/wordpress/wp-json/email-validation/v2/delete_api_key", {
+		fetch(appData.serverUrl + "wp-json/email-validation/v2/delete_api_key", {
 			method: "POST",
 			headers: {
-				"Content-Type": "application/json;charset=utf-8",
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${token}`
 			},
 			body: postData,
 		})
 			.then((response) => {
+
+				if (!response.ok) {
+					throw new Error('Token validation failed');
+				}
+
+
 				if (response.ok && response.status < 400) {
 					response.json().then((res) => {
 
 
 
-						console.log(res);
+						//console.log(res);
 
 						setTimeout(() => {
 						}, 500);
@@ -133,7 +156,10 @@ function ApiKeys() {
 
 	}
 
-
+	function deleteRow(id) {
+		//console.log(id);
+		deleteApiKey(id)
+	}
 
 	var columns = {
 		id: { label: "ID" },
@@ -168,7 +194,12 @@ function ApiKeys() {
 		<Layout>
 			<div>
 
-				<EntriesTable queryPrams={queryPrams} columns={columns} entries={apiKeysData} itemPath={"orders"} onChange={onChangeQueryPrams} />
+				<div className="flex justify-between p-4 ">
+					<div>Add</div>
+					<div></div>
+				</div>
+
+				<EntriesTable deleteRow={deleteRow} queryPrams={queryPrams} columns={columns} entries={apiKeysData} itemPath={"orders"} onChange={onChangeQueryPrams} />
 
 
 

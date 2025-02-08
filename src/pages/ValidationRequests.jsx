@@ -6,6 +6,7 @@ import EntriesTable from "../components/EntriesTable";
 
 function ValidationRequests() {
 
+	var [appData, setappData] = useState(window.appData);
 
 	var [requestData, setrequestData] = useState(null);
 	var [queryPrams, setqueryPrams] = useState({ keyword: "", page: 1, order: "DESC", limit: 10, first_date: "", last_date: "" });
@@ -28,7 +29,7 @@ function ValidationRequests() {
 		};
 		postData = JSON.stringify(postData);
 
-		fetch("http://localhost/wordpress/wp-json/email-validation/v2/validation_requests", {
+		fetch(appData.serverUrl + "wp-json/email-validation/v2/validation_requests", {
 			method: "POST",
 			headers: {
 				'Content-Type': 'application/json',
@@ -76,7 +77,7 @@ function ValidationRequests() {
 		};
 		postData = JSON.stringify(postData);
 
-		fetch("http://localhost/wordpress/wp-json/email-validation/v2/check_email", {
+		fetch(appData.serverUrl + "wp-json/email-validation/v2/check_email", {
 			method: "POST",
 			headers: {
 				'Content-Type': 'application/json',
@@ -92,7 +93,6 @@ function ValidationRequests() {
 
 				if (response.ok && response.status < 400) {
 					response.json().then((res) => {
-						console.log(res);
 
 						//var result = JSON.parse(res);
 						setvalidateMailPrams({ ...validateMailPrams, result: res })

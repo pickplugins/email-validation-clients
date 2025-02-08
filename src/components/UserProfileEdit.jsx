@@ -25,7 +25,7 @@ const UserProfileEdit = (user) => {
 				}
 			});
 
-			console.log(response);
+			//console.log(response);
 
 			if (!response.ok) {
 				throw new Error('Token validation failed');
@@ -33,7 +33,7 @@ const UserProfileEdit = (user) => {
 
 			return true;
 		} catch (error) {
-			console.error('Token validation error:', error);
+			//console.error('Token validation error:', error);
 			// You might want to handle token expiration here
 			// For example, redirect to login page
 			//localStorage.removeItem("token");
@@ -44,14 +44,14 @@ const UserProfileEdit = (user) => {
 
 	// Example usage with updateUserProfile
 	const handleProfileUpdate = async () => {
-		console.log("handleProfileUpdate");
+		//console.log("handleProfileUpdate");
 		try {
 			const isTokenValid = await validateToken();
 			if (isTokenValid) {
 				await updateUserProfile();
 			}
 		} catch (error) {
-			console.error('Profile update failed:', error);
+			//console.error('Profile update failed:', error);
 			// Handle error appropriately
 		}
 	};
@@ -69,7 +69,7 @@ const UserProfileEdit = (user) => {
 
 		};
 
-		console.log(postData);
+		//console.log(postData);
 		// http://localhost/wordpress/wp-json/email-validation/v2/validate_token
 
 		postData = JSON.stringify(postData);
@@ -92,7 +92,7 @@ const UserProfileEdit = (user) => {
 					response.json().then((res) => {
 
 
-						console.log(res);
+						//console.log(res);
 
 						setTimeout(() => {
 						}, 500);
@@ -136,7 +136,7 @@ const UserProfileEdit = (user) => {
 					response.json().then((res) => {
 
 
-						console.log(res);
+						//console.log(res);
 
 						seteditUserData({ ...editUserData, ...res })
 

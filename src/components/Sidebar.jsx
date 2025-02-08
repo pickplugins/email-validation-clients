@@ -18,6 +18,7 @@ const Sidebar = () => {
 	var navs = [
 		// { label: "Products", value: "products" },
 		{ label: "Dashboard", value: "dashboard" },
+		{ label: "Tasks", value: "tasks" },
 		{ label: "Orders", value: "orders" },
 		{ label: "Subscriptions", value: "subscriptions" },
 		// { label: "Licenses", value: "licenses" },

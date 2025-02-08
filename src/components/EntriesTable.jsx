@@ -13,9 +13,10 @@ function Html(props) {
 	var columns = props.columns;
 	var entries = props.entries;
 	var itemPath = props.itemPath;
+	var deleteRow = props.deleteRow;
 	// var queryPrams = props.queryPrams;
 
-	console.log(entries);
+	//console.log(entries);
 
 	var [queryPrams, setqueryPrams] = useState(props.queryPrams);
 
@@ -73,14 +74,14 @@ function Html(props) {
 						var page = queryPrams.page;
 						if (page == 1) return;
 
-						console.log(page);
+						//console.log(page);
 						setqueryPrams({ ...queryPrams, page: queryPrams.page - 1 })
 
 					}} >Previous</div>
 					<div className="p-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer" onClick={ev => {
 
 
-						page = queryPrams.page + 1
+						var page = queryPrams.page + 1
 						if (page > entries?.maxPages) return;
 
 						setqueryPrams({ ...queryPrams, page: queryPrams.page + 1 })
@@ -102,11 +103,12 @@ function Html(props) {
 							var columnData = args[1]
 
 							return (
-								<>
-									<th key={columnIndex} className={`px-5 py-2 ${columnIndex == 'id' ? "w-10" : ""}`}>{columnData.label}</th>
-								</>
+								<th key={columnIndex} className={`px-5 py-2 ${columnIndex == 'id' ? "w-10" : ""}`}>{columnData.label}</th>
 							)
 						})}
+						{deleteRow && (
+							<th>Delete</th>
+						)}
 					</tr>
 				</thead>
 				<tbody >
@@ -126,15 +128,23 @@ function Html(props) {
 												<a className="font-bold" href={`/${itemPath}/${entry.id}`}>#{entry.id}</a>
 											)}
 											{columnIndex != 'id' && (
-												<>
+												<span>
 													{entry[columnIndex]}
-												</>
+												</span>
 											)}
 
 
 										</td>
 									)
 								})}
+
+								{deleteRow && (
+									<td key={'delete'}>
+										<span onClick={ev => {
+											deleteRow(entry.id)
+										}}>Delete</span>
+									</td>
+								)}
 
 							</tr>
 
@@ -151,11 +161,14 @@ function Html(props) {
 							var columnData = args[1]
 
 							return (
-								<>
-									<th key={columnIndex} className=" px-5 py-2">{columnData.label}</th>
-								</>
+
+								<th key={columnIndex} className=" px-5 py-2">{columnData.label}</th>
+
 							)
 						})}
+						{deleteRow && (
+							<th key={'delete'}>Delete</th>
+						)}
 					</tr>
 				</thead>
 			</table>
@@ -179,10 +192,11 @@ class EntriesTable extends Component {
 	}
 
 	render() {
-		var { entries, columns, itemPath, queryPrams, onChange } = this.props;
+		var { entries, deleteRow, columns, itemPath, queryPrams, onChange } = this.props;
 
 		return (
 			<Html
+				deleteRow={deleteRow}
 				columns={columns}
 				entries={entries}
 				itemPath={itemPath}

@@ -8,7 +8,6 @@ import GlobalHeader from "../components/GlobalHeader";
 const Layout = ({ children }) => {
 
 	const { user, loading } = useContext(AuthContext);
-	const token = localStorage.getItem("token");
 
 
 	return (
@@ -16,6 +15,7 @@ const Layout = ({ children }) => {
 			className={`flex min-w-screen min-h-screen`}>
 			<Sidebar />
 			<main className=' basis-[100%]'>
+
 				<GlobalHeader user={user} />
 
 				<div className=''>
