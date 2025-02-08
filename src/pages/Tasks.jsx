@@ -17,6 +17,7 @@ function Tasks() {
 		id: { label: "ID" },
 		title: { label: "Title" },
 		status: { label: "Status" },
+		total: { label: "Total" },
 
 		datetime: { label: "Datetime" },
 	}
@@ -60,6 +61,7 @@ function Tasks() {
 				if (response.ok && response.status < 400) {
 					response.json().then((res) => {
 
+						console.log(res)
 
 						var posts = res?.posts;
 						var total = res?.total;

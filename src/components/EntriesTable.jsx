@@ -103,7 +103,10 @@ function Html(props) {
 							var columnData = args[1]
 
 							return (
-								<th key={columnIndex} className={`px-5 py-2 ${columnIndex == 'id' ? "w-10" : ""}`}>{columnData.label}</th>
+								<th key={columnIndex} className={`px-5 py-2 ${columnIndex == 'id' ? "w-20 " : ""} ${columnIndex == 'email' ? "text-left pl-5" : ""}`}>
+
+									<span className={`${columnIndex == 'email' ? "text-left pl-5" : ""}`}>{columnData.label}</span>
+								</th>
 							)
 						})}
 						{deleteRow && (
@@ -122,13 +125,13 @@ function Html(props) {
 									var columnData = args[1]
 
 									return (
-										<td key={columnIndex} className=" px-5 py-2">
+										<td key={columnIndex} className={`px-5 py-2 ${columnIndex == 'email' ? "text-left pl-5" : ""}`}>
 
 											{columnIndex == 'id' && (
-												<a className="font-bold" href={`/${itemPath}/${entry.id}`}>#{entry.id}</a>
+												<a className="text-xs" href={`/${itemPath}/${entry.id}`}>#{entry.id}</a>
 											)}
 											{columnIndex != 'id' && (
-												<span>
+												<span className={`${columnIndex == 'email' ? "text-left pl-5" : ""}`}>
 													{entry[columnIndex]}
 												</span>
 											)}
@@ -162,7 +165,10 @@ function Html(props) {
 
 							return (
 
-								<th key={columnIndex} className=" px-5 py-2">{columnData.label}</th>
+								<th key={columnIndex} className={`px-5 py-2 ${columnIndex == 'email' ? "text-left pl-5" : ""}`}>
+									<span className={`${columnIndex == 'email' ? "text-left pl-5" : ""}`}>{columnData.label}</span>
+
+								</th>
 
 							)
 						})}
