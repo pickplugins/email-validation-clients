@@ -6,6 +6,10 @@ var appData = {
   serverUrl: "http://localhost/wordpress/",
   appUrl: "http://localhost:5173/",
 }
+// var appData = {
+//   serverUrl: "https://isspammy.com/",
+//   appUrl: "https://isspammy.com/",
+// }
 
 window.appData = appData;
 

@@ -103,7 +103,7 @@ function Html(props) {
 							var columnData = args[1]
 
 							return (
-								<th key={columnIndex} className={`px-5 py-2 ${columnIndex == 'id' ? "w-20 " : ""} ${columnIndex == 'email' ? "text-left pl-5" : ""}`}>
+								<th key={columnIndex} className={`px-5 py-2 ${columnIndex == 'id' ? "w-20 " : ""} ${columnIndex == 'email' ? "text-left pl-5" : ""} ${columnIndex == 'title' ? "text-left pl-5" : ""}`}>
 
 									<span className={`${columnIndex == 'email' ? "text-left pl-5" : ""}`}>{columnData.label}</span>
 								</th>
@@ -125,7 +125,7 @@ function Html(props) {
 									var columnData = args[1]
 
 									return (
-										<td key={columnIndex} className={`px-5 py-2 ${columnIndex == 'email' ? "text-left pl-5" : ""}`}>
+										<td key={columnIndex} className={`px-5 py-2 ${columnIndex == 'email' ? "text-left pl-5" : ""} ${columnIndex == 'title' ? "text-left pl-5" : ""}`}>
 
 											{columnIndex == 'id' && (
 												<a className="text-xs" href={`/${itemPath}/${entry.id}`}>#{entry.id}</a>
@@ -165,7 +165,7 @@ function Html(props) {
 
 							return (
 
-								<th key={columnIndex} className={`px-5 py-2 ${columnIndex == 'email' ? "text-left pl-5" : ""}`}>
+								<th key={columnIndex} className={`px-5 py-2 ${columnIndex == 'email' ? "text-left pl-5" : ""} ${columnIndex == 'title' ? "text-left pl-5" : ""}`}>
 									<span className={`${columnIndex == 'email' ? "text-left pl-5" : ""}`}>{columnData.label}</span>
 
 								</th>

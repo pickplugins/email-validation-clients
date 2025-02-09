@@ -6,7 +6,8 @@ import { Navigate } from "react-router-dom";
 
 const Register = () => {
 	const [user, setUser] = useState({ email: "", password: "" });
-	const [messages, setMessages] = useState([]);
+	const [messages, setMessages] = useState(null);
+	const [errors, seterrors] = useState(null);
 	const [token, setToken] = useState("");
 	var [appData, setappData] = useState(window.appData);
 
@@ -25,6 +26,7 @@ const Register = () => {
 			return;
 		}
 
+		seterrors(false)
 
 
 
@@ -50,7 +52,14 @@ const Register = () => {
 						var result = JSON.parse(res)
 
 						var error = result.error
+
+						seterrors(error)
+
+
+						var success = result.success
 						var messages = result.messages
+
+						console.log(messages);
 						setMessages(messages)
 
 
@@ -99,15 +108,37 @@ const Register = () => {
 						/>
 					</div>
 					<button
-						className="p-3 py-[5px] bg-gray-400 border rounded-sm border-solid w-full"
+						className="p-3 py-[5px] bg-gray-700 text-white cursor-pointer border rounded-sm border-solid w-full"
 
 						type="submit">Register</button>
 				</div>
 			</form>
 
-			{JSON.stringify(messages)}
-
-
+			{errors && (
+				<div className="text-red-600">
+					{messages != null && (
+						<>
+							{Object.entries(messages).map(message => {
+								return (
+									<p>{message}</p>
+								)
+							})}						</>
+					)}
+				</div>
+			)}
+			{!errors && (
+				<div className="text-green-700">
+					{messages != null && (
+						<>
+							{Object.entries(messages).map(args => {
+								return (
+									<p>{args[1]}</p>
+								)
+							})}
+						</>
+					)}
+				</div>
+			)}
 
 
 

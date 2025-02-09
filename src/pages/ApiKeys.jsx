@@ -11,6 +11,8 @@ function ApiKeys() {
 	var [apiKeysData, setapiKeysData] = useState(null);
 	var [queryPrams, setqueryPrams] = useState({ keyword: "", page: 1, order: "DESC", limit: 10, first_date: "", last_date: "" });
 
+	var [addApiKey, setaddApiKey] = useState({ title: "", edit: false, loading: false, success: false, errors: false });
+
 
 	var [getApiKeyPrams, setgetApiKeyPrams] = useState({ adding: false, title: "", email: "public.nurhasan@gmail.com", domain: "", result: null, loading: false }); // Using the hook.
 
@@ -65,14 +67,23 @@ function ApiKeys() {
 
 	}
 
+
+
 	function createApiKey() {
+
 		const token = localStorage.getItem("token");
 
 		if (!token) {
 			throw new Error("No token found");
 		}
+
+
+		if (queryPrams.page < 0) {
+			return;
+		}
+
 		var postData = {
-			email: getApiKeyPrams.limit,
+			title: addApiKey.title,
 		};
 		postData = JSON.stringify(postData);
 
@@ -90,16 +101,22 @@ function ApiKeys() {
 					throw new Error('Token validation failed');
 				}
 
-
 				if (response.ok && response.status < 400) {
 					response.json().then((res) => {
 
+						var errors = res?.errors;
+						var success = res?.success;
 
 
-						//console.log(res);
+						console.log(res);
+						fetchPosts()
+
+						setaddApiKey({ ...addApiKey, loading: false, errors: errors, success: success })
 
 						setTimeout(() => {
-						}, 500);
+							setaddApiKey({ ...addApiKey, title: "", success: null, errors: null })
+
+						}, 3000);
 					});
 				}
 			})
@@ -194,10 +211,46 @@ function ApiKeys() {
 		<Layout>
 			<div>
 
+
 				<div className="flex justify-between p-4 ">
-					<div>Add</div>
+
+					<div className="flex gap-3 items-center">
+						<div className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer" onClick={ev => {
+							setaddApiKey({ ...addApiKey, edit: !addApiKey.edit })
+						}}>Add</div>
+
+						{addApiKey.edit && (
+							<>
+								<input type="text" placeholder="API Title" className="p-3 py-[5px] bg-gray-400 border rounded-sm border-solid " value={addApiKey?.title} onChange={ev => {
+									setaddApiKey({ ...addApiKey, title: ev.target.value })
+
+								}} />
+
+								<div onClick={ev => {
+									createApiKey();
+									setaddApiKey({ ...addApiKey, loading: true })
+
+								}} className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer" >Submit</div>
+							</>
+						)}
+
+						{addApiKey.loading && (
+							<>Loading...</>
+						)}
+						{addApiKey.errors && (
+							<>There is an error.</>
+						)}
+						{addApiKey.success && (
+							<>Task Added.</>
+						)}
+
+					</div>
+
+
+
 					<div></div>
 				</div>
+
 
 				<EntriesTable deleteRow={deleteRow} queryPrams={queryPrams} columns={columns} entries={apiKeysData} itemPath={"orders"} onChange={onChangeQueryPrams} />
 

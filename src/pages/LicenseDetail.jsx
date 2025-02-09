@@ -28,7 +28,7 @@ function LicenseDetail() {
     };
     postData = JSON.stringify(postData);
 
-    fetch(appData.serverUrl + "wp-json/combo-payments/v2/get_subscription", {
+    fetch(appData.serverUrl + "wp-json/email-validation/v2/get_subscription", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',

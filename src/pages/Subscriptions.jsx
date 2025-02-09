@@ -27,7 +27,7 @@ function Subscriptions() {
 		};
 		postData = JSON.stringify(postData);
 
-		fetch(appData.serverUrl + "wp-json/combo-payments/v2/get_subscriptions", {
+		fetch(appData.serverUrl + "wp-json/email-validation/v2/get_subscriptions", {
 			method: "POST",
 			headers: {
 				'Content-Type': 'application/json',

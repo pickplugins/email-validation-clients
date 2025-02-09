@@ -54,6 +54,7 @@ function TaskDetail() {
 
             settasksEntries({ posts: posts, total: total, maxPages: max_pages })
 
+            fetchPost()
 
             setTimeout(() => {
             }, 500);
@@ -73,6 +74,10 @@ function TaskDetail() {
     if (!token) {
       throw new Error("No token found");
     }
+
+    setaddTask({ ...addTask, loading: true })
+
+
     var postData = {
       task_id: id,
       emails: addTask.emails,
@@ -104,6 +109,7 @@ function TaskDetail() {
 
             // settasksEntries({ posts: posts, total: total, maxPages: max_pages })
 
+            setaddTask({ ...addTask, loading: false })
 
             setTimeout(() => {
             }, 500);
@@ -174,7 +180,6 @@ function TaskDetail() {
 
                   console.log(addTask.emails)
 
-                  setaddTask({ ...addTask, loading: true })
 
                 }} className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer" >Submit</div>
               </>

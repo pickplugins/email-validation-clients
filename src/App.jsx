@@ -12,7 +12,6 @@ import SubscriptionDetail from "./pages/SubscriptionDetail";
 import ApiKeys from "./pages/ApiKeys";
 import ValidationRequests from "./pages/ValidationRequests";
 import Home from './pages/Home';
-import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import PrivateRoute from './pages/PrivateRoute';
 import AuthProvider from './components/AuthContext';
@@ -39,7 +38,6 @@ function App(appData) {
         <Route path="/products/:id" element={<PrivateRoute><ProductDetail /></PrivateRoute>} />
         <Route path="/subscriptions" element={<PrivateRoute><Subscriptions /></PrivateRoute>} />
         <Route path="/subscriptions/:id" element={<PrivateRoute><SubscriptionDetail /></PrivateRoute>} />
-        <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
       </Routes>
     </AuthProvider>

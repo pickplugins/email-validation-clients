@@ -125,6 +125,7 @@ function Tasks() {
 
 						console.log(res);
 
+						fetchPosts()
 
 						setaddTask({ ...addTask, loading: false, errors: errors, success: success })
 

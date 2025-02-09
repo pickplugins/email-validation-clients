@@ -45,7 +45,7 @@ function Orders() {
 		};
 		postData = JSON.stringify(postData);
 
-		fetch(appData.serverUrl + "wp-json/combo-payments/v2/get_orders", {
+		fetch(appData.serverUrl + "wp-json/email-validation/v2/get_orders", {
 			method: "POST",
 			headers: {
 				'Content-Type': 'application/json',

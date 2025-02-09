@@ -1,7 +1,6 @@
 import { useLocation } from "react-router-dom";
 import React, { useContext } from "react";
 import { AuthContext } from "../components/AuthContext";
-import Login from '../pages/Login';
 
 
 const Sidebar = () => {

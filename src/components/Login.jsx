@@ -17,6 +17,9 @@ const Login = () => {
 	const handleLogin = async (e) => {
 
 		e.preventDefault();
+
+		console.log(user)
+
 		try {
 			const response = await axios.post(
 				appData.serverUrl + "wp-json/jwt-auth/v1/token",
@@ -25,8 +28,6 @@ const Login = () => {
 					password: user.password,
 				}
 			);
-
-
 
 			setToken(response.data.token);
 
@@ -67,7 +68,7 @@ const Login = () => {
 						/>
 					</div>
 					<button
-						className="p-3 py-[5px] bg-gray-400 border rounded-sm border-solid w-full"
+						className="p-3 py-[5px] bg-gray-700 text-white cursor-pointer border rounded-sm border-solid w-full"
 
 						type="submit">Login</button>
 				</div>

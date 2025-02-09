@@ -7,12 +7,15 @@ export const AuthContext = createContext(null); // Set default value to null
 const AuthProvider = ({ children }) => {
 	const [user, setUser] = useState(null);
 	const [loading, setLoading] = useState(true);
+	const [token, setToken] = useState(localStorage.getItem("token") || null);
 
-
+	const logout = () => {
+		setToken(null);
+		setUser(null);
+		localStorage.removeItem("token");
+	};
 
 	const checkUser = async () => {
-		const token = localStorage.getItem("token");
-
 		//console.log(token)
 
 		if (!token) {
@@ -33,7 +36,7 @@ const AuthProvider = ({ children }) => {
 			setUser(response.data.user);
 		} catch (error) {
 			//console.error("Invalid Token", error);
-			logout();
+			//logout();
 		} finally {
 			setLoading(false);
 		}

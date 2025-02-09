@@ -4,8 +4,8 @@ import Layout from "../components/Layout";
 import UserAccount from "../components/UserAccount";
 import GlobalHeader from "../components/GlobalHeader";
 import UserProfileEdit from "../components/UserProfileEdit";
-import Login from '../pages/Login';
-import Register from '../pages/Register';
+import Login from '../components/Login';
+import Register from '../components/Register';
 import { useState, useEffect } from "react";
 
 const Dashboard = () => {
@@ -37,7 +37,7 @@ const Dashboard = () => {
       ) : (
 
 
-        <div className="grid grid-cols-2 gap-10 w-[1200px] px-10 mx-auto mt-10">
+        <div className="grid grid-cols-2 gap-20 w-[1200px] px-10 mx-auto mt-10">
           <div>
             <h2 className="my-5 text-2xl">Register</h2>
 

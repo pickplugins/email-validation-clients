@@ -10,7 +10,7 @@ function ValidationRequests() {
 
 	var [requestData, setrequestData] = useState(null);
 	var [queryPrams, setqueryPrams] = useState({ keyword: "", page: 1, order: "DESC", limit: 10, first_date: "", last_date: "" });
-	var [validateMailPrams, setvalidateMailPrams] = useState({ email: '', apikey: 'lWl6^EDwPUbLsrqwPz0&Ki2^VO1038#dqJ1Nf4Ss', testType: "", result: {} });
+	var [validateMailPrams, setvalidateMailPrams] = useState({ email: '', apikey: 'lWl6^EDwPUbLsrqwPz0&Ki2^VO1038#dqJ1Nf4Ss', testType: "", result: {}, loading: false });
 
 
 	var [getApiKeyPrams, setgetApiKeyPrams] = useState({ adding: false, title: "", email: "public.nurhasan@gmail.com", domain: "", result: null, loading: false }); // Using the hook.
@@ -76,9 +76,11 @@ function ValidationRequests() {
 			apikey: validateMailPrams.apikey,
 		};
 		postData = JSON.stringify(postData);
+		setvalidateMailPrams({ ...validateMailPrams, loading: true })
 
-		fetch(appData.serverUrl + "wp-json/email-validation/v2/check_email", {
+		fetch(appData.serverUrl + "wp-json/email-validation/v2/validate_email_by_user", {
 			method: "POST",
+			mode: "cors",
 			headers: {
 				'Content-Type': 'application/json',
 				'Authorization': `Bearer ${token}`
@@ -95,7 +97,7 @@ function ValidationRequests() {
 					response.json().then((res) => {
 
 						//var result = JSON.parse(res);
-						setvalidateMailPrams({ ...validateMailPrams, result: res })
+						setvalidateMailPrams({ ...validateMailPrams, result: res, loading: false })
 
 
 
@@ -230,6 +232,9 @@ function ValidationRequests() {
 							}}>Validate</div>
 					</div>
 
+					{validateMailPrams.loading && (
+						<>Loading...</>
+					)}
 
 					{validateMailPrams.result != null && (
 
