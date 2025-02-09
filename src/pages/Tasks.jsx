@@ -2,6 +2,7 @@ import Layout from "../components/Layout";
 import UserAccount from "../components/UserAccount";
 import EntriesTable from "../components/EntriesTable";
 import { useState, useEffect } from "react";
+import Spinner from "../components/Spinner";
 
 
 
@@ -12,6 +13,9 @@ function Tasks() {
 	var [addTask, setaddTask] = useState({ title: "", edit: false, loading: false, success: false, errors: false });
 	var [tasksData, settasksData] = useState(null);
 	var [queryPrams, setqueryPrams] = useState({ keyword: "", page: 1, order: "DESC", limit: 10, first_date: "", last_date: "" });
+
+	var [loading, setloading] = useState(false);
+
 
 	var columns = {
 		id: { label: "ID" },
@@ -43,6 +47,7 @@ function Tasks() {
 			order: queryPrams.order,
 		};
 		postData = JSON.stringify(postData);
+		setloading(true);
 
 		fetch(appData.serverUrl + "wp-json/email-validation/v2/get_tasks", {
 			method: "POST",
@@ -69,6 +74,7 @@ function Tasks() {
 
 						settasksData({ posts: posts, total: total, maxPages: max_pages })
 						//setqueryPrams({ ...queryPrams, loading: false })
+						setloading(false);
 
 
 						setTimeout(() => {
@@ -204,7 +210,7 @@ function Tasks() {
 						)}
 
 						{addTask.loading && (
-							<>Loading...</>
+							<><Spinner /></>
 						)}
 						{addTask.errors && (
 							<>There is an error.</>
@@ -220,7 +226,7 @@ function Tasks() {
 					<div></div>
 				</div>
 
-				<EntriesTable queryPrams={queryPrams} columns={columns} entries={tasksData} itemPath={"tasks"} onChange={onChangeQueryPrams} />
+				<EntriesTable queryPrams={queryPrams} columns={columns} entries={tasksData} itemPath={"tasks"} onChange={onChangeQueryPrams} loading={loading} />
 
 
 

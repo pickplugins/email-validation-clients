@@ -1,6 +1,7 @@
 import Layout from "../components/Layout";
 import { useState, useEffect } from "react";
 import EntriesTable from "../components/EntriesTable";
+import Spinner from "../components/Spinner";
 
 
 
@@ -15,6 +16,7 @@ function ValidationRequests() {
 
 	var [getApiKeyPrams, setgetApiKeyPrams] = useState({ adding: false, title: "", email: "public.nurhasan@gmail.com", domain: "", result: null, loading: false }); // Using the hook.
 
+	var [loading, setloading] = useState(false);
 
 
 	function fetchPosts() {
@@ -28,6 +30,7 @@ function ValidationRequests() {
 			page: queryPrams.page,
 		};
 		postData = JSON.stringify(postData);
+		setloading(true);
 
 		fetch(appData.serverUrl + "wp-json/email-validation/v2/validation_requests", {
 			method: "POST",
@@ -52,6 +55,7 @@ function ValidationRequests() {
 						var max_pages = res?.max_pages;
 
 						setrequestData({ posts: posts, total: total, maxPages: max_pages })
+						setloading(false);
 
 						setTimeout(() => {
 						}, 500);
@@ -211,7 +215,7 @@ function ValidationRequests() {
 		<Layout>
 			<div>
 
-				<EntriesTable queryPrams={queryPrams} columns={columns} entries={requestData} itemPath={"orders"} onChange={onChangeQueryPrams} />
+				<EntriesTable queryPrams={queryPrams} columns={columns} entries={requestData} itemPath={"orders"} onChange={onChangeQueryPrams} loading={loading} />
 
 
 

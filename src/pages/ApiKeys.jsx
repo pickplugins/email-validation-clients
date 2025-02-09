@@ -16,6 +16,7 @@ function ApiKeys() {
 
 	var [getApiKeyPrams, setgetApiKeyPrams] = useState({ adding: false, title: "", email: "public.nurhasan@gmail.com", domain: "", result: null, loading: false }); // Using the hook.
 
+	var [loading, setloading] = useState(false);
 
 
 	function fetchPosts() {
@@ -29,6 +30,7 @@ function ApiKeys() {
 			page: queryPrams.page,
 		};
 		postData = JSON.stringify(postData);
+		setloading(true);
 
 		fetch(appData.serverUrl + "wp-json/email-validation/v2/get_api_keys", {
 			method: "POST",
@@ -54,6 +56,7 @@ function ApiKeys() {
 						var max_pages = res?.max_pages;
 
 						setapiKeysData({ posts: posts, total: total, maxPages: max_pages })
+						setloading(false);
 
 						setTimeout(() => {
 						}, 500);
@@ -252,7 +255,7 @@ function ApiKeys() {
 				</div>
 
 
-				<EntriesTable deleteRow={deleteRow} queryPrams={queryPrams} columns={columns} entries={apiKeysData} itemPath={"orders"} onChange={onChangeQueryPrams} />
+				<EntriesTable deleteRow={deleteRow} queryPrams={queryPrams} columns={columns} entries={apiKeysData} itemPath={"orders"} onChange={onChangeQueryPrams} loading={loading} />
 
 
 

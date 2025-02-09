@@ -1,6 +1,7 @@
 import Layout from "../components/Layout";
 import { useState, useEffect } from "react";
 import EntriesTable from "../components/EntriesTable";
+import Spinner from "../components/Spinner";
 
 
 
@@ -11,6 +12,7 @@ function Licenses() {
 	var [licensesData, setlicensesData] = useState(null);
 	var [queryPrams, setqueryPrams] = useState({ keyword: "", page: 1, order: "DESC", limit: 10, first_date: "", last_date: "" });
 
+	var [loading, setloading] = useState(false);
 
 
 
@@ -26,6 +28,7 @@ function Licenses() {
 			page: queryPrams.page,
 		};
 		postData = JSON.stringify(postData);
+		setloading(true);
 
 		fetch(appData.serverUrl + "wp-json/email-validation/v2/get_licenses", {
 			method: "POST",
@@ -50,6 +53,7 @@ function Licenses() {
 						var max_pages = res?.max_pages;
 
 						setlicensesData({ posts: posts, total: total, maxPages: max_pages })
+						setloading(true);
 
 						setTimeout(() => {
 						}, 500);
@@ -108,7 +112,7 @@ function Licenses() {
 		<Layout>
 			<div>
 
-				<EntriesTable queryPrams={queryPrams} columns={columns} entries={licensesData} itemPath={"orders"} onChange={onChangeQueryPrams} />
+				<EntriesTable queryPrams={queryPrams} columns={columns} entries={licensesData} itemPath={"orders"} onChange={onChangeQueryPrams} loading={loading} />
 
 
 			</div>

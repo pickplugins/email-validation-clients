@@ -1,5 +1,6 @@
 import { useState, useEffect, Component } from "react";
 
+import Spinner from "../components/Spinner";
 
 
 
@@ -14,6 +15,7 @@ function Html(props) {
 	var entries = props.entries;
 	var itemPath = props.itemPath;
 	var deleteRow = props.deleteRow;
+	var loading = props.loading;
 	// var queryPrams = props.queryPrams;
 
 	//console.log(entries);
@@ -41,6 +43,12 @@ function Html(props) {
 				</div>
 
 				<div className=" flex gap-3 items-center">
+
+					{loading && (
+						<>
+							<Spinner />
+						</>
+					)}
 
 					<div> {entries?.total} Items</div>
 
@@ -198,11 +206,12 @@ class EntriesTable extends Component {
 	}
 
 	render() {
-		var { entries, deleteRow, columns, itemPath, queryPrams, onChange } = this.props;
+		var { entries, deleteRow, loading, columns, itemPath, queryPrams, onChange } = this.props;
 
 		return (
 			<Html
 				deleteRow={deleteRow}
+				loading={loading}
 				columns={columns}
 				entries={entries}
 				itemPath={itemPath}

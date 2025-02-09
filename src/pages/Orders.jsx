@@ -2,6 +2,7 @@ import Layout from "../components/Layout";
 import UserAccount from "../components/UserAccount";
 import EntriesTable from "../components/EntriesTable";
 import { useState, useEffect } from "react";
+import Spinner from "../components/Spinner";
 
 
 
@@ -12,11 +13,12 @@ function Orders() {
 	var [ordersData, setordersData] = useState(null);
 	var [queryPrams, setqueryPrams] = useState({ keyword: "", page: 1, order: "DESC", limit: 10, first_date: "", last_date: "" });
 
+	var [loading, setloading] = useState(false);
+
+
 	var columns = {
 		id: { label: "ID" },
 		status: { label: "Status" },
-		setup_fee: { label: "Setup fee" },
-		tax_total: { label: "Tax" },
 		discount_total: { label: "Discount" },
 		total: { label: "Total" },
 		refunded_total: { label: "Refunded" },
@@ -44,6 +46,7 @@ function Orders() {
 			order: queryPrams.order,
 		};
 		postData = JSON.stringify(postData);
+		setloading(true);
 
 		fetch(appData.serverUrl + "wp-json/email-validation/v2/get_orders", {
 			method: "POST",
@@ -69,6 +72,7 @@ function Orders() {
 
 						setordersData({ posts: posts, total: total, maxPages: max_pages })
 						//setqueryPrams({ ...queryPrams, loading: false })
+						setloading(false);
 
 
 						setTimeout(() => {
@@ -109,7 +113,7 @@ function Orders() {
 		<Layout>
 			<div>
 
-				<EntriesTable queryPrams={queryPrams} columns={columns} entries={ordersData} itemPath={"orders"} onChange={onChangeQueryPrams} />
+				<EntriesTable queryPrams={queryPrams} columns={columns} entries={ordersData} itemPath={"orders"} onChange={onChangeQueryPrams} loading={loading} />
 
 
 

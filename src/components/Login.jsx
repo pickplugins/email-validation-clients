@@ -20,21 +20,63 @@ const Login = () => {
 
 		console.log(user)
 
-		try {
-			const response = await axios.post(
-				appData.serverUrl + "wp-json/jwt-auth/v1/token",
-				{
-					username: user.username,
-					password: user.password,
+		// try {
+		// 	const response = await axios.post(
+		// 		appData.serverUrl + "wp-json/jwt-auth/v1/token",
+		// 		{
+		// 			username: user.username,
+		// 			password: user.password,
+		// 		}
+		// 	);
+
+		// 	setToken(response.data.token);
+
+		// 	localStorage.setItem("token", response.data.token);
+		// } catch (error) {
+		// 	setError("Invalid credentials. Please try again.");
+		// }
+		var postData = {
+			username: user.username,
+			password: user.password,
+		};
+		postData = JSON.stringify(postData);
+		console.log(postData);
+
+
+		fetch(appData.serverUrl + "wp-json/jwt-auth/v1/token", {
+			method: "POST",
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: postData,
+		})
+			.then((response) => {
+
+				if (!response.ok) {
+					throw new Error('Token validation failed');
 				}
-			);
 
-			setToken(response.data.token);
+				if (response.ok && response.status < 400) {
+					response.json().then((res) => {
 
-			localStorage.setItem("token", response.data.token);
-		} catch (error) {
-			setError("Invalid credentials. Please try again.");
-		}
+
+						console.log(res);
+						setToken(res.token);
+
+						localStorage.setItem("token", res.token);
+						setTimeout(() => {
+						}, 500);
+					});
+				}
+			})
+			.catch((_error) => {
+				setError("Invalid credentials. Please try again.");
+			});
+
+
+
+
+
 	};
 
 	return (

@@ -1,6 +1,7 @@
 import Layout from "../components/Layout";
 import { useState, useEffect } from "react";
 import EntriesTable from "../components/EntriesTable";
+import Spinner from "../components/Spinner";
 
 
 
@@ -12,6 +13,7 @@ function Subscriptions() {
 	var [queryPrams, setqueryPrams] = useState({ keyword: "", page: 1, order: "DESC", limit: 10, first_date: "", last_date: "" });
 
 
+	var [loading, setloading] = useState(false);
 
 
 
@@ -26,6 +28,9 @@ function Subscriptions() {
 			page: queryPrams.page,
 		};
 		postData = JSON.stringify(postData);
+
+		setloading(true);
+
 
 		fetch(appData.serverUrl + "wp-json/email-validation/v2/get_subscriptions", {
 			method: "POST",
@@ -51,6 +56,7 @@ function Subscriptions() {
 						var max_pages = res?.max_pages;
 
 						setsubscriptionsData({ posts: posts, total: total, maxPages: max_pages })
+						setloading(false);
 
 						setTimeout(() => {
 						}, 500);
@@ -77,12 +83,7 @@ function Subscriptions() {
 		id: { label: "ID" },
 		order_id: { label: "Order id" },
 		user_email: { label: "Email" },
-		setup_fee: { label: "Setup fee" },
-		tax_total: { label: "Tax" },
-		discount_total: { label: "Discount" },
 		total: { label: "Total" },
-		billing_anchor: { label: "Billing anchor" },
-		card_last_four: { label: "Card Last Four" },
 		test_mode: { label: "Test Mode" },
 		trial_ends_at: { label: "Trial Ends" },
 		renews_at: { label: "Renews" },
@@ -102,7 +103,7 @@ function Subscriptions() {
 		<Layout>
 			<div>
 
-				<EntriesTable queryPrams={queryPrams} columns={columns} entries={subscriptionsData} itemPath={"orders"} onChange={onChangeQueryPrams} />
+				<EntriesTable queryPrams={queryPrams} columns={columns} entries={subscriptionsData} itemPath={"orders"} onChange={onChangeQueryPrams} loading={loading} />
 
 
 
