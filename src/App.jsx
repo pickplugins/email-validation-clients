@@ -1,4 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
+import Credits from './pages/Credits';
 import Licenses from './pages/Licenses';
 import LicenseDetail from './pages/LicenseDetail';
 import Orders from "./pages/Orders";
@@ -28,6 +29,7 @@ function App(appData) {
         <Route path="/app" element={<Dashboard />} />
         <Route path="/apikeys" element={<PrivateRoute><ApiKeys /></PrivateRoute>} />
         <Route path="/validationrequests" element={<PrivateRoute><ValidationRequests /></PrivateRoute>} />
+        <Route path="/credits" element={<PrivateRoute><Credits /></PrivateRoute>} />
         <Route path="/licenses" element={<PrivateRoute><Licenses /></PrivateRoute>} />
         <Route path="/licenses/:id" element={<PrivateRoute><LicenseDetail /></PrivateRoute>} />
         <Route path="/orders" element={<PrivateRoute><Orders /></PrivateRoute>} />

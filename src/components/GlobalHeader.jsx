@@ -1,8 +1,14 @@
 import { useLocation } from "react-router-dom";
 import UserAccount from "../components/UserAccount";
+// import Notify from "../components/Notify";
+import { useState, useEffect } from "react";
 
 
 const GlobalHeader = ({ user }) => {
+
+	// var [notifications, setnotifications] = useState([]);
+
+
 
 	const location = useLocation();
 	var currentLocation = location.pathname
@@ -10,8 +16,6 @@ const GlobalHeader = ({ user }) => {
 	var currentRoutes = currentLocation.split("/");
 
 	currentRoutes = currentRoutes.filter(function (e) { return e.replace(/(\r\n|\n|\r)/gm, "") });
-
-
 
 
 	var routesArgs = {
@@ -25,6 +29,30 @@ const GlobalHeader = ({ user }) => {
 		apiKeys: { label: "API Keys", value: "apiKeys" },
 		ValidationRequests: { label: "Validation Requests", value: "ValidationRequests" },
 	}
+
+
+	// addNotifications({
+	// 	title: "Data Saved!",
+	// 	content: "You change successfully saved!.",
+	// 	type: "success",
+	// });
+
+
+	// function addNotifications(notification) {
+	// 	var notificationsX = [...notifications];
+	// 	notificationsX.push(notification);
+	// 	setnotifications(notificationsX);
+	// }
+
+	// useEffect(() => {
+	// 	setnotifications(notifications);
+
+	// 	const timer = setTimeout(() => {
+	// 		setnotifications([]); // Update the debounced value after delay
+	// 	}, 5000); // 300ms debounce delay
+
+	// 	return () => clearTimeout(timer); // Cleanup timer on value change or unmount
+	// }, [notifications]);
 
 	return (
 		<div className="flex justify-between bg-gray-700 p-3 px-5 gap-3">
@@ -44,6 +72,7 @@ const GlobalHeader = ({ user }) => {
 
 			<div>
 				<UserAccount user={user} />
+				{/* <Notify notifications={notifications} /> */}
 			</div>
 		</div>
 	);

@@ -32,7 +32,7 @@ const AuthProvider = ({ children }) => {
 				}
 			);
 
-			//console.log(response.data.user);
+			console.log(response.data.user);
 			setUser(response.data.user);
 		} catch (error) {
 			//console.error("Invalid Token", error);
