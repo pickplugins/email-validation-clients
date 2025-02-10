@@ -1,3 +1,5 @@
+import { useState, useEffect, Component } from "react";
+
 import { Routes, Route } from 'react-router-dom';
 import Credits from './pages/Credits';
 import Licenses from './pages/Licenses';
@@ -22,10 +24,76 @@ import AuthProvider from './components/AuthContext';
 import './index.css'
 
 function App(appData) {
+
+
+  var [userData, setuserData] = useState(null);
+  var [appData, setappData] = useState(window.appData);
+
+
+  function fetchUser() {
+
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+
+      return;
+      //throw new Error("No token found");
+    }
+
+
+    var postData = {
+
+    };
+    postData = JSON.stringify(postData);
+
+    fetch(appData.serverUrl + "wp-json/email-validation/v2/get_user", {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: postData,
+    })
+      .then((response) => {
+
+        if (!response.ok) {
+          throw new Error('Token validation failed');
+        }
+
+        if (response.ok && response.status < 400) {
+          response.json().then((res) => {
+
+
+            setuserData(res.user);
+            setTimeout(() => {
+            }, 500);
+          });
+        }
+      })
+      .catch((_error) => {
+        //this.saveAsStatus = 'error';
+        // handle the error
+      });
+
+  }
+
+
+  useEffect(() => {
+
+    fetchUser();
+  }, []);
+
+
+
+
+
+
+
+
   return (
     <AuthProvider>
       <Routes>
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/" element={<Dashboard user={userData} />} />
         <Route path="/app" element={<Dashboard />} />
         <Route path="/apikeys" element={<PrivateRoute><ApiKeys /></PrivateRoute>} />
         <Route path="/validationrequests" element={<PrivateRoute><ValidationRequests /></PrivateRoute>} />

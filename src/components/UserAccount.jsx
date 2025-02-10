@@ -9,7 +9,7 @@ const UserAccount = ({ user }) => {
 
 	const handleLogout = () => {
 		localStorage.removeItem("token");
-		window.location.href = "/dashboard";
+		window.location.href = "/";
 	};
 
 	var [modal, setmodal] = useState(false);
@@ -25,7 +25,8 @@ const UserAccount = ({ user }) => {
 					<>
 						{user && (
 							<div className="flex items-center gap-4">
-								<div className="flex gap-3 text-white items-center">
+								<div className="flex gap-3 text-white items-center bg-gray-600 px-3 py-2 rounded-sm">
+									<span>Credits: </span>
 									<span>{user?.total_credit}</span> /
 									<span>{user?.total_used}</span>
 								</div>
@@ -72,7 +73,6 @@ const UserAccount = ({ user }) => {
 
 				) : (
 					<div>
-						<h2>Login</h2>
 
 					</div>
 				)}

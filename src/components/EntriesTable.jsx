@@ -1,6 +1,7 @@
 import { useState, useEffect, Component } from "react";
 
 import Spinner from "../components/Spinner";
+import { Link } from 'react-router-dom';
 
 
 
@@ -18,7 +19,7 @@ function Html(props) {
 	var loading = props.loading;
 	// var queryPrams = props.queryPrams;
 
-	//console.log(entries);
+	console.log(entries);
 
 	var [queryPrams, setqueryPrams] = useState(props.queryPrams);
 
@@ -123,6 +124,12 @@ function Html(props) {
 					</tr>
 				</thead>
 				<tbody >
+
+					{entries == null && (
+
+						<tr><td colSpan={4} className="col-span-4 py-3">No items found</td></tr>
+					)}
+
 					{entries?.posts?.map((entry, index) => {
 						return (
 							<tr key={index} className="border-0 border-b border-solid border-gray-200">
@@ -132,11 +139,22 @@ function Html(props) {
 									var columnIndex = args[0]
 									var columnData = args[1]
 
+
 									return (
 										<td key={columnIndex} className={`px-5 py-2 ${columnIndex == 'email' ? "text-left pl-5" : ""} ${columnIndex == 'title' ? "text-left pl-5" : ""}`}>
 
 											{columnIndex == 'id' && (
-												<a className="text-xs" href={`/${itemPath}/${entry.id}`}>#{entry.id}</a>
+												<>
+
+													{itemPath.length > 0 && (
+														<Link className="text-xs" to={`/${itemPath}/${entry.id}`}>#{entry.id}</Link>
+													)}
+													{itemPath.length == 0 && (
+														<span className="text-xs" >#{entry.id}</span>
+													)}
+
+
+												</>
 											)}
 											{columnIndex != 'id' && (
 												<span className={`${columnIndex == 'email' ? "text-left pl-5" : ""}`}>

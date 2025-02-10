@@ -8,7 +8,7 @@ import App from "./App";
 // }
 var appData = {
   serverUrl: "https://isspammy.com/",
-  appUrl: "https://isspammy.com/",
+  appUrl: "https://app.isspammy.com/",
 }
 
 window.appData = appData;

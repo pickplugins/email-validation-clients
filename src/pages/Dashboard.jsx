@@ -8,8 +8,8 @@ import Login from '../components/Login';
 import Register from '../components/Register';
 import { useState, useEffect } from "react";
 
-const Dashboard = () => {
-  const { user, loading } = useContext(AuthContext);
+const Dashboard = ({ user }) => {
+  // const { user, loading } = useContext(AuthContext);
   const token = localStorage.getItem("token");
 
   var [appData, setappData] = useState(window.appData);

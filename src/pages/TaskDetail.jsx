@@ -224,7 +224,7 @@ function TaskDetail() {
 
           </div>
         </div>
-        <EntriesTable queryPrams={queryPrams} columns={columns} entries={tasksEntries} itemPath={"tasks"} onChange={onChangeQueryPrams} loading={loading} />
+        <EntriesTable queryPrams={queryPrams} columns={columns} entries={tasksEntries} itemPath={""} onChange={onChangeQueryPrams} loading={loading} />
 
 
 

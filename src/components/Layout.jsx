@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { AuthContext } from "../components/AuthContext";
+import { useState, useEffect, Component } from "react";
 
 import Sidebar from './Sidebar';
 import PropTypes from 'prop-types';
@@ -9,6 +10,7 @@ const Layout = ({ children }) => {
 
 	const { user, loading } = useContext(AuthContext);
 
+	console.log(user);
 
 	return (
 		<div

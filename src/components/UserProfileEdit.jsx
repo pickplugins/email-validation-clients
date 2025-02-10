@@ -3,10 +3,10 @@ import UserAccount from "../components/UserAccount";
 import { useState, useEffect } from "react";
 
 
-const UserProfileEdit = (user) => {
+const UserProfileEdit = ({ user }) => {
 
 
-	var [userData, setuserData] = useState(user.user);
+	var [userData, setuserData] = useState(user);
 	var [editUserData, seteditUserData] = useState({});
 
 
@@ -43,8 +43,6 @@ const UserProfileEdit = (user) => {
 				if (response.ok && response.status < 400) {
 					response.json().then((res) => {
 
-
-						//console.log(res);
 
 						setTimeout(() => {
 						}, 500);
@@ -88,7 +86,6 @@ const UserProfileEdit = (user) => {
 					response.json().then((res) => {
 
 
-						//console.log(res);
 
 						seteditUserData({ ...editUserData, ...res })
 

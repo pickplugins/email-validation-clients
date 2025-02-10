@@ -9,7 +9,6 @@ const GlobalHeader = ({ user }) => {
 	// var [notifications, setnotifications] = useState([]);
 
 
-
 	const location = useLocation();
 	var currentLocation = location.pathname
 

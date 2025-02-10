@@ -291,7 +291,7 @@ function Credits() {
 				</div>
 
 
-				<EntriesTable deleteRow={deleteRow} queryPrams={queryPrams} columns={columns} entries={creditsData} itemPath={"orders"} onChange={onChangeQueryPrams} loading={loading} />
+				<EntriesTable deleteRow={deleteRow} queryPrams={queryPrams} columns={columns} entries={creditsData} itemPath={""} onChange={onChangeQueryPrams} loading={loading} />
 
 
 

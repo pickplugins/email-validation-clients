@@ -255,7 +255,7 @@ function ApiKeys() {
 				</div>
 
 
-				<EntriesTable deleteRow={deleteRow} queryPrams={queryPrams} columns={columns} entries={apiKeysData} itemPath={"orders"} onChange={onChangeQueryPrams} loading={loading} />
+				<EntriesTable deleteRow={deleteRow} queryPrams={queryPrams} columns={columns} entries={apiKeysData} itemPath={""} onChange={onChangeQueryPrams} loading={loading} />
 
 
 
