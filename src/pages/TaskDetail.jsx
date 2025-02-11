@@ -23,8 +23,6 @@ function TaskDetail() {
 
   function fetchPosts() {
 
-    console.log(queryPrams);
-
 
     const token = localStorage.getItem("token");
 
@@ -68,7 +66,6 @@ function TaskDetail() {
     })
       .then((response) => {
 
-        console.log(response.status)
 
         if (!response.ok) {
           throw new Error('Token validation failed');
@@ -137,7 +134,6 @@ function TaskDetail() {
         if (response.ok && response.status < 400) {
           response.json().then((res) => {
 
-            console.log(res)
 
             // var posts = res?.posts;
             // var total = res?.total;
@@ -159,7 +155,7 @@ function TaskDetail() {
 
   }
 
-  function delete_tasks() {
+  function delete_tasks_entries() {
 
     const token = localStorage.getItem("token");
 
@@ -177,7 +173,7 @@ function TaskDetail() {
     };
     postData = JSON.stringify(postData);
     setloading(true)
-    fetch(appData.serverUrl + "wp-json/email-validation/v2/delete_tasks", {
+    fetch(appData.serverUrl + "wp-json/email-validation/v2/delete_tasks_entries", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
@@ -199,7 +195,6 @@ function TaskDetail() {
 
             setloading(false)
 
-            console.log(res);
 
             fetchPosts()
 
@@ -253,9 +248,6 @@ function TaskDetail() {
 
         if (response.ok && response.status < 400) {
           response.json().then((res) => {
-
-            console.log(res)
-
 
 
             var success = res?.success;
@@ -311,7 +303,6 @@ function TaskDetail() {
 
   function onChangeQueryPrams(args) {
 
-    console.log(args);
     if (args) {
       setqueryPrams({ ...queryPrams, ...args })
       //fetchPosts();
@@ -326,14 +317,7 @@ function TaskDetail() {
   }
 
 
-  // useEffect(() => {
 
-  //   setInterval(() => {
-  //     //fetchPosts();
-
-  //     //console.log("Hello");
-  //   }, 5000)
-  // }, []);
 
 
   return (
@@ -342,6 +326,7 @@ function TaskDetail() {
 
       <div className="">
 
+        {/* {JSON.stringify(tasksEntries)} */}
 
         <div className="flex justify-between p-4 ">
 
@@ -459,7 +444,7 @@ function TaskDetail() {
             {selectedRows.length > 0 && (
 
               <div className="px-3 py-[5px] rounded-sm bg-red-600 hover:bg-red-500 text-white cursor-pointer" onClick={ev => {
-                delete_tasks();
+                delete_tasks_entries();
               }}>Delete Tasks</div>
 
             )}

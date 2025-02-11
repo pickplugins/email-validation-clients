@@ -218,6 +218,7 @@ function Html(props) {
 
 													var selectedRowsX = [...selectedRows]
 
+													console.log(selectedRowsX);
 
 													var index = selectedRowsX.indexOf(entry.id);
 
