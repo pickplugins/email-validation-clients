@@ -15,6 +15,7 @@ function TaskDetail() {
 
   var [tasksEntries, settasksEntries] = useState(null);
   var [loading, setloading] = useState(false);
+  var [selectedRows, setselectedRows] = useState([]);
 
 
 
@@ -157,6 +158,69 @@ function TaskDetail() {
       });
 
   }
+
+  function delete_tasks() {
+
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      throw new Error("No token found");
+    }
+
+
+    if (queryPrams.page < 0) {
+      return;
+    }
+
+    var postData = {
+      ids: selectedRows,
+    };
+    postData = JSON.stringify(postData);
+    setloading(true)
+    fetch(appData.serverUrl + "wp-json/email-validation/v2/delete_tasks", {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: postData,
+    })
+      .then((response) => {
+
+        if (!response.ok) {
+          throw new Error('Token validation failed');
+        }
+
+        if (response.ok && response.status < 400) {
+          response.json().then((res) => {
+
+            var errors = res?.errors;
+            var success = res?.success;
+
+            setloading(false)
+
+            console.log(res);
+
+            fetchPosts()
+
+            // setaddTask({ ...addTask, loading: false, errors: errors, success: success })
+
+            // setTimeout(() => {
+            // 	setaddTask({ ...addTask, title: "", success: null, errors: null })
+
+            // }, 3000);
+          });
+        }
+      })
+      .catch((_error) => {
+        //this.saveAsStatus = 'error';
+        // handle the error
+      });
+
+  }
+
+
+
   function email_export() {
     const token = localStorage.getItem("token");
 
@@ -253,6 +317,12 @@ function TaskDetail() {
       //fetchPosts();
     }
 
+  }
+
+  function onSelectRows(rows) {
+
+    console.log(rows);
+    setselectedRows(rows)
   }
 
 
@@ -386,12 +456,18 @@ function TaskDetail() {
             <div onClick={ev => {
               fetchPosts()
             }} className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">Refresh</div>
+            {selectedRows.length > 0 && (
 
+              <div className="px-3 py-[5px] rounded-sm bg-red-600 hover:bg-red-500 text-white cursor-pointer" onClick={ev => {
+                delete_tasks();
+              }}>Delete Tasks</div>
+
+            )}
           </div>
         </div>
 
 
-        <EntriesTable queryPrams={queryPrams} columns={columns} entries={tasksEntries} itemPath={""} onChange={onChangeQueryPrams} loading={loading} />
+        <EntriesTable queryPrams={queryPrams} columns={columns} entries={tasksEntries} itemPath={""} onChange={onChangeQueryPrams} loading={loading} selectedRows={selectedRows} onSelectRows={onSelectRows} />
 
 
 

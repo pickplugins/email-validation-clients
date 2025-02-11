@@ -2,6 +2,7 @@ import { useLocation } from "react-router-dom";
 import UserAccount from "../components/UserAccount";
 // import Notify from "../components/Notify";
 import { useState, useEffect } from "react";
+import { Link } from 'react-router-dom';
 
 
 const GlobalHeader = ({ user }) => {
@@ -56,12 +57,12 @@ const GlobalHeader = ({ user }) => {
 	return (
 		<div className="flex justify-between bg-gray-700 p-3 px-5 gap-3">
 			<div className="flex gap-2 items-center text-white">
-				<a href="/dashboard">Dashboard</a>
+				<Link to="/dashboard">Dashboard</Link>
 
 				{currentRoutes.map((route, index) => {
 					return (
 
-						<a key={`index-${index}`} href={`/${route}`}> / {routesArgs[route] == undefined ? route : routesArgs[route].label}</a>
+						<Link key={`index-${index}`} to={`/${route}`}> / {routesArgs[route] == undefined ? route : routesArgs[route].label}</Link>
 
 
 					)
