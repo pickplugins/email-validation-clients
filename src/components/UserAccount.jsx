@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 
 const UserAccount = ({ user }) => {
 
+	console.log(user);
+
 	const token = localStorage.getItem("token");
 
 

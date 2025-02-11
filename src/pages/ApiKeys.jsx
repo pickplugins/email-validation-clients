@@ -183,7 +183,7 @@ function ApiKeys() {
 
 	var columns = {
 		check: { label: "Check" },
-		id: { label: "ID" },
+		// id: { label: "ID" },
 		title: { label: "Title" },
 		apikey: { label: "API key" },
 		status: { label: "Status" },
@@ -256,7 +256,8 @@ function ApiKeys() {
 				</div>
 
 
-				<EntriesTable deleteRow={deleteRow} queryPrams={queryPrams} columns={columns} entries={apiKeysData} itemPath={""} onChange={onChangeQueryPrams} loading={loading} />
+				{/* <EntriesTable deleteRow={deleteRow} queryPrams={queryPrams} columns={columns} entries={apiKeysData} itemPath={""} onChange={onChangeQueryPrams} loading={loading} /> */}
+				<EntriesTable queryPrams={queryPrams} columns={columns} entries={apiKeysData} itemPath={""} onChange={onChangeQueryPrams} loading={loading} />
 
 
 

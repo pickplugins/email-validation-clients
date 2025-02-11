@@ -99,7 +99,7 @@ function App(appData) {
     <AuthProvider>
       <Routes>
         <Route path="/" element={<Dashboard user={userData} />} />
-        <Route path="/app" element={<Dashboard />} />
+        <Route path="/app" element={<Dashboard user={userData} />} />
         <Route path="/apikeys" element={<PrivateRoute><ApiKeys /></PrivateRoute>} />
         <Route path="/validationrequests" element={<PrivateRoute><ValidationRequests /></PrivateRoute>} />
         <Route path="/credits" element={<PrivateRoute><Credits /></PrivateRoute>} />
@@ -113,7 +113,7 @@ function App(appData) {
         <Route path="/products/:id" element={<PrivateRoute><ProductDetail /></PrivateRoute>} />
         <Route path="/subscriptions" element={<PrivateRoute><Subscriptions /></PrivateRoute>} />
         <Route path="/subscriptions/:id" element={<PrivateRoute><SubscriptionDetail /></PrivateRoute>} />
-        <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+        <Route path="/dashboard" element={<PrivateRoute><Dashboard user={userData} /></PrivateRoute>} />
       </Routes>
     </AuthProvider>
 

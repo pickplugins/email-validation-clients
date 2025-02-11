@@ -6,9 +6,9 @@ import Sidebar from './Sidebar';
 import PropTypes from 'prop-types';
 import GlobalHeader from "../components/GlobalHeader";
 
-const Layout = ({ children }) => {
+const Layout = ({ children, user }) => {
 
-	const { user, loading } = useContext(AuthContext);
+	//const { user, loading } = useContext(AuthContext);
 
 
 	return (

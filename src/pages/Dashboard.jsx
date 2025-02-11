@@ -19,7 +19,7 @@ const Dashboard = ({ user }) => {
   // }, [window.appData]);
 
   return (
-    <Layout >
+    <Layout user={user} >
       {token ? (
 
 
