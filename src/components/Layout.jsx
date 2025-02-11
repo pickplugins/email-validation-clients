@@ -10,7 +10,6 @@ const Layout = ({ children }) => {
 
 	const { user, loading } = useContext(AuthContext);
 
-	console.log(user);
 
 	return (
 		<div

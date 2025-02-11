@@ -182,6 +182,7 @@ function ApiKeys() {
 	}
 
 	var columns = {
+		check: { label: "Check" },
 		id: { label: "ID" },
 		title: { label: "Title" },
 		apikey: { label: "API key" },

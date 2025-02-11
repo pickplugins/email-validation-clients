@@ -2,6 +2,7 @@ import { useState, useEffect, Component } from "react";
 
 import Spinner from "../components/Spinner";
 import { Link } from 'react-router-dom';
+import { IconArrowLeft, IconCheckbox, IconSquare, IconCheck } from '@tabler/icons-react';
 
 
 
@@ -11,6 +12,7 @@ function Html(props) {
 		return null;
 	}
 
+	var onSelectRows = props.onSelectRows;
 	var onChange = props.onChange;
 	var columns = props.columns;
 	var entries = props.entries;
@@ -19,25 +21,38 @@ function Html(props) {
 	var loading = props.loading;
 	// var queryPrams = props.queryPrams;
 
-	console.log(entries);
 
 	var [queryPrams, setqueryPrams] = useState(props.queryPrams);
+	var [selectedRows, setselectedRows] = useState(props.selectedRows);
+	var [selectedAll, setselectedAll] = useState(false);
 
 	useEffect(() => {
 		onChange(queryPrams);
 	}, [queryPrams]);
 
 
+	useEffect(() => {
+
+
+		if (onSelectRows) {
+			onSelectRows(selectedRows);
+
+		}
+
+	}, [selectedRows]);
+
+
 	return (
 		<div className="">
 
-			<div className=" bg-gray-200 p-3 flex justify-between px-5">
+			<div className=" bg-gray-200 p-3 flex justify-between flex-wrap px-5">
 
-				<div>
+				<div className="flex gap-2 items-center">
 					<input type="text" placeholder="Search..." className="p-3 py-[5px] bg-gray-400 border rounded-sm border-solid " value={queryPrams?.keyword} onChange={ev => {
 						setqueryPrams({ ...queryPrams, keyword: ev.target.value })
 
 					}} />
+
 
 
 
@@ -112,9 +127,45 @@ function Html(props) {
 							var columnData = args[1]
 
 							return (
-								<th key={columnIndex} className={`px-5 py-2 ${columnIndex == 'id' ? "w-20 " : ""} ${columnIndex == 'email' ? "text-left pl-5" : ""} ${columnIndex == 'title' ? "text-left pl-5" : ""}`}>
+								<th key={columnIndex} className={`px-5 py-2 ${columnIndex == 'check' ? "w-12 " : ""} ${columnIndex == 'id' ? "w-20 " : ""} ${columnIndex == 'email' ? "text-left pl-5" : ""} ${columnIndex == 'title' ? "text-left pl-5" : ""}`}>
+									{columnIndex == 'check' && (
+										<div onClick={ev => {
+											console.log("Hello")
+											setselectedAll(!selectedAll)
+											var ids = [];
 
-									<span className={`${columnIndex == 'email' ? "text-left pl-5" : ""}`}>{columnData.label}</span>
+											if (!selectedAll) {
+												entries?.posts.map(entry => {
+													ids.push(entry.id)
+												})
+												setselectedRows(ids)
+
+											}
+
+											if (selectedAll) {
+												setselectedRows([])
+
+											}
+
+
+
+
+										}}>
+
+											{selectedAll && (
+												<span className="cursor-pointer"><IconCheckbox /></span>
+											)}
+											{!selectedAll && (
+												<span className="cursor-pointer"><IconSquare /></span>
+											)}
+										</div>
+									)}
+									{columnIndex != 'check' && (
+										<span className={`${columnIndex == 'email' ? "text-left pl-5" : ""}`}>{columnData.label}</span>
+									)}
+
+
+
 								</th>
 							)
 						})}
@@ -144,22 +195,59 @@ function Html(props) {
 										<td key={columnIndex} className={`px-5 py-2 ${columnIndex == 'email' ? "text-left pl-5" : ""} ${columnIndex == 'title' ? "text-left pl-5" : ""}`}>
 
 											{columnIndex == 'id' && (
-												<>
+												<div className="flex items-center gap-2">
+
 
 													{itemPath.length > 0 && (
 														<Link className="text-xs" to={`/${itemPath}/${entry.id}`}>#{entry.id}</Link>
 													)}
 													{itemPath.length == 0 && (
-														<span className="text-xs" >#{entry.id}</span>
+														<span className="text-xs cursor-pointer" >#{entry.id}</span>
 													)}
 
 
-												</>
+												</div>
 											)}
 											{columnIndex != 'id' && (
-												<span className={`${columnIndex == 'email' ? "text-left pl-5" : ""}`}>
+												<span className={`${columnIndex == 'email' ? "text-left pl-5" : ""} break-all`}>
 													{entry[columnIndex]}
 												</span>
+											)}
+											{columnIndex == 'check' && (
+												<span className="mx-2" onClick={ev => {
+
+													var selectedRowsX = [...selectedRows]
+
+
+													var index = selectedRowsX.indexOf(entry.id);
+
+													if (index !== -1) {
+														selectedRowsX.splice(index, 1);
+														setselectedRows(selectedRowsX)
+
+													}
+
+													if (index == -1) {
+														selectedRowsX?.push(entry.id)
+														setselectedRows(selectedRowsX)
+
+													}
+
+
+
+												}}>
+
+													{selectedRows?.includes(entry.id) && (
+														<span className="cursor-pointer"><IconCheckbox /></span>
+													)}
+													{!selectedRows?.includes(entry.id) && (
+														<span className="cursor-pointer"><IconSquare /></span>
+													)}
+
+
+
+												</span>
+
 											)}
 
 
@@ -224,10 +312,12 @@ class EntriesTable extends Component {
 	}
 
 	render() {
-		var { entries, deleteRow, loading, columns, itemPath, queryPrams, onChange } = this.props;
+		var { entries, deleteRow, selectedRows, onSelectRows, loading, columns, itemPath, queryPrams, onChange } = this.props;
 
 		return (
 			<Html
+				selectedRows={selectedRows}
+				onSelectRows={onSelectRows}
 				deleteRow={deleteRow}
 				loading={loading}
 				columns={columns}

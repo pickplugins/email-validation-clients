@@ -56,6 +56,11 @@ function App(appData) {
     })
       .then((response) => {
 
+        if (response.status == 429) {
+          setloading(false);
+
+          throw new Error('Too Many Requests');
+        }
         if (!response.ok) {
           throw new Error('Token validation failed');
         }
