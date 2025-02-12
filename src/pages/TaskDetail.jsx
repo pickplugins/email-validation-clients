@@ -5,6 +5,7 @@ import EntriesTable from "../components/EntriesTable";
 import Spinner from "../components/Spinner";
 import { AuthContext } from "../components/AuthContext";
 import Dropdown from "../components/Dropdown";
+import { data } from "../components/data";
 
 function TaskDetail({user}) {
   const { id } = useParams();
@@ -503,7 +504,7 @@ const { token } = useContext(AuthContext);
 				<EntriesTable
 					queryPrams={queryPrams}
 					columns={columns}
-					entries={tasksEntries}
+					entries={data}
 					itemPath={""}
 					onChange={onChangeQueryPrams}
 					loading={loading}

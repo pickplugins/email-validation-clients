@@ -1,7 +1,8 @@
 import { Component, useEffect, useState } from "react";
+
 import { IconCheckbox, IconSquare } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
-import Spinner from "./Spinner";
+import Spinner from "../components/Spinner";
 
 function Html(props) {
 	if (!props.warn) {
@@ -15,12 +16,11 @@ function Html(props) {
 	var itemPath = props.itemPath;
 	var deleteRow = props.deleteRow;
 	var loading = props.loading;
+	// var queryPrams = props.queryPrams;
 
 	var [queryPrams, setqueryPrams] = useState(props.queryPrams);
 	var [selectedRows, setselectedRows] = useState(props.selectedRows);
 	var [selectedAll, setselectedAll] = useState(false);
-	var [anchorId, setAnchorId] = useState(null);
-	var [lastCheckedId, setLastCheckedId] = useState(null);
 
 	useEffect(() => {
 		onChange(queryPrams);
@@ -32,55 +32,14 @@ function Html(props) {
 		}
 	}, [selectedRows]);
 
-	const handleRowSelection = (entryId, shiftKey) => {
-		var selectedRowsX = [...selectedRows];
-
-		if (shiftKey && lastCheckedId !== null) {
-			const currentIndex = entries.posts.findIndex(
-				(entry) => entry.id === entryId
-			);
-			console.log("Current Index",currentIndex)
-			const lastIndex = entries.posts.findIndex(
-				(entry) => entry.id === lastCheckedId
-			);
-			console.log("Last Checked Index",lastIndex)
-			const [start, end] = [
-				Math.min(currentIndex, lastIndex),
-				Math.max(currentIndex, lastIndex),
-			];
-			console.log("Start",start)
-			console.log("End",end)
-
-			// Clear previous selections
-			selectedRowsX = [];
-
-			// Select all items in range
-			entries.posts.slice(start, end + 1).forEach((entry) => {
-				selectedRowsX.push(entry.id);
-			});
-		} else {
-			const index = selectedRowsX.indexOf(entryId);
-			if (index !== -1) {
-				selectedRowsX.splice(index, 1);
-				setAnchorId(null);
-			} else {
-				selectedRowsX.push(entryId);
-				setAnchorId(entryId);
-			}
-		}
-
-		setLastCheckedId(entryId);
-		setselectedRows(selectedRowsX);
-	};
-
 	return (
 		<div className="w-full">
-			<div className="bg-gray-200 p-3 flex justify-between flex-wrap px-5">
+			<div className=" bg-gray-200 p-3 flex justify-between flex-wrap px-5">
 				<div className="flex gap-2 items-center">
 					<input
 						type="text"
 						placeholder="Search..."
-						className="p-3 py-[5px] bg-gray-400 border rounded-sm border-solid"
+						className="p-3 py-[5px] bg-gray-400 border rounded-sm border-solid "
 						value={queryPrams?.keyword}
 						onChange={(ev) => {
 							setqueryPrams({ ...queryPrams, keyword: ev.target.value });
@@ -88,7 +47,7 @@ function Html(props) {
 					/>
 				</div>
 
-				<div className="flex gap-3 items-center">
+				<div className=" flex gap-3 items-center">
 					{loading && (
 						<>
 							<Spinner />
@@ -133,6 +92,8 @@ function Html(props) {
 						onClick={(ev) => {
 							var page = queryPrams.page;
 							if (page == 1) return;
+
+							//console.log(page);
 							setqueryPrams({ ...queryPrams, page: queryPrams.page - 1 });
 						}}>
 						Previous
@@ -142,6 +103,7 @@ function Html(props) {
 						onClick={(ev) => {
 							var page = queryPrams.page + 1;
 							if (page > entries?.maxPages) return;
+
 							setqueryPrams({ ...queryPrams, page: queryPrams.page + 1 });
 						}}>
 						Next
@@ -167,21 +129,27 @@ function Html(props) {
 									{columnIndex == "check" && (
 										<div
 											onClick={(ev) => {
+												console.log("Hello");
 												setselectedAll(!selectedAll);
+												var ids = [];
+
 												if (!selectedAll) {
-													const ids = entries?.posts.map((entry) => entry.id);
+													entries?.posts.map((entry) => {
+														ids.push(entry.id);
+													});
 													setselectedRows(ids);
-												} else {
+												}
+
+												if (selectedAll) {
 													setselectedRows([]);
 												}
-												setAnchorId(null);
-												setLastCheckedId(null);
 											}}>
-											{selectedAll ? (
+											{selectedAll && (
 												<span className="cursor-pointer">
 													<IconCheckbox />
 												</span>
-											) : (
+											)}
+											{!selectedAll && (
 												<span className="cursor-pointer">
 													<IconSquare />
 												</span>
@@ -226,39 +194,55 @@ function Html(props) {
 											className={`px-5 py-2 ${
 												columnIndex == "email" ? "text-left pl-5" : ""
 											} ${columnIndex == "title" ? "text-left pl-5" : ""}`}>
+											
 											{columnIndex == "title" && (
-												<div className="flex items-center gap-2 select-none">
+												<div className="flex items-center gap-2">
 													{itemPath.length > 0 && (
 														<Link className="" to={`/${itemPath}/${entry.id}`}>
 															{entry.title}
 														</Link>
 													)}
 													{itemPath.length == 0 && (
-														<span className="cursor-pointer select-none">
+														<span className="cursor-pointer">
 															{entry.title}
 														</span>
 													)}
 												</div>
 											)}
-											{columnIndex != "title" && columnIndex != "check" && (
+											{columnIndex != "title" && (
 												<span
 													className={`${
 														columnIndex == "email" ? "text-left pl-5" : ""
-													} break-all select-none`}>
+													} break-all`}>
 													{entry[columnIndex]}
 												</span>
 											)}
 											{columnIndex == "check" && (
 												<span
 													className="mx-2"
-													onClick={(ev) =>
-														handleRowSelection(entry.id, ev.shiftKey)
-													}>
-													{selectedRows?.includes(entry.id) ? (
+													onClick={(ev) => {
+														var selectedRowsX = [...selectedRows];
+
+														console.log(selectedRowsX);
+
+														var index = selectedRowsX.indexOf(entry.id);
+
+														if (index !== -1) {
+															selectedRowsX.splice(index, 1);
+															setselectedRows(selectedRowsX);
+														}
+
+														if (index == -1) {
+															selectedRowsX?.push(entry.id);
+															setselectedRows(selectedRowsX);
+														}
+													}}>
+													{selectedRows?.includes(entry.id) && (
 														<span className="cursor-pointer">
 															<IconCheckbox />
 														</span>
-													) : (
+													)}
+													{!selectedRows?.includes(entry.id) && (
 														<span className="cursor-pointer">
 															<IconSquare />
 														</span>
