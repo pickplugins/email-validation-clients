@@ -23,8 +23,7 @@ const Layout = ({ children }) => {
 }
 
 Layout.propTypes = {
-	children: PropTypes.node.isRequired,
-	user: PropTypes.object
+	children: PropTypes.node.isRequired
 };
 
 export default Layout

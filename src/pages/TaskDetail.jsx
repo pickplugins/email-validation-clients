@@ -1,13 +1,14 @@
 import { useParams } from "react-router-dom";
 import Layout from "../components/Layout";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import EntriesTable from "../components/EntriesTable";
 import Spinner from "../components/Spinner";
+import { AuthContext } from "../components/AuthContext";
 
 function TaskDetail({user}) {
   const { id } = useParams();
 
-
+const { token } = useContext(AuthContext);
   var [appData, setappData] = useState(window.appData);
   var [queryPrams, setqueryPrams] = useState({ keyword: "", page: 1, order: "DESC", limit: 10, first_date: "", last_date: "", });
   var [addEntries, setaddEntries] = useState({ emails: "", edit: false, loading: false, success: false, errors: false });
@@ -26,7 +27,7 @@ function TaskDetail({user}) {
   function fetchPosts() {
 
 
-    const token = localStorage.getItem("token");
+    // const token = localStorage.getItem("token");
 
     if (!token) {
       throw new Error("No token found");
@@ -104,7 +105,7 @@ function TaskDetail({user}) {
   }
 
   function addTaskEntries() {
-    const token = localStorage.getItem("token");
+    // const token = localStorage.getItem("token");
 
     if (!token) {
       throw new Error("No token found");
@@ -159,7 +160,7 @@ function TaskDetail({user}) {
 
   function delete_tasks_entries() {
 
-    const token = localStorage.getItem("token");
+    // const token = localStorage.getItem("token");
 
     if (!token) {
       throw new Error("No token found");
@@ -219,7 +220,7 @@ function TaskDetail({user}) {
 
 
   function email_export() {
-    const token = localStorage.getItem("token");
+    // const token = localStorage.getItem("token");
 
     if (!token) {
       throw new Error("No token found");
