@@ -21,8 +21,6 @@ const AuthProvider = ({ children }) => {
 
 	var appData = window.appData;
 
-	console.log(appData);
-
 function fetchUser() {
 	// const token = localStorage.getItem("token");
 

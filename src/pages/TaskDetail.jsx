@@ -4,6 +4,7 @@ import { useState, useEffect, useContext } from "react";
 import EntriesTable from "../components/EntriesTable";
 import Spinner from "../components/Spinner";
 import { AuthContext } from "../components/AuthContext";
+import Dropdown from "../components/Dropdown";
 
 function TaskDetail({user}) {
   const { id } = useParams();
@@ -330,34 +331,34 @@ const { token } = useContext(AuthContext);
 
 				<div className="flex justify-between p-4 ">
 					<div className="flex gap-3 items-center">
-						<div
-							className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer"
-							onClick={(ev) => {
-								setaddEntries({ ...addEntries, edit: !addEntries.edit });
-							}}>
-							Add Emails
-						</div>
-
-						{addEntries.edit && (
-							<>
-								<textarea
-									name=""
-									id=""
-									className="p-3 py-[5px] bg-gray-400 border rounded-sm border-solid w-[400px]"
-									value={addEntries?.emails}
-									onChange={(ev) => {
-										setaddEntries({ ...addEntries, emails: ev.target.value });
-									}}></textarea>
-
-								<div
-									onClick={(ev) => {
-										addTaskEntries();
-									}}
-									className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
-									Submit
-								</div>
-							</>
-						)}
+						<div className="relative">
+              <div
+                className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer"
+                onClick={(ev) => {
+                  setaddEntries({ ...addEntries, edit: !addEntries.edit });
+                }}>
+                Add Emails
+              </div>
+              {addEntries.edit && (
+                <Dropdown className="top-full mt-2 bg-white px-4 py-3 rounded-sm">
+                  <textarea
+                    name=""
+                    id=""
+                    className="p-3 py-[5px] bg-gray-400 border rounded-sm border-solid w-[400px]"
+                    value={addEntries?.emails}
+                    onChange={(ev) => {
+                      setaddEntries({ ...addEntries, emails: ev.target.value });
+                    }}></textarea>
+                  <div
+                    onClick={(ev) => {
+                      addTaskEntries();
+                    }}
+                    className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
+                    Submit
+                  </div>
+                </Dropdown>
+              )}
+            </div>
 
 						{addEntries.loading && (
 							<>
