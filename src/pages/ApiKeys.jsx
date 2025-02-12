@@ -1,12 +1,14 @@
 import Layout from "../components/Layout";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import EntriesTable from "../components/EntriesTable";
+import { AuthContext } from "../components/AuthContext";
 
 
 
 function ApiKeys() {
 
 	var [appData, setappData] = useState(window.appData);
+	const {token} = useContext(AuthContext);
 
 	var [apiKeysData, setapiKeysData] = useState(null);
 	var [queryPrams, setqueryPrams] = useState({ keyword: "", page: 1, order: "DESC", limit: 10, first_date: "", last_date: "" });
@@ -20,7 +22,7 @@ function ApiKeys() {
 
 
 	function fetchPosts() {
-		const token = localStorage.getItem("token");
+		// const token = localStorage.getItem("token");
 
 		if (!token) {
 			throw new Error("No token found");
@@ -74,7 +76,7 @@ function ApiKeys() {
 
 	function createApiKey() {
 
-		const token = localStorage.getItem("token");
+		// const token = localStorage.getItem("token");
 
 		if (!token) {
 			throw new Error("No token found");
@@ -132,7 +134,7 @@ function ApiKeys() {
 
 
 	function deleteApiKey(id) {
-		const token = localStorage.getItem("token");
+		// const token = localStorage.getItem("token");
 
 		if (!token) {
 			throw new Error("No token found");

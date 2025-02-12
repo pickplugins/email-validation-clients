@@ -2,6 +2,7 @@ import Layout from "../components/Layout";
 import { useState, useEffect, useContext } from "react";
 import EntriesTable from "../components/EntriesTable";
 import { AuthContext } from "../components/AuthContext";
+import Dropdown from "../components/Dropdown";
 
 
 
@@ -239,7 +240,7 @@ function delete_credit_entries() {
 	postData = JSON.stringify(postData);
 	setloading(true);
 	fetch(
-		appData.serverUrl + "wp-json/email-validation/v2/delete_tasks_entries",
+		appData.serverUrl + "wp-json/email-validation/v2/delete_credit_entries",
 		{
 			method: "POST",
 			headers: {
@@ -284,74 +285,71 @@ function delete_credit_entries() {
 			<div>
 				<div className="flex justify-between p-4 ">
 					<div className="flex gap-3 items-center">
-						<div
-							className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer"
-							onClick={(ev) => {
-								setaddCredits({ ...addCredits, edit: !addCredits.edit });
-							}}>
-							Add
+						<div className="relative">
+							<div
+								className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer"
+								onClick={(ev) => {
+									setaddCredits({ ...addCredits, edit: !addCredits.edit });
+								}}>
+								Add
+							</div>
+							{addCredits.edit && (
+								<Dropdown className="top-full left-0 min-w-[400px] mt-2 bg-white px-4 py-3 rounded-sm grid grid-cols-2 gap-4">
+									<input
+										type="text"
+										placeholder="100"
+										className="p-3 py-[5px] w-25 bg-gray-400 border rounded-sm border-solid "
+										value={addCredits?.amount}
+										onChange={(ev) => {
+											setaddCredits({ ...addCredits, amount: ev.target.value });
+										}}
+									/>
+									<input
+										type="text"
+										placeholder="123"
+										className="p-3 py-[5px] w-20 bg-gray-400 border rounded-sm border-solid "
+										value={addCredits?.userid}
+										onChange={(ev) => {
+											setaddCredits({ ...addCredits, userid: ev.target.value });
+										}}
+									/>
+									<select
+										name=""
+										id=""
+										value={addCredits?.type}
+										onChange={(ev) => {
+											setaddCredits({ ...addCredits, type: ev.target.value });
+										}}>
+										<option value="">Type..</option>
+										<option value="credit">credit</option>
+										<option value="debit">debit</option>
+									</select>
+									<select
+										name=""
+										id=""
+										value={addCredits?.source}
+										onChange={(ev) => {
+											setaddCredits({ ...addCredits, source: ev.target.value });
+										}}>
+										<option value="">Source..</option>
+										<option value="instant">Instant</option>
+										<option value="daily">Daily</option>
+										<option value="API">API</option>
+										<option value="cron">Cron</option>
+										<option value="monthly">Monthly</option>
+										<option value="register">Register</option>
+									</select>
+									<div
+										onClick={(ev) => {
+											createCredits();
+											setaddCredits({ ...addCredits, loading: true });
+										}}
+										className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
+										Submit
+									</div>
+								</Dropdown>
+							)}
 						</div>
-
-						{addCredits.edit && (
-							<>
-								<input
-									type="text"
-									placeholder="100"
-									className="p-3 py-[5px] w-25 bg-gray-400 border rounded-sm border-solid "
-									value={addCredits?.amount}
-									onChange={(ev) => {
-										setaddCredits({ ...addCredits, amount: ev.target.value });
-									}}
-								/>
-								<input
-									type="text"
-									placeholder="123"
-									className="p-3 py-[5px] w-20 bg-gray-400 border rounded-sm border-solid "
-									value={addCredits?.userid}
-									onChange={(ev) => {
-										setaddCredits({ ...addCredits, userid: ev.target.value });
-									}}
-								/>
-
-								<select
-									name=""
-									id=""
-									value={addCredits?.type}
-									onChange={(ev) => {
-										setaddCredits({ ...addCredits, type: ev.target.value });
-									}}>
-									<option value="">Type..</option>
-									<option value="credit">credit</option>
-									<option value="debit">debit</option>
-								</select>
-
-								<select
-									name=""
-									id=""
-									value={addCredits?.source}
-									onChange={(ev) => {
-										setaddCredits({ ...addCredits, source: ev.target.value });
-									}}>
-									<option value="">Source..</option>
-
-									<option value="instant">Instant</option>
-									<option value="daily">Daily</option>
-									<option value="API">API</option>
-									<option value="cron">Cron</option>
-									<option value="monthly">Monthly</option>
-									<option value="register">Register</option>
-								</select>
-
-								<div
-									onClick={(ev) => {
-										createCredits();
-										setaddCredits({ ...addCredits, loading: true });
-									}}
-									className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
-									Submit
-								</div>
-							</>
-						)}
 
 						{addCredits.loading && <>Loading...</>}
 						{addCredits.errors && <>There is an error.</>}

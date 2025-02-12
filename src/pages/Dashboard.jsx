@@ -9,8 +9,8 @@ import Register from '../components/Register';
 import { useState, useEffect } from "react";
 
 const Dashboard = () => {
-  const { userData } = useContext(AuthContext);
-  const token = localStorage.getItem("token");
+  const { userData, token } = useContext(AuthContext);
+  // const token = localStorage.getItem("token");
 
   var [appData, setappData] = useState(window.appData);
 
@@ -27,7 +27,7 @@ const Dashboard = () => {
           {userData && (
             <div className="p-5">
 
-              <UserProfileEdit user={userData} />
+              <UserProfileEdit />
             </div>
           )}
 
