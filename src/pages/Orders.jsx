@@ -6,7 +6,7 @@ import Spinner from "../components/Spinner";
 
 
 
-function Orders() {
+function Orders({user}) {
 
 	var [appData, setappData] = useState(window.appData);
 
@@ -110,7 +110,7 @@ function Orders() {
 
 
 	return (
-		<Layout>
+		<Layout user={user}>
 			<div>
 
 				<EntriesTable queryPrams={queryPrams} columns={columns} entries={ordersData} itemPath={"orders"} onChange={onChangeQueryPrams} loading={loading} />

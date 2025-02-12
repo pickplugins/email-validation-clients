@@ -1,14 +1,17 @@
 import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
+import { Navigate, useNavigate } from "react-router-dom";
 
 // Create Context
 export const AuthContext = createContext(null); // Set default value to null
 
 const AuthProvider = ({ children }) => {
+	const navigate = useNavigate()
 	const [user, setUser] = useState(null);
+	var [userData, setuserData] = useState(null);
 	const [loading, setLoading] = useState(true);
+	const [logging, setlogging] = useState(false);
 	const [token, setToken] = useState(localStorage.getItem("token") || null);
-
 	const logout = () => {
 		setToken(null);
 		setUser(null);
@@ -18,79 +21,103 @@ const AuthProvider = ({ children }) => {
 
 	var appData = window.appData;
 
-	console.log(appData);
-
-
-	const checkUser = async () => {
-		//console.log(token)
+	function fetchUser() {
+		// const token = localStorage.getItem("token");
 
 		if (!token) {
-			setUser(null);
-			setLoading(false);
 			return;
+			//throw new Error("No token found");
 		}
 
-		// try {
-		// 	const response = await axios.get(
-		// 		appData.serverUrl + "/wp-json/email-validation/v2/validate_token/",
-		// 		{
-		// 			headers: { Authorization: `Bearer ${token}` },
-		// 		}
-		// 	);
+		var postData = {};
+		postData = JSON.stringify(postData);
 
-		// 	console.log(response.data.user);
-		// 	setUser(response.data.user);
-		// } catch (error) {
-		// 	//console.error("Invalid Token", error);
-		// 	//logout();
-		// } finally {
-		// 	setLoading(false);
-		// }
-
-		var postData = {}
-
-
-		fetch(appData.serverUrl + "wp-json/email-validation/v2/validate_token/", {
-			method: "GET",
+		fetch(appData.serverUrl + "wp-json/email-validation/v2/get_user", {
+			method: "POST",
 			headers: {
-				'Content-Type': 'application/json',
-				'Authorization': `Bearer ${token}`,
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
 			},
 			body: postData,
 		})
 			.then((response) => {
+				if (response.status == 429) {
+					setLoading(false);
 
+					throw new Error("Too Many Requests");
+				}
 				if (!response.ok) {
-					throw new Error('Token validation failed');
+					throw new Error("Token validation failed");
 				}
 
 				if (response.ok && response.status < 400) {
 					response.json().then((res) => {
-
-
-						console.log(res);
-						// setToken(res.token);
-						setUser(res.user)
-						// localStorage.setItem("token", res.token);
-						setTimeout(() => {
-						}, 500);
+						setuserData(res.user);
+						setTimeout(() => { }, 500);
 					});
 				}
 			})
 			.catch((_error) => {
-				//setError("Invalid credentials. Please try again.");
+				//this.saveAsStatus = 'error';
+				// handle the error
 			});
+	}
 
+	useEffect(() => {
+		fetchUser();
+	}, []);
 
+	const handleLogin = async (e) => {
+		e.preventDefault();
+
+		setlogging(true);
+		console.log(user);
+		var postData = {
+			username: user.username,
+			password: user.password,
+		};
+		postData = JSON.stringify(postData);
+		console.log(postData);
+
+		fetch(appData.serverUrl + "wp-json/jwt-auth/v1/token", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: postData,
+		})
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error("Token validation failed");
+				}
+
+				if (response.ok && response.status < 400) {
+					response.json().then((res) => {
+						console.log(res);
+						setToken(res.token);
+
+						localStorage.setItem("token", res.token);
+						navigate("/orders");
+						setTimeout(() => { }, 500);
+					});
+				}
+				fetchUser()
+				setlogging(false);
+			})
+			.catch((_error) => {
+				setError("Invalid credentials. Please try again.");
+				setlogging(false);
+			});
 	};
 
 
+
 	useEffect(() => {
-		checkUser();
 	}, []);
 
 	return (
-		<AuthContext.Provider value={{ user, loading, checkUser }}>
+		<AuthContext.Provider
+			value={{ user, setUser, loading, handleLogin, logging, userData, token }}>
 			{children}
 		</AuthContext.Provider>
 	);

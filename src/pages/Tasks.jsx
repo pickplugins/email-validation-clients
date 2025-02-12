@@ -12,6 +12,7 @@ function Tasks({ user }) {
 
 	var [addTask, setaddTask] = useState({ title: "", edit: false, loading: false, success: false, errors: false });
 	var [tasksData, settasksData] = useState(null);
+	console.log(tasksData)
 	var [queryPrams, setqueryPrams] = useState({ keyword: "", page: 1, order: "DESC", limit: 10, first_date: "", last_date: "" });
 
 	var [loading, setloading] = useState(false);
@@ -20,7 +21,7 @@ function Tasks({ user }) {
 
 	var columns = {
 		check: { label: "Check" },
-		id: { label: "ID" },
+		// id: { label: "ID" },
 		title: { label: "Title" },
 		status: { label: "Status" },
 		total: { label: "Total" },

@@ -1,12 +1,16 @@
 import Layout from "../components/Layout";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import EntriesTable from "../components/EntriesTable";
+import { AuthContext } from "../components/AuthContext";
+import Dropdown from "../components/Dropdown";
 
 
 
 function Credits() {
 
 	var [appData, setappData] = useState(window.appData);
+
+	const {token} = useContext(AuthContext)
 
 	var [creditsData, setcreditsData] = useState(null);
 	var [queryPrams, setqueryPrams] = useState({ keyword: "", page: 1, order: "DESC", limit: 10, first_date: "", last_date: "" });
@@ -17,10 +21,11 @@ function Credits() {
 	var [getCreditsPrams, setgetCreditsPrams] = useState({ adding: false, title: "", email: "public.nurhasan@gmail.com", domain: "", result: null, loading: false }); // Using the hook.
 
 	var [loading, setloading] = useState(false);
+	var [selectedRows, setselectedRows] = useState([]);
 
 
 	function fetchPosts() {
-		const token = localStorage.getItem("token");
+		// const token = localStorage.getItem("token");
 
 		if (!token) {
 			throw new Error("No token found");
@@ -74,7 +79,7 @@ function Credits() {
 
 	function createCredits() {
 
-		const token = localStorage.getItem("token");
+		// const token = localStorage.getItem("token");
 
 		if (!token) {
 			throw new Error("No token found");
@@ -133,9 +138,14 @@ function Credits() {
 
 	}
 
+	function onSelectRows(rows) {
+		console.log(rows);
+		setselectedRows(rows);
+	}
+
 
 	function deleteCredits(id) {
-		const token = localStorage.getItem("token");
+		// const token = localStorage.getItem("token");
 
 		if (!token) {
 			throw new Error("No token found");
@@ -185,6 +195,7 @@ function Credits() {
 	}
 
 	var columns = {
+		check: { label: "Check" },
 		id: { label: "ID" },
 		type: { label: "Type" },
 		source: { label: "Source" },
@@ -212,89 +223,162 @@ function Credits() {
 		}
 
 	}
+function delete_credit_entries() {
+	// const token = localStorage.getItem("token");
 
+	if (!token) {
+		throw new Error("No token found");
+	}
+
+	if (queryPrams.page < 0) {
+		return;
+	}
+
+	var postData = {
+		ids: selectedRows,
+	};
+	postData = JSON.stringify(postData);
+	setloading(true);
+	fetch(
+		appData.serverUrl + "wp-json/email-validation/v2/delete_credit_entries",
+		{
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+			body: postData,
+		}
+	)
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error("Token validation failed");
+			}
+
+			if (response.ok && response.status < 400) {
+				response.json().then((res) => {
+					var errors = res?.errors;
+					var success = res?.success;
+
+					setloading(false);
+
+					fetchPosts();
+
+					// setaddTask({ ...addTask, loading: false, errors: errors, success: success })
+
+					// setTimeout(() => {
+					// 	setaddTask({ ...addTask, title: "", success: null, errors: null })
+
+					// }, 3000);
+				});
+			}
+		})
+		.catch((_error) => {
+			//this.saveAsStatus = 'error';
+			// handle the error
+		});
+}
 
 
 	return (
 		<Layout>
 			<div>
-
-
 				<div className="flex justify-between p-4 ">
-
 					<div className="flex gap-3 items-center">
-						<div className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer" onClick={ev => {
-							setaddCredits({ ...addCredits, edit: !addCredits.edit })
-						}}>Add</div>
-
-						{addCredits.edit && (
-							<>
-								<input type="text" placeholder="100" className="p-3 py-[5px] w-25 bg-gray-400 border rounded-sm border-solid " value={addCredits?.amount} onChange={ev => {
-									setaddCredits({ ...addCredits, amount: ev.target.value })
-
-								}} />
-								<input type="text" placeholder="123" className="p-3 py-[5px] w-20 bg-gray-400 border rounded-sm border-solid " value={addCredits?.userid} onChange={ev => {
-									setaddCredits({ ...addCredits, userid: ev.target.value })
-
-								}} />
-
-
-								<select name="" id="" value={addCredits?.type} onChange={ev => {
-									setaddCredits({ ...addCredits, type: ev.target.value })
-
+						<div className="relative">
+							<div
+								className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer"
+								onClick={(ev) => {
+									setaddCredits({ ...addCredits, edit: !addCredits.edit });
 								}}>
-									<option value="">Type..</option>
-									<option value="credit">credit</option>
-									<option value="debit">debit</option>
-								</select>
+								Add
+							</div>
+							{addCredits.edit && (
+								<Dropdown className="top-full left-0 min-w-[400px] mt-2 bg-white px-4 py-3 rounded-sm grid grid-cols-2 gap-4">
+									<input
+										type="text"
+										placeholder="100"
+										className="p-3 py-[5px] w-25 bg-gray-400 border rounded-sm border-solid "
+										value={addCredits?.amount}
+										onChange={(ev) => {
+											setaddCredits({ ...addCredits, amount: ev.target.value });
+										}}
+									/>
+									<input
+										type="text"
+										placeholder="123"
+										className="p-3 py-[5px] w-20 bg-gray-400 border rounded-sm border-solid "
+										value={addCredits?.userid}
+										onChange={(ev) => {
+											setaddCredits({ ...addCredits, userid: ev.target.value });
+										}}
+									/>
+									<select
+										name=""
+										id=""
+										value={addCredits?.type}
+										onChange={(ev) => {
+											setaddCredits({ ...addCredits, type: ev.target.value });
+										}}>
+										<option value="">Type..</option>
+										<option value="credit">credit</option>
+										<option value="debit">debit</option>
+									</select>
+									<select
+										name=""
+										id=""
+										value={addCredits?.source}
+										onChange={(ev) => {
+											setaddCredits({ ...addCredits, source: ev.target.value });
+										}}>
+										<option value="">Source..</option>
+										<option value="instant">Instant</option>
+										<option value="daily">Daily</option>
+										<option value="API">API</option>
+										<option value="cron">Cron</option>
+										<option value="monthly">Monthly</option>
+										<option value="register">Register</option>
+									</select>
+									<div
+										onClick={(ev) => {
+											createCredits();
+											setaddCredits({ ...addCredits, loading: true });
+										}}
+										className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
+										Submit
+									</div>
+								</Dropdown>
+							)}
+						</div>
 
-								<select name="" id="" value={addCredits?.source} onChange={ev => {
-									setaddCredits({ ...addCredits, source: ev.target.value })
-
+						{addCredits.loading && <>Loading...</>}
+						{addCredits.errors && <>There is an error.</>}
+						{addCredits.success && <>Task Added.</>}
+						{selectedRows.length > 0 && (
+							<div
+								className="px-3 py-[5px] rounded-sm bg-red-600 hover:bg-red-500 text-white cursor-pointer"
+								onClick={(ev) => {
+									delete_credit_entries();
 								}}>
-									<option value="">Source..</option>
-
-									<option value="instant">Instant</option>
-									<option value="daily">Daily</option>
-									<option value="API">API</option>
-									<option value="cron">Cron</option>
-									<option value="monthly">Monthly</option>
-									<option value="register">Register</option>
-								</select>
-
-
-
-
-								<div onClick={ev => {
-									createCredits();
-									setaddCredits({ ...addCredits, loading: true })
-
-								}} className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer" >Submit</div>
-							</>
+								Delete Tasks
+							</div>
 						)}
-
-						{addCredits.loading && (
-							<>Loading...</>
-						)}
-						{addCredits.errors && (
-							<>There is an error.</>
-						)}
-						{addCredits.success && (
-							<>Task Added.</>
-						)}
-
 					</div>
-
-
 
 					<div></div>
 				</div>
 
-
-				<EntriesTable deleteRow={deleteRow} queryPrams={queryPrams} columns={columns} entries={creditsData} itemPath={""} onChange={onChangeQueryPrams} loading={loading} />
-
-
-
+				<EntriesTable
+					deleteRow={deleteRow}
+					queryPrams={queryPrams}
+					columns={columns}
+					entries={creditsData}
+					itemPath={""}
+					onChange={onChangeQueryPrams}
+					loading={loading}
+					selectedRows={selectedRows}
+					onSelectRows={onSelectRows}
+				/>
 			</div>
 		</Layout>
 	);

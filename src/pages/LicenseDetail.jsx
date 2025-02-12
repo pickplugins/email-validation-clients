@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import Layout from "../components/Layout";
 import { useState, useEffect } from "react";
 
-function LicenseDetail() {
+function LicenseDetail({user}) {
   const { id } = useParams();
 
 
@@ -89,7 +89,7 @@ function LicenseDetail() {
 
 
   return (
-    <Layout >
+    <Layout user={user} >
 
       <div>
 

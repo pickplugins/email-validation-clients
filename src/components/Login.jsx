@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
 import Layout from "../components/Layout";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import Spinner from "./Spinner";
+import { AuthContext } from "./AuthContext";
 
 
 const Login = () => {
-	const [user, setUser] = useState({ username: "", password: "" });
+	const navigate = useNavigate();
+	const {user, setUser, handleLogin, logging} = useContext(AuthContext);
+	// const [user, setUser] = useState({ username: "", password: "" });
 	const [error, setError] = useState("");
 	const [token, setToken] = useState("");
 	var [appData, setappData] = useState(window.appData);
@@ -14,70 +18,10 @@ const Login = () => {
 		setUser({ ...user, [e.target.name]: e.target.value });
 	};
 
-	const handleLogin = async (e) => {
-
-		e.preventDefault();
-
-		console.log(user)
-
-		// try {
-		// 	const response = await axios.post(
-		// 		appData.serverUrl + "wp-json/jwt-auth/v1/token",
-		// 		{
-		// 			username: user.username,
-		// 			password: user.password,
-		// 		}
-		// 	);
-
-		// 	setToken(response.data.token);
-
-		// 	localStorage.setItem("token", response.data.token);
-		// } catch (error) {
-		// 	setError("Invalid credentials. Please try again.");
-		// }
-		var postData = {
-			username: user.username,
-			password: user.password,
-		};
-		postData = JSON.stringify(postData);
-		console.log(postData);
-
-
-		fetch(appData.serverUrl + "wp-json/jwt-auth/v1/token", {
-			method: "POST",
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: postData,
-		})
-			.then((response) => {
-
-				if (!response.ok) {
-					throw new Error('Token validation failed');
-				}
-
-				if (response.ok && response.status < 400) {
-					response.json().then((res) => {
-
-
-						console.log(res);
-						setToken(res.token);
-
-						localStorage.setItem("token", res.token);
-						setTimeout(() => {
-						}, 500);
-					});
-				}
-			})
-			.catch((_error) => {
-				setError("Invalid credentials. Please try again.");
-			});
+	
 
 
 
-
-
-	};
 
 	return (
 
@@ -110,9 +54,9 @@ const Login = () => {
 						/>
 					</div>
 					<button
-						className="p-3 py-[5px] bg-gray-700 text-white cursor-pointer border rounded-sm border-solid w-full"
+						className="p-3 py-[5px] bg-gray-700 text-white cursor-pointer border rounded-sm border-solid w-full flex gap-2 items-center justify-center"
 
-						type="submit">Login</button>
+						type="submit">Login {logging && <Spinner />}</button>
 				</div>
 			</form>
 			{error && <p>{error}</p>}
