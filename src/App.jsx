@@ -2,6 +2,7 @@ import { useState, useEffect, Component } from "react";
 
 import { Routes, Route } from 'react-router-dom';
 import Credits from './pages/Credits';
+import CreditsLogs from './pages/CreditsLogs';
 import Licenses from './pages/Licenses';
 import LicenseDetail from './pages/LicenseDetail';
 import Orders from "./pages/Orders";
@@ -100,19 +101,20 @@ function App(appData) {
       <Routes>
         <Route path="/" element={<Dashboard user={userData} />} />
         <Route path="/app" element={<Dashboard user={userData} />} />
-        <Route path="/apikeys" element={<PrivateRoute><ApiKeys /></PrivateRoute>} />
-        <Route path="/validationrequests" element={<PrivateRoute><ValidationRequests /></PrivateRoute>} />
-        <Route path="/credits" element={<PrivateRoute><Credits /></PrivateRoute>} />
-        <Route path="/licenses" element={<PrivateRoute><Licenses /></PrivateRoute>} />
-        <Route path="/licenses/:id" element={<PrivateRoute><LicenseDetail /></PrivateRoute>} />
-        <Route path="/orders" element={<PrivateRoute><Orders /></PrivateRoute>} />
-        <Route path="/tasks" element={<PrivateRoute><Tasks /></PrivateRoute>} />
-        <Route path="/tasks/:id" element={<PrivateRoute><TaskDetail /></PrivateRoute>} />
-        <Route path="/orders/:id" element={<PrivateRoute><OrderDetail /></PrivateRoute>} />
-        <Route path="/products" element={<PrivateRoute><Products /></PrivateRoute>} />
-        <Route path="/products/:id" element={<PrivateRoute><ProductDetail /></PrivateRoute>} />
-        <Route path="/subscriptions" element={<PrivateRoute><Subscriptions /></PrivateRoute>} />
-        <Route path="/subscriptions/:id" element={<PrivateRoute><SubscriptionDetail /></PrivateRoute>} />
+        <Route path="/apikeys" element={<PrivateRoute><ApiKeys user={userData} /></PrivateRoute>} />
+        <Route path="/validationrequests" element={<PrivateRoute><ValidationRequests user={userData} /></PrivateRoute>} />
+        <Route path="/credits" element={<PrivateRoute><Credits user={userData} /></PrivateRoute>} />
+        <Route path="/creditslogs" element={<PrivateRoute><CreditsLogs user={userData} /></PrivateRoute>} />
+        <Route path="/licenses" element={<PrivateRoute><Licenses user={userData} /></PrivateRoute>} />
+        <Route path="/licenses/:id" element={<PrivateRoute><LicenseDetail user={userData} /></PrivateRoute>} />
+        <Route path="/orders" element={<PrivateRoute><Orders user={userData} /></PrivateRoute>} />
+        <Route path="/tasks" element={<PrivateRoute><Tasks user={userData} /></PrivateRoute>} />
+        <Route path="/tasks/:id" element={<PrivateRoute><TaskDetail user={userData} /></PrivateRoute>} />
+        <Route path="/orders/:id" element={<PrivateRoute><OrderDetail user={userData} /></PrivateRoute>} />
+        <Route path="/products" element={<PrivateRoute><Products user={userData} /></PrivateRoute>} />
+        <Route path="/products/:id" element={<PrivateRoute><ProductDetail user={userData} /></PrivateRoute>} />
+        <Route path="/subscriptions" element={<PrivateRoute><Subscriptions user={userData} /></PrivateRoute>} />
+        <Route path="/subscriptions/:id" element={<PrivateRoute><SubscriptionDetail user={userData} /></PrivateRoute>} />
         <Route path="/dashboard" element={<PrivateRoute><Dashboard user={userData} /></PrivateRoute>} />
       </Routes>
     </AuthProvider>

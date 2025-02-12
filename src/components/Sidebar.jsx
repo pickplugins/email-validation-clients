@@ -4,10 +4,10 @@ import { AuthContext } from "../components/AuthContext";
 import { Link } from 'react-router-dom';
 
 
-const Sidebar = () => {
+const Sidebar = ({ user }) => {
 
 	// const { user, loading } = useContext(AuthContext);
-
+	console.log(user);
 	var appData = window.appData;
 
 
@@ -25,6 +25,7 @@ const Sidebar = () => {
 		{ label: "Orders", value: "orders" },
 		{ label: "Subscriptions", value: "subscriptions" },
 		{ label: "Credits", value: "credits" },
+		{ label: "CreditsLogs", value: "creditslogs" },
 		// { label: "Licenses", value: "licenses" },
 		{ label: "API Keys", value: "apiKeys" },
 		{ label: "Validation Requests", value: "ValidationRequests" },

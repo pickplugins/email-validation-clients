@@ -291,9 +291,9 @@ function TaskDetail() {
     check: { label: "Check" },
     // id: { label: "ID" },
     email: { label: "Email" },
-    status: { label: "Status" },
+    status: { label: "Progress" },
     result: { label: "Result" },
-    datetime: { label: "Datetime" },
+    // datetime: { label: "Datetime" },
   }
 
   useEffect(() => {

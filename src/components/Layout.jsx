@@ -14,7 +14,7 @@ const Layout = ({ children, user }) => {
 	return (
 		<div
 			className={`flex min-w-screen min-h-screen`}>
-			<Sidebar />
+			<Sidebar user={user} />
 			<main className=' basis-[100%]'>
 
 				<GlobalHeader user={user} />

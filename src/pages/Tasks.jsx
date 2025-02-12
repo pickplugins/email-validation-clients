@@ -6,7 +6,7 @@ import Spinner from "../components/Spinner";
 
 
 
-function Tasks() {
+function Tasks({ user }) {
 
 	var [appData, setappData] = useState(window.appData);
 
@@ -251,7 +251,7 @@ function Tasks() {
 
 
 	return (
-		<Layout>
+		<Layout user={user}>
 			<div>
 
 
