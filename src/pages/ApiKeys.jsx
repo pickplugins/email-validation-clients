@@ -4,7 +4,7 @@ import EntriesTable from "../components/EntriesTable";
 
 
 
-function ApiKeys() {
+function ApiKeys({user}) {
 
 	var [appData, setappData] = useState(window.appData);
 
@@ -212,7 +212,7 @@ function ApiKeys() {
 
 
 	return (
-		<Layout>
+		<Layout user={user}>
 			<div>
 
 

@@ -5,7 +5,7 @@ import Spinner from "../components/Spinner";
 
 
 
-function Subscriptions() {
+function Subscriptions({ user }) {
 
 	var [appData, setappData] = useState(window.appData);
 
@@ -100,7 +100,7 @@ function Subscriptions() {
 	}
 
 	return (
-		<Layout>
+		<Layout user={user}>
 			<div>
 
 				<EntriesTable queryPrams={queryPrams} columns={columns} entries={subscriptionsData} itemPath={"orders"} onChange={onChangeQueryPrams} loading={loading} />

@@ -5,7 +5,7 @@ import Spinner from "../components/Spinner";
 
 
 
-function Licenses() {
+function Licenses({user}) {
 
 	var [appData, setappData] = useState(window.appData);
 
@@ -109,7 +109,7 @@ function Licenses() {
 
 
 	return (
-		<Layout>
+		<Layout user={user}>
 			<div>
 
 				<EntriesTable queryPrams={queryPrams} columns={columns} entries={licensesData} itemPath={"orders"} onChange={onChangeQueryPrams} loading={loading} />

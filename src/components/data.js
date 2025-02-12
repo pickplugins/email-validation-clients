@@ -1,0 +1,121 @@
+export const data = {
+	posts: [
+		{
+			id: 1,
+			email: "filip.lopatka@brainit.sk",
+			result: '{"status":"valid","safeToSend":"yes"}',
+			status: "completed",
+		},
+		{
+			id: 2,
+			email: "firozhossain@upwork.com",
+			result: '{"status":"valid","safeToSend":"yes"}',
+			status: "completed",
+		},
+		{
+			id: 3,
+			email: "fofori@nu.edu",
+			result: '{"status":"valid","safeToSend":"yes"}',
+			status: "completed",
+		},
+		{
+			id: 4,
+			email: "francis.agulto@wpengine.com",
+			result: '{"status":"valid","safeToSend":"yes"}',
+			status: "completed",
+		},
+		{
+			id: 5,
+			email: "freelance@bobajob.com",
+			result: '{"status":"valid","safeToSend":"yes"}',
+			status: "completed",
+		},
+		{
+			id: 6,
+			email: "ga@belzonaboats.com",
+			result: '{"status":"valid","safeToSend":"yes"}',
+			status: "completed",
+		},
+		{
+			id: 7,
+			email: "garegin.hakobyan@sourcefit.net",
+			result: '{"status":"valid","safeToSend":"yes"}',
+			status: "completed",
+		},
+		{
+			id: 8,
+			email: "gaspar@thedarl.com",
+			result: '{"status":"valid","safeToSend":"yes"}',
+			status: "completed",
+		},
+		{
+			id: 9,
+			email: "gazanfarali@upwork.com",
+			result: '{"status":"valid","safeToSend":"yes"}',
+			status: "completed",
+		},
+		{
+			id: 10,
+			email: "filip.lopatka@brainit.sk",
+			result: '{"status":"valid","safeToSend":"yes"}',
+			status: "completed",
+		},
+		{
+			id: 11,
+			email: "firozhossain@upwork.com",
+			result: '{"status":"valid","safeToSend":"yes"}',
+			status: "completed",
+		},
+		{
+			id: 12,
+			email: "fofori@nu.edu",
+			result: '{"status":"valid","safeToSend":"yes"}',
+			status: "completed",
+		},
+		{
+			id: 13,
+			email: "francis.agulto@wpengine.com",
+			result: '{"status":"valid","safeToSend":"yes"}',
+			status: "completed",
+		},
+		{
+			id: 14,
+			email: "freelance@bobajob.com",
+			result: '{"status":"valid","safeToSend":"yes"}',
+			status: "completed",
+		},
+		{
+			id: 15,
+			email: "ga@belzonaboats.com",
+			result: '{"status":"valid","safeToSend":"yes"}',
+			status: "failed",
+		},
+		{
+			id: 16,
+			email: "garegin.hakobyan@sourcefit.net",
+			result: '{"status":"valid","safeToSend":"yes"}',
+			status: "completed",
+		},
+		{
+			id: 17,
+			email: "gaspar@thedarl.com",
+			result: '{"status":"valid","safeToSend":"yes"}',
+			status: "completed",
+		},
+		{
+			id: 18,
+			email: "gazanfarali@upwork.com",
+			result: '{"status":"valid","safeToSend":"yes"}',
+			status: "failed",
+		},
+		{
+			id: 19,
+			email: "hello@dfdfdfdfdfdf.dfdfdfdf",
+			result:
+				'{"status":["invalidDomain"],"safeToSend":"no","isSyntaxValid":true,"isValidEmail":true,"hasValidDomain":false,"isDisposableDomain":false}',
+			status: "completed",
+		},
+	],
+	total: "19",
+	maxPages: 2,
+};

@@ -1,17 +1,20 @@
 import { useLocation } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "./AuthContext";
 
 
-const UserAccount = ({ user }) => {
+const UserAccount = () => {
+	const navigate = useNavigate();
 
-	console.log(user);
+	const {userData} = useContext(AuthContext);
 
 	const token = localStorage.getItem("token");
 
 
 	const handleLogout = () => {
 		localStorage.removeItem("token");
-		window.location.href = "/";
+		navigate("/");
 	};
 
 	var [modal, setmodal] = useState(false);
@@ -20,65 +23,58 @@ const UserAccount = ({ user }) => {
 	return (
 		<div className="">
 			<div>
-
-
 				{token ? (
-
 					<>
-						{user && (
+						{userData && (
 							<div className="flex items-center gap-4">
 								<div className="flex gap-3 text-white items-center bg-gray-600 px-3 py-2 rounded-sm">
 									<span>Credits: </span>
-									<span>{user?.total_credit}</span> /
-									<span>{user?.total_used}</span>
+									<span>{userData?.total_credit}</span> /
+									<span>{userData?.total_used}</span>
 								</div>
 
-
-								<div title={user?.name} className=" relative">
-
-
-
-
-									<div className="w-10 h-10 rounded-full overflow-hidden border border-gray-500 cursor-pointer" onClick={ev => {
-										setmodal(!modal)
-									}}>
-										<img className="w-full" src={user?.avatar} alt={user?.name} />
+								<div title={userData?.name} className=" relative">
+									<div
+										className="w-10 h-10 rounded-full overflow-hidden border border-gray-500 cursor-pointer"
+										onClick={(ev) => {
+											setmodal(!modal);
+										}}>
+										<img
+											className="w-full"
+											src={userData?.avatar}
+											alt={userData?.name}
+										/>
 									</div>
 
 									{modal && (
-										<div className="absolute left-0 top-[100%] bg-white p-2 w-[300px] rounded-sm">
-											<div className="my-3">Welcome! {user?.name}</div>
-											<div className="p-2 hover:bg-gray-400 rounded-sm cursor-pointer px-4 bg-gray-600 text-white"
-												onClick={ev => {
-													handleLogout()
-												}}>Log-out</div>
+										<div className="absolute z-[99] right-0 top-[100%] bg-white p-2 w-[300px] rounded-sm">
+											<div className="my-3">Welcome! {userData?.name}</div>
+											<div
+												className="p-2 hover:bg-gray-400 rounded-sm cursor-pointer px-4 bg-gray-600 text-white"
+												onClick={(ev) => {
+													handleLogout();
+												}}>
+												Log-out
+											</div>
 										</div>
 									)}
-
-
 								</div>
-
-
 							</div>
 						)}
 
-
-						{!user && (
-							<div className="p-2 hover:bg-gray-400 rounded-sm cursor-pointer px-4 bg-gray-600 text-white"
-								onClick={ev => {
-									handleLogout()
-								}}>Log-out</div>
+						{!userData && (
+							<div
+								className="p-2 hover:bg-gray-400 rounded-sm cursor-pointer px-4 bg-gray-600 text-white"
+								onClick={(ev) => {
+									handleLogout();
+								}}>
+								Log-out
+							</div>
 						)}
 					</>
-
-
-
 				) : (
-					<div>
-
-					</div>
+					<div></div>
 				)}
-
 			</div>
 		</div>
 	);

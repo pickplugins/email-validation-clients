@@ -4,7 +4,7 @@ import EntriesTable from "../components/EntriesTable";
 
 
 
-function Credits() {
+function Credits({user}) {
 
 	var [appData, setappData] = useState(window.appData);
 
@@ -216,7 +216,7 @@ function Credits() {
 
 
 	return (
-		<Layout>
+		<Layout user={user}>
 			<div>
 
 
