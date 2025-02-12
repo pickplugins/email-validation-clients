@@ -40,13 +40,13 @@ function App(appData) {
   return (
 		<AuthProvider>
 			<Routes>
-				<Route path="/" element={<Dashboard user={userData} />} />
-				<Route path="/app" element={<Dashboard user={userData} />} />
+				<Route path="/" element={<Dashboard/>} />
+				<Route path="/app" element={<Dashboard />} />
 				<Route
 					path="/apikeys"
 					element={
 						<PrivateRoute>
-							<ApiKeys user={userData} />
+							<ApiKeys />
 						</PrivateRoute>
 					}
 				/>
@@ -54,7 +54,7 @@ function App(appData) {
 					path="/validationrequests"
 					element={
 						<PrivateRoute>
-							<ValidationRequests user={userData} />
+							<ValidationRequests />
 						</PrivateRoute>
 					}
 				/>
@@ -62,7 +62,7 @@ function App(appData) {
 					path="/credits"
 					element={
 						<PrivateRoute>
-							<Credits user={userData} />
+							<Credits />
 						</PrivateRoute>
 					}
 				/>
@@ -70,7 +70,7 @@ function App(appData) {
 					path="/licenses"
 					element={
 						<PrivateRoute>
-							<Licenses user={userData} />
+							<Licenses />
 						</PrivateRoute>
 					}
 				/>
@@ -78,7 +78,7 @@ function App(appData) {
 					path="/licenses/:id"
 					element={
 						<PrivateRoute>
-							<LicenseDetail user={userData} />
+							<LicenseDetail />
 						</PrivateRoute>
 					}
 				/>
@@ -86,7 +86,7 @@ function App(appData) {
 					path="/orders"
 					element={
 						<PrivateRoute>
-							<Orders user={userData} />
+							<Orders />
 						</PrivateRoute>
 					}
 				/>
@@ -94,7 +94,7 @@ function App(appData) {
 					path="/tasks"
 					element={
 						<PrivateRoute>
-							<Tasks user={userData} />
+							<Tasks />
 						</PrivateRoute>
 					}
 				/>
@@ -102,7 +102,7 @@ function App(appData) {
 					path="/tasks/:id"
 					element={
 						<PrivateRoute>
-							<TaskDetail user={userData} />
+							<TaskDetail />
 						</PrivateRoute>
 					}
 				/>
@@ -110,7 +110,7 @@ function App(appData) {
 					path="/orders/:id"
 					element={
 						<PrivateRoute>
-							<OrderDetail user={userData} />
+							<OrderDetail />
 						</PrivateRoute>
 					}
 				/>
@@ -118,7 +118,7 @@ function App(appData) {
 					path="/products"
 					element={
 						<PrivateRoute>
-							<Products user={userData} />
+							<Products />
 						</PrivateRoute>
 					}
 				/>
@@ -126,7 +126,7 @@ function App(appData) {
 					path="/products/:id"
 					element={
 						<PrivateRoute>
-							<ProductDetail user={userData} />
+							<ProductDetail />
 						</PrivateRoute>
 					}
 				/>
@@ -134,7 +134,7 @@ function App(appData) {
 					path="/subscriptions"
 					element={
 						<PrivateRoute>
-							<Subscriptions user={userData} />
+							<Subscriptions />
 						</PrivateRoute>
 					}
 				/>
@@ -142,7 +142,7 @@ function App(appData) {
 					path="/subscriptions/:id"
 					element={
 						<PrivateRoute>
-							<SubscriptionDetail user={userData} />
+							<SubscriptionDetail />
 						</PrivateRoute>
 					}
 				/>
@@ -150,7 +150,7 @@ function App(appData) {
 					path="/dashboard"
 					element={
 						<PrivateRoute>
-							<Dashboard user={userData} />
+							<Dashboard />
 						</PrivateRoute>
 					}
 				/>

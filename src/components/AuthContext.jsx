@@ -67,7 +67,7 @@ function fetchUser() {
 
 useEffect(() => {
 	fetchUser();
-});
+},[]);
 
 	const handleLogin = async (e) => {
 		e.preventDefault();
@@ -118,7 +118,8 @@ useEffect(() => {
 	}, []);
 
 	return (
-		<AuthContext.Provider value={{ user, setUser, loading, handleLogin, logging, userData }}>
+		<AuthContext.Provider
+			value={{ user, setUser, loading, handleLogin, logging, userData, token }}>
 			{children}
 		</AuthContext.Provider>
 	);

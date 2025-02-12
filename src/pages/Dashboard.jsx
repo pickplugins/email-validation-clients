@@ -8,8 +8,8 @@ import Login from '../components/Login';
 import Register from '../components/Register';
 import { useState, useEffect } from "react";
 
-const Dashboard = ({ user }) => {
-  // const { user, loading } = useContext(AuthContext);
+const Dashboard = () => {
+  const { userData } = useContext(AuthContext);
   const token = localStorage.getItem("token");
 
   var [appData, setappData] = useState(window.appData);
@@ -19,15 +19,15 @@ const Dashboard = ({ user }) => {
   // }, [window.appData]);
 
   return (
-    <Layout user={user} >
+    <Layout >
       {token ? (
 
 
         <div className="bg-gray-200">
-          {user && (
+          {userData && (
             <div className="p-5">
 
-              <UserProfileEdit user={user} />
+              <UserProfileEdit user={userData} />
             </div>
           )}
 
