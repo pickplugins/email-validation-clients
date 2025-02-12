@@ -6,22 +6,17 @@ import Sidebar from './Sidebar';
 import PropTypes from 'prop-types';
 import GlobalHeader from "../components/GlobalHeader";
 
-const Layout = ({ children, user }) => {
+const Layout = ({ children }) => {
 
-	//const { user, loading } = useContext(AuthContext);
 
 
 	return (
-		<div
-			className={`flex min-w-screen min-h-screen`}>
+		<div className={`flex max-w-screen min-h-screen`}>
 			<Sidebar />
-			<main className=' basis-[100%]'>
+			<main className="flex-1">
+				<GlobalHeader />
 
-				<GlobalHeader user={user} />
-
-				<div className=''>
-					{children}
-				</div>
+				<div className="">{children}</div>
 			</main>
 		</div>
 	);
@@ -29,6 +24,7 @@ const Layout = ({ children, user }) => {
 
 Layout.propTypes = {
 	children: PropTypes.node.isRequired,
+	user: PropTypes.object
 };
 
 export default Layout

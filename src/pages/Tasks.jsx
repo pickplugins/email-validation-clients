@@ -6,12 +6,13 @@ import Spinner from "../components/Spinner";
 
 
 
-function Tasks() {
+function Tasks({user}) {
 
 	var [appData, setappData] = useState(window.appData);
 
 	var [addTask, setaddTask] = useState({ title: "", edit: false, loading: false, success: false, errors: false });
 	var [tasksData, settasksData] = useState(null);
+	console.log(tasksData)
 	var [queryPrams, setqueryPrams] = useState({ keyword: "", page: 1, order: "DESC", limit: 10, first_date: "", last_date: "" });
 
 	var [loading, setloading] = useState(false);
@@ -20,7 +21,7 @@ function Tasks() {
 
 	var columns = {
 		check: { label: "Check" },
-		id: { label: "ID" },
+		// id: { label: "ID" },
 		title: { label: "Title" },
 		status: { label: "Status" },
 		total: { label: "Total" },
@@ -251,7 +252,7 @@ function Tasks() {
 
 
 	return (
-		<Layout>
+		<Layout user={user}>
 			<div>
 
 

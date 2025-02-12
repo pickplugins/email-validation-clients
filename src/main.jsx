@@ -3,9 +3,10 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 
 var appData = {
-  serverUrl: "http://localhost/wordpress/",
-  appUrl: "http://localhost:5173/",
-}
+	// serverUrl: "http://localhost/wp/",
+	serverUrl: "https://isspammy.com/",
+	appUrl: "http://localhost:5173/",
+};
 // var appData = {
 //   serverUrl: "https://isspammy.com/",
 //   appUrl: "https://app.isspammy.com/",
@@ -14,7 +15,7 @@ var appData = {
 window.appData = appData;
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <BrowserRouter>
-    <App appData={appData} />
-  </BrowserRouter>
+	<BrowserRouter>
+		<App appData={appData} />
+	</BrowserRouter>
 );

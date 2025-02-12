@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import EntriesTable from "../components/EntriesTable";
 import Spinner from "../components/Spinner";
 
-function TaskDetail() {
+function TaskDetail({user}) {
   const { id } = useParams();
 
 
@@ -12,8 +12,10 @@ function TaskDetail() {
   var [queryPrams, setqueryPrams] = useState({ keyword: "", page: 1, order: "DESC", limit: 10, first_date: "", last_date: "", });
   var [addEntries, setaddEntries] = useState({ emails: "", edit: false, loading: false, success: false, errors: false });
 
+  var [showExport, setshowExport] = useState(false);
 
   var [tasksEntries, settasksEntries] = useState(null);
+  console.log(tasksEntries)
   var [loading, setloading] = useState(false);
   var [selectedRows, setselectedRows] = useState([]);
 
@@ -321,107 +323,125 @@ function TaskDetail() {
 
 
   return (
-    <Layout >
+		<Layout user={user}>
+			<div className="flex-1">
+				{/* {JSON.stringify(tasksEntries)} */}
 
+				<div className="flex justify-between p-4 ">
+					<div className="flex gap-3 items-center">
+						<div
+							className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer"
+							onClick={(ev) => {
+								setaddEntries({ ...addEntries, edit: !addEntries.edit });
+							}}>
+							Add Emails
+						</div>
 
-      <div className="">
+						{addEntries.edit && (
+							<>
+								<textarea
+									name=""
+									id=""
+									className="p-3 py-[5px] bg-gray-400 border rounded-sm border-solid w-[400px]"
+									value={addEntries?.emails}
+									onChange={(ev) => {
+										setaddEntries({ ...addEntries, emails: ev.target.value });
+									}}></textarea>
 
-        {/* {JSON.stringify(tasksEntries)} */}
+								<div
+									onClick={(ev) => {
+										addTaskEntries();
+									}}
+									className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
+									Submit
+								</div>
+							</>
+						)}
 
-        <div className="flex justify-between p-4 ">
+						{addEntries.loading && (
+							<>
+								<Spinner />
+							</>
+						)}
+						{addEntries.errors && <>There is an error.</>}
+						{addEntries.success && <>Task Added.</>}
+					</div>
 
-          <div className="flex gap-3 items-center">
-            <div className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer" onClick={ev => {
-              setaddEntries({ ...addEntries, edit: !addEntries.edit })
-            }}>Add Emails</div>
+					<div className="gap-2 flex items-center">
+						<select
+							name=""
+							id=""
+							className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
+							value={queryPrams?.status}
+							onChange={(ev) => {
+								setqueryPrams({ ...queryPrams, status: ev.target.value });
+							}}>
+							<option value="">Status</option>
+							<option value="valid">Valid</option>
+							<option value="disposable">disposable</option>
+							<option value="invalidEmail">invalidEmail</option>
+							<option value="invalidDomain">invalidDomain</option>
+							<option value="syntaxNotValid">syntaxNotValid</option>
+						</select>
+						<select
+							name=""
+							id=""
+							className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
+							value={queryPrams?.safeToSend}
+							onChange={(ev) => {
+								setqueryPrams({ ...queryPrams, safeToSend: ev.target.value });
+							}}>
+							<option value="">Safe To Send</option>
+							<option value="yes">yes</option>
+							<option value="no">no</option>
+						</select>
 
-            {addEntries.edit && (
-              <>
-
-
-                <textarea name="" id="" className="p-3 py-[5px] bg-gray-400 border rounded-sm border-solid w-[400px]" value={addEntries?.emails} onChange={ev => {
-                  setaddEntries({ ...addEntries, emails: ev.target.value })
-
-                }}>
-                </textarea>
-
-                <div onClick={ev => {
-                  addTaskEntries();
-
-
-
-                }} className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer" >Submit</div>
-              </>
-            )}
-
-            {addEntries.loading && (
-              <><Spinner /></>
-            )}
-            {addEntries.errors && (
-              <>There is an error.</>
-            )}
-            {addEntries.success && (
-              <>Task Added.</>
-            )}
-
-          </div>
-
-          <div className="gap-2 flex items-center">
-            <select name="" id=""
-              className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
-              value={queryPrams?.status} onChange={ev => {
-                setqueryPrams({ ...queryPrams, status: ev.target.value })
-
-              }}>
-              <option value="">Status</option>
-              <option value="valid">Valid</option>
-              <option value="disposable">disposable</option>
-              <option value="invalidEmail">invalidEmail</option>
-              <option value="invalidDomain">invalidDomain</option>
-              <option value="syntaxNotValid">syntaxNotValid</option>
-            </select>
-            <select name="" id=""
-              className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
-              value={queryPrams?.safeToSend} onChange={ev => {
-                setqueryPrams({ ...queryPrams, safeToSend: ev.target.value })
-
-              }}>
-              <option value="">Safe To Send</option>
-              <option value="yes">yes</option>
-              <option value="no">no</option>
-            </select>
-
-            <select name="" id=""
-              className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
-              value={queryPrams?.isRoleBasedEmail} onChange={ev => {
-                setqueryPrams({ ...queryPrams, isRoleBasedEmail: ev.target.value })
-
-              }}>
-              <option value="">Role Based</option>
-              <option value="yes">yes</option>
-              <option value="no">no</option>
-            </select>
-            <select name="" id=""
-              className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
-              value={queryPrams?.hasValidDomain} onChange={ev => {
-                setqueryPrams({ ...queryPrams, hasValidDomain: ev.target.value })
-
-              }}>
-              <option value="">Valid Domain</option>
-              <option value="1">yes</option>
-              <option value="0">no</option>
-            </select>
-            <select name="" id=""
-              className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
-              value={queryPrams?.isFreeEmailProvider} onChange={ev => {
-                setqueryPrams({ ...queryPrams, isFreeEmailProvider: ev.target.value })
-
-              }}>
-              <option value="">Free Email</option>
-              <option value="1">yes</option>
-              <option value="0">no</option>
-            </select>
-            {/* <select name="" id=""
+						<select
+							name=""
+							id=""
+							className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
+							value={queryPrams?.isRoleBasedEmail}
+							onChange={(ev) => {
+								setqueryPrams({
+									...queryPrams,
+									isRoleBasedEmail: ev.target.value,
+								});
+							}}>
+							<option value="">Role Based</option>
+							<option value="yes">yes</option>
+							<option value="no">no</option>
+						</select>
+						<select
+							name=""
+							id=""
+							className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
+							value={queryPrams?.hasValidDomain}
+							onChange={(ev) => {
+								setqueryPrams({
+									...queryPrams,
+									hasValidDomain: ev.target.value,
+								});
+							}}>
+							<option value="">Valid Domain</option>
+							<option value="1">yes</option>
+							<option value="0">no</option>
+						</select>
+						<select
+							name=""
+							id=""
+							className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
+							value={queryPrams?.isFreeEmailProvider}
+							onChange={(ev) => {
+								setqueryPrams({
+									...queryPrams,
+									isFreeEmailProvider: ev.target.value,
+								});
+							}}>
+							<option value="">Free Email</option>
+							<option value="1">yes</option>
+							<option value="0">no</option>
+						</select>
+						{/* <select name="" id=""
               className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
               value={queryPrams?.verifySMTP} onChange={ev => {
                 setqueryPrams({ ...queryPrams, verifySMTP: ev.target.value })
@@ -431,42 +451,66 @@ function TaskDetail() {
               <option value="1">yes</option>
               <option value="0">no</option>
             </select> */}
-          </div>
+					</div>
 
-          <div className="gap-2 flex items-center">
-            <div className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer" onClick={ev => {
-              email_export();
-            }}>Export</div>
+					<div className="gap-2 flex items-center">
+						<div className="relative">
+							<div
+								className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer"
+								onClick={() => {
+                  setshowExport(!showExport);
+								}}>
+								Export
+							</div>
+							<div className={`absolute top-full right-0 bg-white mt-2 px-4 py-3 ${showExport ? "" : "hidden"}`}>
+								<button className="text-nowrap cursor-pointer px-3 py-[5px] w-full rounded-sm bg-gray-600 hover:bg-gray-500 text-white mt-2"
+									onClick={() => {
+										email_export();
+									}}>
+									Export All
+								</button>
+								<button
+                className="text-nowrap cursor-pointer px-3 py-[5px] w-full rounded-sm bg-gray-600 hover:bg-gray-500 text-white mt-2"
+									onClick={() => {
+										email_export();
+									}}>
+									Export Selected
+								</button>
+							</div>
+						</div>
 
-            <div onClick={ev => {
-              fetchPosts()
-            }} className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">Refresh</div>
-            {selectedRows.length > 0 && (
+						<div
+							onClick={(ev) => {
+								fetchPosts();
+							}}
+							className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
+							Refresh
+						</div>
+						{selectedRows.length > 0 && (
+							<div
+								className="px-3 py-[5px] rounded-sm bg-red-600 hover:bg-red-500 text-white cursor-pointer"
+								onClick={(ev) => {
+									delete_tasks_entries();
+								}}>
+								Delete Tasks
+							</div>
+						)}
+					</div>
+				</div>
 
-              <div className="px-3 py-[5px] rounded-sm bg-red-600 hover:bg-red-500 text-white cursor-pointer" onClick={ev => {
-                delete_tasks_entries();
-              }}>Delete Tasks</div>
-
-            )}
-          </div>
-        </div>
-
-
-        <EntriesTable queryPrams={queryPrams} columns={columns} entries={tasksEntries} itemPath={""} onChange={onChangeQueryPrams} loading={loading} selectedRows={selectedRows} onSelectRows={onSelectRows} />
-
-
-
-
-      </div>
-
-
-
-
-
-
-
-    </Layout>
-  )
+				<EntriesTable
+					queryPrams={queryPrams}
+					columns={columns}
+					entries={tasksEntries}
+					itemPath={""}
+					onChange={onChangeQueryPrams}
+					loading={loading}
+					selectedRows={selectedRows}
+					onSelectRows={onSelectRows}
+				/>
+			</div>
+		</Layout>
+	);
 
 
 }

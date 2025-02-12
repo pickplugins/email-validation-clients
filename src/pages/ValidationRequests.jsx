@@ -5,7 +5,7 @@ import Spinner from "../components/Spinner";
 
 
 
-function ValidationRequests() {
+function ValidationRequests({ user }) {
 
 	var [appData, setappData] = useState(window.appData);
 
@@ -212,7 +212,7 @@ function ValidationRequests() {
 	}
 
 	return (
-		<Layout>
+		<Layout user={user}>
 			<div>
 
 				<EntriesTable queryPrams={queryPrams} columns={columns} entries={requestData} itemPath={"orders"} onChange={onChangeQueryPrams} loading={loading} />

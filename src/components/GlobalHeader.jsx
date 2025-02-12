@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 
 
-const GlobalHeader = ({ user }) => {
+const GlobalHeader = () => {
 
 	// var [notifications, setnotifications] = useState([]);
 
@@ -71,7 +71,7 @@ const GlobalHeader = ({ user }) => {
 			</div>
 
 			<div>
-				<UserAccount user={user} />
+				<UserAccount />
 				{/* <Notify notifications={notifications} /> */}
 			</div>
 		</div>
