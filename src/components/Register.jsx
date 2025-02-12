@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import Layout from "../components/Layout";
 import { Navigate } from "react-router-dom";
+import Spinner from "./Spinner";
 
 
 const Register = () => {
@@ -10,6 +11,7 @@ const Register = () => {
 	const [errors, seterrors] = useState(null);
 	const [token, setToken] = useState("");
 	var [appData, setappData] = useState(window.appData);
+	const [logging, setlogging] = useState(false);
 
 	const handleChange = (e) => {
 		setUser({ ...user, [e.target.name]: e.target.value });
@@ -20,6 +22,7 @@ const Register = () => {
 
 
 		e.preventDefault();
+		setlogging(true);
 
 		if (user.email.length == 0 || user.password.length == 0) {
 			alert("email or password should not empty");
@@ -63,6 +66,7 @@ const Register = () => {
 						setMessages(messages)
 
 
+						setlogging(false);
 
 
 						setTimeout(() => {
@@ -73,6 +77,7 @@ const Register = () => {
 			.catch((_error) => {
 				//this.saveAsStatus = 'error';
 				// handle the error
+				setlogging(false);
 			});
 
 	}
@@ -108,9 +113,9 @@ const Register = () => {
 						/>
 					</div>
 					<button
-						className="p-3 py-[5px] bg-gray-700 text-white cursor-pointer border rounded-sm border-solid w-full"
+						className="p-3 py-[5px] bg-gray-700 text-white cursor-pointer border rounded-sm border-solid w-full flex gap-2 items-center justify-center"
 
-						type="submit">Register</button>
+						type="submit">Register {logging && <Spinner />}</button>
 				</div>
 			</form>
 
