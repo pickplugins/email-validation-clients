@@ -186,8 +186,8 @@ function CreditsLogs() {
 
 	var columns = {
 		id: { label: "ID" },
-		count: { label: "count" },
-		notes: { label: "notes" },
+		count: { label: "Count" },
+		notes: { label: "Notes" },
 		datetime: { label: "Datetime" },
 	}
 

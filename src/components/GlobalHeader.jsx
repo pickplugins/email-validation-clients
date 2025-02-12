@@ -55,7 +55,7 @@ const GlobalHeader = () => {
 	// }, [notifications]);
 
 	return (
-		<div className="flex justify-between bg-gray-700 p-3 px-5 gap-3">
+		<div className="flex justify-between bg-gray-700 p-3 px-5 gap-3 h-[70px]">
 			<div className="flex gap-2 items-center text-white">
 				<Link to="/dashboard">Dashboard</Link>
 

@@ -10,7 +10,7 @@ function Credits() {
 
 	var [appData, setappData] = useState(window.appData);
 
-	const {token} = useContext(AuthContext)
+	const { token } = useContext(AuthContext)
 
 	var [creditsData, setcreditsData] = useState(null);
 	var [queryPrams, setqueryPrams] = useState({ keyword: "", page: 1, order: "DESC", limit: 10, first_date: "", last_date: "" });
@@ -196,12 +196,12 @@ function Credits() {
 
 	var columns = {
 		check: { label: "Check" },
-		id: { label: "ID" },
+		// id: { label: "ID" },
 		type: { label: "Type" },
 		source: { label: "Source" },
 		amount: { label: "Amount" },
-		userid: { label: "Userid" },
-		status: { label: "Status" },
+		// userid: { label: "Userid" },
+		// status: { label: "Status" },
 		datetime: { label: "Datetime" },
 	}
 
@@ -223,61 +223,61 @@ function Credits() {
 		}
 
 	}
-function delete_credit_entries() {
-	// const token = localStorage.getItem("token");
+	function delete_credit_entries() {
+		// const token = localStorage.getItem("token");
 
-	if (!token) {
-		throw new Error("No token found");
-	}
-
-	if (queryPrams.page < 0) {
-		return;
-	}
-
-	var postData = {
-		ids: selectedRows,
-	};
-	postData = JSON.stringify(postData);
-	setloading(true);
-	fetch(
-		appData.serverUrl + "wp-json/email-validation/v2/delete_credit_entries",
-		{
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${token}`,
-			},
-			body: postData,
+		if (!token) {
+			throw new Error("No token found");
 		}
-	)
-		.then((response) => {
-			if (!response.ok) {
-				throw new Error("Token validation failed");
+
+		if (queryPrams.page < 0) {
+			return;
+		}
+
+		var postData = {
+			ids: selectedRows,
+		};
+		postData = JSON.stringify(postData);
+		setloading(true);
+		fetch(
+			appData.serverUrl + "wp-json/email-validation/v2/delete_credit_entries",
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+				body: postData,
 			}
+		)
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error("Token validation failed");
+				}
 
-			if (response.ok && response.status < 400) {
-				response.json().then((res) => {
-					var errors = res?.errors;
-					var success = res?.success;
+				if (response.ok && response.status < 400) {
+					response.json().then((res) => {
+						var errors = res?.errors;
+						var success = res?.success;
 
-					setloading(false);
+						setloading(false);
 
-					fetchPosts();
+						fetchPosts();
 
-					// setaddTask({ ...addTask, loading: false, errors: errors, success: success })
+						// setaddTask({ ...addTask, loading: false, errors: errors, success: success })
 
-					// setTimeout(() => {
-					// 	setaddTask({ ...addTask, title: "", success: null, errors: null })
+						// setTimeout(() => {
+						// 	setaddTask({ ...addTask, title: "", success: null, errors: null })
 
-					// }, 3000);
-				});
-			}
-		})
-		.catch((_error) => {
-			//this.saveAsStatus = 'error';
-			// handle the error
-		});
-}
+						// }, 3000);
+					});
+				}
+			})
+			.catch((_error) => {
+				//this.saveAsStatus = 'error';
+				// handle the error
+			});
+	}
 
 
 	return (
@@ -369,7 +369,7 @@ function delete_credit_entries() {
 				</div>
 
 				<EntriesTable
-					deleteRow={deleteRow}
+					// deleteRow={deleteRow}
 					queryPrams={queryPrams}
 					columns={columns}
 					entries={creditsData}

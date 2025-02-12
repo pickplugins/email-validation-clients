@@ -1,4 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
+import { IconDashboard, IconList, IconBasketCheck, IconRotateRectangle, IconCards, IconDatabaseEdit, IconCloudDataConnection, IconBrandCitymapper } from "@tabler/icons-react";
 
 const Sidebar = ({ user }) => {
 	// const { user, loading } = useContext(AuthContext);
@@ -12,20 +13,20 @@ const Sidebar = ({ user }) => {
 
 	var navs = [
 		// { label: "Products", value: "products" },
-		{ label: "Dashboard", value: "dashboard" },
-		{ label: "Tasks", value: "tasks" },
-		{ label: "Orders", value: "orders" },
-		{ label: "Subscriptions", value: "subscriptions" },
-		{ label: "Credits", value: "credits" },
-		{ label: "CreditsLogs", value: "creditslogs" },
-		// { label: "Licenses", value: "licenses" },
-		{ label: "API Keys", value: "apiKeys" },
-		{ label: "Validation Requests", value: "ValidationRequests" },
+		{ label: "Dashboard", value: "dashboard", icon: <IconDashboard /> },
+		{ label: "Tasks", value: "tasks", icon: <IconList /> },
+		{ label: "Orders", value: "orders", icon: <IconBasketCheck /> },
+		{ label: "Subscriptions", value: "subscriptions", icon: <IconRotateRectangle /> },
+		{ label: "Credits", value: "credits", icon: <IconCards /> },
+		{ label: "CreditsLogs", value: "creditslogs", icon: <IconDatabaseEdit /> },
+		// { label: "Licenses", value: "licenses", icon: ""  },
+		{ label: "API Keys", value: "apiKeys", icon: <IconCloudDataConnection /> },
+		{ label: "Validation Requests", value: "ValidationRequests", icon: <IconBrandCitymapper /> },
 	];
 
 	return (
 		<aside className="min-w-[300px] bg-gray-200 text-gray-800 p-0">
-			<div className="bg-blue-700 p-3 text-white ">
+			<div className="bg-blue-700 p-3 text-white h-[70px]">
 				<Link to={`${appData.appUrl}`} className="flex gap-3 items-center">
 					<div className="w-[30px]">
 						<svg
@@ -48,13 +49,14 @@ const Sidebar = ({ user }) => {
 						{navs.map((nav, index) => {
 							return (
 								<Link
+									cla
 									key={index}
 									to={`/${nav.value}`}
 									className={`${currentLocation == "/" + nav.value
-										? "bg-gray-500"
-										: "bg-gray-400"
-										} hover:bg-gray-500 border-0 border-b border-solid border-gray-300 cursor-pointer px-4 py-2 `}>
-									{nav.label}
+										? "bg-gray-200"
+										: "bg-white"
+										} hover:bg-gray-200 text-blue-500 border-0 border-b border-solid border-gray-300 cursor-pointer px-4 py-2 flex items-center gap-2`}>
+									<span className="">{nav.icon}</span> <span>{nav.label}</span>
 								</Link>
 							);
 						})}

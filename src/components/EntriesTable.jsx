@@ -1,6 +1,6 @@
 import { Component, useEffect, useState } from "react";
 
-import { IconCheckbox, IconSquare } from "@tabler/icons-react";
+import { IconCheckbox, IconSquare, IconArrowNarrowLeftDashed, IconArrowNarrowRightDashed } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import Spinner from "../components/Spinner";
 
@@ -39,7 +39,7 @@ function Html(props) {
 					<input
 						type="text"
 						placeholder="Search..."
-						className="p-3 py-[5px] bg-gray-400 border rounded-sm border-solid "
+						className="p-3 py-[5px] bg-blue-200 border-2 border-blue-500 rounded-sm border-solid "
 						value={queryPrams?.keyword}
 						onChange={(ev) => {
 							setqueryPrams({ ...queryPrams, keyword: ev.target.value });
@@ -63,7 +63,7 @@ function Html(props) {
 					<select
 						name=""
 						id=""
-						className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
+						className=" rounded-sm border-solid border-2 border-blue-500 py-[3px] px-2 cursor-pointer"
 						value={queryPrams?.order}
 						onChange={(ev) => {
 							setqueryPrams({ ...queryPrams, order: ev.target.value });
@@ -75,7 +75,7 @@ function Html(props) {
 					<select
 						name=""
 						id=""
-						className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
+						className="border-2 border-blue-500 rounded-sm border-solid py-[3px] px-2 cursor-pointer"
 						value={queryPrams?.limit}
 						onChange={(ev) => {
 							setqueryPrams({ ...queryPrams, limit: ev.target.value });
@@ -88,7 +88,7 @@ function Html(props) {
 					</select>
 
 					<div
-						className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer"
+						className="px-3 py-[5px] rounded-sm bg-blue-600 hover:bg-blue-500 text-white cursor-pointer"
 						onClick={(ev) => {
 							var page = queryPrams.page;
 							if (page == 1) return;
@@ -96,17 +96,17 @@ function Html(props) {
 							//console.log(page);
 							setqueryPrams({ ...queryPrams, page: queryPrams.page - 1 });
 						}}>
-						Previous
+						<IconArrowNarrowLeftDashed />
 					</div>
 					<div
-						className="p-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer"
+						className="p-3 py-[5px] rounded-sm bg-blue-600 hover:bg-blue-500 text-white cursor-pointer"
 						onClick={(ev) => {
 							var page = queryPrams.page + 1;
 							if (page > entries?.maxPages) return;
 
 							setqueryPrams({ ...queryPrams, page: queryPrams.page + 1 });
 						}}>
-						Next
+						<IconArrowNarrowRightDashed />
 					</div>
 				</div>
 			</div>
@@ -121,11 +121,9 @@ function Html(props) {
 							return (
 								<th
 									key={columnIndex}
-									className={`px-5 py-2 ${
-										columnIndex == "check" ? "w-12 " : ""
-									} ${columnIndex == "id" ? "w-20 " : ""} ${
-										columnIndex == "email" ? "text-left pl-5" : ""
-									} ${columnIndex == "title" ? "text-left pl-5" : ""}`}>
+									className={`px-5 py-2 ${columnIndex == "check" ? "w-12 " : ""
+										} ${columnIndex == "id" ? "w-20 " : ""} ${columnIndex == "email" ? "text-left pl-5" : ""
+										} ${columnIndex == "title" ? "text-left pl-5" : ""}`}>
 									{columnIndex == "check" && (
 										<div
 											onClick={(ev) => {
@@ -145,12 +143,12 @@ function Html(props) {
 												}
 											}}>
 											{selectedAll && (
-												<span className="cursor-pointer">
+												<span className="cursor-pointer text-blue-500">
 													<IconCheckbox />
 												</span>
 											)}
 											{!selectedAll && (
-												<span className="cursor-pointer">
+												<span className="cursor-pointer text-blue-500">
 													<IconSquare />
 												</span>
 											)}
@@ -158,9 +156,8 @@ function Html(props) {
 									)}
 									{columnIndex != "check" && (
 										<span
-											className={`${
-												columnIndex == "email" ? "text-left pl-5" : ""
-											}`}>
+											className={`${columnIndex == "email" ? "text-left pl-5" : ""
+												}`}>
 											{columnData.label}
 										</span>
 									)}
@@ -191,10 +188,9 @@ function Html(props) {
 									return (
 										<td
 											key={columnIndex}
-											className={`px-5 py-2 ${
-												columnIndex == "email" ? "text-left pl-5" : ""
-											} ${columnIndex == "title" ? "text-left pl-5" : ""}`}>
-											
+											className={`px-5 py-2 ${columnIndex == "email" ? "text-left pl-5" : ""
+												} ${columnIndex == "title" ? "text-left pl-5" : ""}`}>
+
 											{columnIndex == "title" && (
 												<div className="flex items-center gap-2">
 													{itemPath.length > 0 && (
@@ -211,9 +207,8 @@ function Html(props) {
 											)}
 											{columnIndex != "title" && (
 												<span
-													className={`${
-														columnIndex == "email" ? "text-left pl-5" : ""
-													} break-all`}>
+													className={`${columnIndex == "email" ? "text-left pl-5" : ""
+														} break-all`}>
 													{entry[columnIndex]}
 												</span>
 											)}
@@ -238,12 +233,12 @@ function Html(props) {
 														}
 													}}>
 													{selectedRows?.includes(entry.id) && (
-														<span className="cursor-pointer">
+														<span className="cursor-pointer text-blue-500">
 															<IconCheckbox />
 														</span>
 													)}
 													{!selectedRows?.includes(entry.id) && (
-														<span className="cursor-pointer">
+														<span className="cursor-pointer text-blue-500">
 															<IconSquare />
 														</span>
 													)}
@@ -276,19 +271,50 @@ function Html(props) {
 							return (
 								<th
 									key={columnIndex}
-									className={`px-5 py-2 ${
-										columnIndex == "email" ? "text-left pl-5" : ""
-									} ${columnIndex == "title" ? "text-left pl-5" : ""}`}>
-									<span
-										className={`${
-											columnIndex == "email" ? "text-left pl-5" : ""
-										}`}>
-										{columnData.label}
-									</span>
+									className={`px-5 py-2 ${columnIndex == "check" ? "w-12 " : ""
+										} ${columnIndex == "id" ? "w-20 " : ""} ${columnIndex == "email" ? "text-left pl-5" : ""
+										} ${columnIndex == "title" ? "text-left pl-5" : ""}`}>
+									{columnIndex == "check" && (
+										<div
+											onClick={(ev) => {
+												console.log("Hello");
+												setselectedAll(!selectedAll);
+												var ids = [];
+
+												if (!selectedAll) {
+													entries?.posts.map((entry) => {
+														ids.push(entry.id);
+													});
+													setselectedRows(ids);
+												}
+
+												if (selectedAll) {
+													setselectedRows([]);
+												}
+											}}>
+											{selectedAll && (
+												<span className="cursor-pointer text-blue-500">
+													<IconCheckbox />
+												</span>
+											)}
+											{!selectedAll && (
+												<span className="cursor-pointer text-blue-500">
+													<IconSquare />
+												</span>
+											)}
+										</div>
+									)}
+									{columnIndex != "check" && (
+										<span
+											className={`${columnIndex == "email" ? "text-left pl-5" : ""
+												}`}>
+											{columnData.label}
+										</span>
+									)}
 								</th>
 							);
 						})}
-						{deleteRow && <th key={"delete"}>Delete</th>}
+						{deleteRow && <th>Delete</th>}
 					</tr>
 				</thead>
 			</table>

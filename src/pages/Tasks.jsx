@@ -259,7 +259,7 @@ function Tasks({ user }) {
 				<div className="flex justify-between p-4 ">
 
 					<div className="flex gap-3 items-center">
-						<div className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer" onClick={ev => {
+						<div className="px-3 py-[5px] rounded-sm bg-blue-600 hover:bg-blue-500 text-white cursor-pointer" onClick={ev => {
 							setaddTask({ ...addTask, edit: !addTask.edit })
 						}}>Add</div>
 
