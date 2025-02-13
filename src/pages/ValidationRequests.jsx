@@ -5,7 +5,7 @@ import Spinner from "../components/Spinner";
 
 
 
-function ValidationRequests({ user }) {
+function ValidationRequests() {
 
 	var [appData, setappData] = useState(window.appData);
 
@@ -200,7 +200,7 @@ function ValidationRequests({ user }) {
 	var columns = {
 		id: { label: "ID" },
 		email: { label: "Email" },
-		status: { label: "Status" },
+		result: { label: "Result" },
 		datetime: { label: "Datetime" },
 	}
 	function onChangeQueryPrams(queryPrams) {
@@ -212,7 +212,7 @@ function ValidationRequests({ user }) {
 	}
 
 	return (
-		<Layout user={user}>
+		<Layout>
 			<div>
 
 				<EntriesTable queryPrams={queryPrams} columns={columns} entries={requestData} itemPath={"orders"} onChange={onChangeQueryPrams} loading={loading} />
@@ -223,17 +223,19 @@ function ValidationRequests({ user }) {
 
 				<div className="p-5">
 
+					<div className="my-5 text-2xl font-bold">Single Validation</div>
+
 					<div className="flex gap-2 items-center">
 						<input type="email"
-							className="bg-gray-200 px-2 py-2 border border-solid rounded-sm"
+							className="bg-gray-200 px-2 py-[5px] border border-solid rounded-sm"
 							value={validateMailPrams.email} onChange={ev => {
 								setvalidateMailPrams({ ...validateMailPrams, email: ev.target.value })
 							}} />
-						<div
-							className="p-3 py-2 bg-gray-600 text-white cursor-pointer"
+						<button
+							className="p-3 py-[5px] bg-gray-600 text-white cursor-pointer rounded-sm"
 							onClick={ev => {
 								validateEmail()
-							}}>Validate</div>
+							}}>Validate</button>
 					</div>
 
 					{validateMailPrams.loading && (
@@ -243,7 +245,7 @@ function ValidationRequests({ user }) {
 					{validateMailPrams.result != null && (
 
 						<>
-							<table className="table-fixed border-collapse">
+							<table className="table-fixed border-collapse my-5">
 								<tbody>
 									{Object.entries(validateMailPrams.result).map(args => {
 										var id = args[0]
@@ -255,7 +257,7 @@ function ValidationRequests({ user }) {
 											<>
 												{validationPrams[id] != undefined && (
 													<>
-														<tr className=" ">
+														<tr className=" " key={id}>
 															<td className="w-[250px] py-4 border-0 border-b border-solid border-gray-400">{validationPrams[id]?.label}</td>
 															<td className="w-[250px] py-4  border-0 border-b border-solid border-gray-400">
 
@@ -284,20 +286,20 @@ function ValidationRequests({ user }) {
 
 																	{id == "isGibberishEmail" && (
 																		<>
-																			{!value && (
+																			{value != 'yes' && (
 																				<> No</>
 																			)}
-																			{value && (
+																			{value == 'yes' && (
 																				<> Yes</>
 																			)}
 																		</>
 																	)}
 																	{id == "isSMTPBlacklisted" && (
 																		<>
-																			{!value && (
+																			{value != 'yes' && (
 																				<> No</>
 																			)}
-																			{value && (
+																			{value == 'yes' && (
 																				<> Yes</>
 																			)}
 																		</>
@@ -319,11 +321,11 @@ function ValidationRequests({ user }) {
 																	)
 																		&& (
 																			<>
-																				{value && (
-																					<> Yes</>
-																				)}
-																				{!value && (
+																				{value == 'yes' && (
 																					<> No</>
+																				)}
+																				{value != 'yes' && (
+																					<> Yes</>
 																				)}
 																			</>
 																		)}

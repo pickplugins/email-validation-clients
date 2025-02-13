@@ -1,28 +1,46 @@
-import Layout from "../components/Layout";
-import { useState, useEffect, useContext } from "react";
-import EntriesTable from "../components/EntriesTable";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../components/AuthContext";
-import Dropdown from "../components/Dropdown";
-
-
+import EntriesTable from "../components/EntriesTable";
+import Layout from "../components/Layout";
+import Popover from "../components/Popover";
 
 function Credits() {
-
 	var [appData, setappData] = useState(window.appData);
 
-	const {token} = useContext(AuthContext)
+	const { token } = useContext(AuthContext);
 
 	var [creditsData, setcreditsData] = useState(null);
-	var [queryPrams, setqueryPrams] = useState({ keyword: "", page: 1, order: "DESC", limit: 10, first_date: "", last_date: "" });
+	var [queryPrams, setqueryPrams] = useState({
+		keyword: "",
+		page: 1,
+		order: "DESC",
+		limit: 10,
+		first_date: "",
+		last_date: "",
+	});
 
-	var [addCredits, setaddCredits] = useState({ amount: 100, type: "", source: "", userid: 1, edit: false, loading: false, success: false, errors: false });
+	var [addCredits, setaddCredits] = useState({
+		amount: 100,
+		type: "",
+		source: "",
+		userid: 1,
+		edit: false,
+		loading: false,
+		success: false,
+		errors: false,
+	});
 
-
-	var [getCreditsPrams, setgetCreditsPrams] = useState({ adding: false, title: "", email: "public.nurhasan@gmail.com", domain: "", result: null, loading: false }); // Using the hook.
+	var [getCreditsPrams, setgetCreditsPrams] = useState({
+		adding: false,
+		title: "",
+		email: "public.nurhasan@gmail.com",
+		domain: "",
+		result: null,
+		loading: false,
+	}); // Using the hook.
 
 	var [loading, setloading] = useState(false);
 	var [selectedRows, setselectedRows] = useState([]);
-
 
 	function fetchPosts() {
 		// const token = localStorage.getItem("token");
@@ -40,31 +58,26 @@ function Credits() {
 		fetch(appData.serverUrl + "wp-json/email-validation/v2/get_credits", {
 			method: "POST",
 			headers: {
-				'Content-Type': 'application/json',
-				'Authorization': `Bearer ${token}`
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
 			},
 			body: postData,
 		})
 			.then((response) => {
-
 				if (!response.ok) {
-					throw new Error('Token validation failed');
+					throw new Error("Token validation failed");
 				}
 
 				if (response.ok && response.status < 400) {
 					response.json().then((res) => {
-
-
-
 						var posts = res?.posts;
 						var total = res?.total;
 						var max_pages = res?.max_pages;
 
-						setcreditsData({ posts: posts, total: total, maxPages: max_pages })
+						setcreditsData({ posts: posts, total: total, maxPages: max_pages });
 						setloading(false);
 
-						setTimeout(() => {
-						}, 500);
+						setTimeout(() => {}, 500);
 					});
 				}
 			})
@@ -72,19 +85,14 @@ function Credits() {
 				//this.saveAsStatus = 'error';
 				// handle the error
 			});
-
 	}
 
-
-
 	function createCredits() {
-
 		// const token = localStorage.getItem("token");
 
 		if (!token) {
 			throw new Error("No token found");
 		}
-
 
 		if (queryPrams.page < 0) {
 			return;
@@ -101,32 +109,38 @@ function Credits() {
 		fetch(appData.serverUrl + "wp-json/email-validation/v2/create_credits", {
 			method: "POST",
 			headers: {
-				'Content-Type': 'application/json',
-				'Authorization': `Bearer ${token}`
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
 			},
 			body: postData,
 		})
 			.then((response) => {
-
 				if (!response.ok) {
-					throw new Error('Token validation failed');
+					throw new Error("Token validation failed");
 				}
 
 				if (response.ok && response.status < 400) {
 					response.json().then((res) => {
-
 						var errors = res?.errors;
 						var success = res?.success;
 
-
 						console.log(res);
-						fetchPosts()
+						fetchPosts();
 
-						setaddCredits({ ...addCredits, loading: false, errors: errors, success: success })
+						setaddCredits({
+							...addCredits,
+							loading: false,
+							errors: errors,
+							success: success,
+						});
 
 						setTimeout(() => {
-							setaddCredits({ ...addCredits, title: "", success: null, errors: null })
-
+							setaddCredits({
+								...addCredits,
+								title: "",
+								success: null,
+								errors: null,
+							});
 						}, 3000);
 					});
 				}
@@ -135,14 +149,12 @@ function Credits() {
 				//this.saveAsStatus = 'error';
 				// handle the error
 			});
-
 	}
 
 	function onSelectRows(rows) {
 		console.log(rows);
 		setselectedRows(rows);
 	}
-
 
 	function deleteCredits(id) {
 		// const token = localStorage.getItem("token");
@@ -158,27 +170,21 @@ function Credits() {
 		fetch(appData.serverUrl + "wp-json/email-validation/v2/delete_credits", {
 			method: "POST",
 			headers: {
-				'Content-Type': 'application/json',
-				'Authorization': `Bearer ${token}`
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
 			},
 			body: postData,
 		})
 			.then((response) => {
-
 				if (!response.ok) {
-					throw new Error('Token validation failed');
+					throw new Error("Token validation failed");
 				}
-
 
 				if (response.ok && response.status < 400) {
 					response.json().then((res) => {
-
-
-
 						//console.log(res);
 
-						setTimeout(() => {
-						}, 500);
+						setTimeout(() => {}, 500);
 					});
 				}
 			})
@@ -186,26 +192,23 @@ function Credits() {
 				//this.saveAsStatus = 'error';
 				// handle the error
 			});
-
 	}
 
 	function deleteRow(id) {
 		//console.log(id);
-		deleteCredits(id)
+		deleteCredits(id);
 	}
 
 	var columns = {
 		check: { label: "Check" },
-		id: { label: "ID" },
+		// id: { label: "ID" },
 		type: { label: "Type" },
 		source: { label: "Source" },
 		amount: { label: "Amount" },
-		userid: { label: "Userid" },
-		status: { label: "Status" },
+		// userid: { label: "Userid" },
+		// status: { label: "Status" },
 		datetime: { label: "Datetime" },
-	}
-
-
+	};
 
 	// useEffect(() => {
 	// 	fetchPosts();
@@ -215,86 +218,83 @@ function Credits() {
 		fetchPosts();
 	}, [queryPrams]);
 
-
 	function onChangeQueryPrams(queryPrams) {
 		if (queryPrams) {
-			setqueryPrams(queryPrams)
+			setqueryPrams(queryPrams);
 			fetchPosts();
 		}
-
 	}
-function delete_credit_entries() {
-	// const token = localStorage.getItem("token");
+	function delete_credit_entries() {
+		// const token = localStorage.getItem("token");
 
-	if (!token) {
-		throw new Error("No token found");
-	}
-
-	if (queryPrams.page < 0) {
-		return;
-	}
-
-	var postData = {
-		ids: selectedRows,
-	};
-	postData = JSON.stringify(postData);
-	setloading(true);
-	fetch(
-		appData.serverUrl + "wp-json/email-validation/v2/delete_credit_entries",
-		{
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${token}`,
-			},
-			body: postData,
+		if (!token) {
+			throw new Error("No token found");
 		}
-	)
-		.then((response) => {
-			if (!response.ok) {
-				throw new Error("Token validation failed");
+
+		if (queryPrams.page < 0) {
+			return;
+		}
+
+		var postData = {
+			ids: selectedRows,
+		};
+		postData = JSON.stringify(postData);
+		setloading(true);
+		fetch(
+			appData.serverUrl + "wp-json/email-validation/v2/delete_credit_entries",
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+				body: postData,
 			}
+		)
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error("Token validation failed");
+				}
 
-			if (response.ok && response.status < 400) {
-				response.json().then((res) => {
-					var errors = res?.errors;
-					var success = res?.success;
+				if (response.ok && response.status < 400) {
+					response.json().then((res) => {
+						var errors = res?.errors;
+						var success = res?.success;
 
-					setloading(false);
+						setloading(false);
 
-					fetchPosts();
+						fetchPosts();
 
-					// setaddTask({ ...addTask, loading: false, errors: errors, success: success })
+						// setaddTask({ ...addTask, loading: false, errors: errors, success: success })
 
-					// setTimeout(() => {
-					// 	setaddTask({ ...addTask, title: "", success: null, errors: null })
+						// setTimeout(() => {
+						// 	setaddTask({ ...addTask, title: "", success: null, errors: null })
 
-					// }, 3000);
-				});
-			}
-		})
-		.catch((_error) => {
-			//this.saveAsStatus = 'error';
-			// handle the error
-		});
-}
-
+						// }, 3000);
+					});
+				}
+			})
+			.catch((_error) => {
+				//this.saveAsStatus = 'error';
+				// handle the error
+			});
+	}
 
 	return (
 		<Layout>
 			<div>
-				<div className="flex justify-between p-4 ">
-					<div className="flex gap-3 items-center">
+				<div className=" p-4 ">
+					<div className="flex gap-3 items-center justify-between">
 						<div className="relative">
-							<div
+							<button
 								className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer"
 								onClick={(ev) => {
 									setaddCredits({ ...addCredits, edit: !addCredits.edit });
 								}}>
 								Add
-							</div>
+							</button>
 							{addCredits.edit && (
-								<Dropdown className="top-full left-0 min-w-[400px] mt-2 bg-white px-4 py-3 rounded-sm grid grid-cols-2 gap-4">
+								<Popover className="top-full left-0 min-w-[400px] mt-2 bg-white px-4 py-3 rounded-sm grid grid-cols-2 gap-4">
 									<input
 										type="text"
 										placeholder="100"
@@ -316,6 +316,7 @@ function delete_credit_entries() {
 									<select
 										name=""
 										id=""
+										className=" rounded-sm border-solid border-2 border-blue-500 py-[3px] px-2 cursor-pointer"
 										value={addCredits?.type}
 										onChange={(ev) => {
 											setaddCredits({ ...addCredits, type: ev.target.value });
@@ -327,6 +328,7 @@ function delete_credit_entries() {
 									<select
 										name=""
 										id=""
+										className=" rounded-sm border-solid border-2 border-blue-500 py-[3px] px-2 cursor-pointer"
 										value={addCredits?.source}
 										onChange={(ev) => {
 											setaddCredits({ ...addCredits, source: ev.target.value });
@@ -339,15 +341,15 @@ function delete_credit_entries() {
 										<option value="monthly">Monthly</option>
 										<option value="register">Register</option>
 									</select>
-									<div
+									<button
 										onClick={(ev) => {
 											createCredits();
 											setaddCredits({ ...addCredits, loading: true });
 										}}
 										className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
 										Submit
-									</div>
-								</Dropdown>
+									</button>
+								</Popover>
 							)}
 						</div>
 
@@ -369,7 +371,7 @@ function delete_credit_entries() {
 				</div>
 
 				<EntriesTable
-					deleteRow={deleteRow}
+					// deleteRow={deleteRow}
 					queryPrams={queryPrams}
 					columns={columns}
 					entries={creditsData}
@@ -385,5 +387,3 @@ function delete_credit_entries() {
 }
 
 export default Credits;
-
-

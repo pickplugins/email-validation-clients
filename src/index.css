@@ -19,3 +19,17 @@
 --color-amazon-900: #1b3928;
 --color-amazon-950: #0e2016;
 }
+
+input[type="text"],
+input[type="email"],
+input[type="password"],textarea{
+  @apply bg-blue-200 border-2 border-blue-500;
+}
+
+input[type="submit"],button{
+  @apply bg-blue-600 hover:bg-blue-500 text-white;
+}
+
+select{
+  @apply border-2 border-blue-500;
+}

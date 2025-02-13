@@ -20,52 +20,57 @@ const AuthProvider = ({ children }) => {
 
 
 	var appData = window.appData;
+const handleLogout = () => {
+	localStorage.removeItem("token");
+	setToken(null);
+	setuserData(null);
+	navigate("/");
+};
+	function fetchUser() {
+		// const token = localStorage.getItem("token");
 
-function fetchUser() {
-	// const token = localStorage.getItem("token");
+		if (!token) {
+			return;
+			//throw new Error("No token found");
+		}
 
-	if (!token) {
-		return;
-		//throw new Error("No token found");
+		var postData = {};
+		postData = JSON.stringify(postData);
+
+		fetch(appData.serverUrl + "wp-json/email-validation/v2/get_user", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+			body: postData,
+		})
+			.then((response) => {
+				if (response.status == 429) {
+					setLoading(false);
+
+					throw new Error("Too Many Requests");
+				}
+				if (!response.ok) {
+					throw new Error("Token validation failed");
+				}
+
+				if (response.ok && response.status < 400) {
+					response.json().then((res) => {
+						setuserData(res.user);
+						setTimeout(() => { }, 500);
+					});
+				}
+			})
+			.catch((_error) => {
+				//this.saveAsStatus = 'error';
+				// handle the error
+			});
 	}
 
-	var postData = {};
-	postData = JSON.stringify(postData);
-
-	fetch(appData.serverUrl + "wp-json/email-validation/v2/get_user", {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-			Authorization: `Bearer ${token}`,
-		},
-		body: postData,
-	})
-		.then((response) => {
-			if (response.status == 429) {
-				setloading(false);
-
-				throw new Error("Too Many Requests");
-			}
-			if (!response.ok) {
-				throw new Error("Token validation failed");
-			}
-
-			if (response.ok && response.status < 400) {
-				response.json().then((res) => {
-					setuserData(res.user);
-					setTimeout(() => {}, 500);
-				});
-			}
-		})
-		.catch((_error) => {
-			//this.saveAsStatus = 'error';
-			// handle the error
-		});
-}
-
-useEffect(() => {
-	fetchUser();
-},[]);
+	useEffect(() => {
+		fetchUser();
+	}, []);
 
 	const handleLogin = async (e) => {
 		e.preventDefault();
@@ -97,11 +102,11 @@ useEffect(() => {
 						setToken(res.token);
 
 						localStorage.setItem("token", res.token);
+						// fetchUser()
 						navigate("/orders");
-						setTimeout(() => {}, 500);
+						setTimeout(() => { }, 500);
 					});
 				}
-				fetchUser()
 				setlogging(false);
 			})
 			.catch((_error) => {
@@ -113,11 +118,21 @@ useEffect(() => {
 
 
 	useEffect(() => {
-	}, []);
+		fetchUser();
+	}, [token]);
 
 	return (
 		<AuthContext.Provider
-			value={{ user, setUser, loading, handleLogin, logging, userData, token }}>
+			value={{
+				user,
+				setUser,
+				loading,
+				handleLogin,
+				logging,
+				userData,
+				token,
+				handleLogout,
+			}}>
 			{children}
 		</AuthContext.Provider>
 	);

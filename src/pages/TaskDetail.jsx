@@ -1,365 +1,349 @@
+import { IconSettings } from "@tabler/icons-react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Layout from "../components/Layout";
-import { useState, useEffect, useContext } from "react";
-import EntriesTable from "../components/EntriesTable";
-import Spinner from "../components/Spinner";
 import { AuthContext } from "../components/AuthContext";
-import Dropdown from "../components/Dropdown";
-import { data } from "../components/data";
-
-function TaskDetail({user}) {
-  const { id } = useParams();
-
-const { token } = useContext(AuthContext);
-  var [appData, setappData] = useState(window.appData);
-  var [queryPrams, setqueryPrams] = useState({ keyword: "", page: 1, order: "DESC", limit: 10, first_date: "", last_date: "", });
-  var [addEntries, setaddEntries] = useState({ emails: "", edit: false, loading: false, success: false, errors: false });
-
-  var [showExport, setshowExport] = useState(false);
-
-  var [tasksEntries, settasksEntries] = useState(null);
-  console.log(tasksEntries)
-  var [loading, setloading] = useState(false);
-  var [selectedRows, setselectedRows] = useState([]);
-
-
-
-
-
-  function fetchPosts() {
-
-
-    // const token = localStorage.getItem("token");
-
-    if (!token) {
-      throw new Error("No token found");
-    }
-    var postData = {
-      task_id: id,
-      limit: queryPrams.limit,
-      page: queryPrams.page,
-      order: queryPrams.order,
-      status: queryPrams.status,
-      safeToSend: queryPrams.safeToSend,
-      isSyntaxValid: queryPrams.isSyntaxValid,
-      isValidEmail: queryPrams.isValidEmail,
-      hasValidDomain: queryPrams.hasValidDomain,
-      isDisposableDomain: queryPrams.isDisposableDomain,
-      isInboxFull: queryPrams.isInboxFull,
-      isFreeEmailProvider: queryPrams.isFreeEmailProvider,
-      isGibberishEmail: queryPrams.isGibberishEmail,
-      checkDomainReputation: queryPrams.checkDomainReputation,
-      isSMTPBlacklisted: queryPrams.isSMTPBlacklisted,
-      isRoleBasedEmail: queryPrams.isRoleBasedEmail,
-      isCatchAllDomain: queryPrams.isCatchAllDomain,
-      verifySMTP: queryPrams.verifySMTP
-
-
-    };
-    postData = JSON.stringify(postData);
-
-    setloading(true);
-
-
-    fetch(appData.serverUrl + "wp-json/email-validation/v2/get_tasks_entries", {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: postData,
-    })
-      .then((response) => {
-
-
-        if (!response.ok) {
-          throw new Error('Token validation failed');
-        }
-        if (response.status == 429) {
-          setloading(false);
-
-          throw new Error('Too Many Requests');
-        }
-
-        if (response.ok && response.status < 400) {
-          response.json().then((res) => {
-
-
-            var posts = res?.posts;
-            var total = res?.total;
-            var max_pages = res?.max_pages;
-
-            settasksEntries({ posts: posts, total: total, maxPages: max_pages })
-
-            setloading(false);
-
-
-            setTimeout(() => {
-            }, 500);
-          });
-        }
-      })
-      .catch((_error) => {
-        //this.saveAsStatus = 'error';
-        // handle the error
-      });
-
-  }
-
-  function addTaskEntries() {
-    // const token = localStorage.getItem("token");
-
-    if (!token) {
-      throw new Error("No token found");
-    }
-
-    setloading(true);
-
-
-    var postData = {
-      task_id: id,
-      emails: addEntries.emails,
-    };
-    postData = JSON.stringify(postData);
-
-    fetch(appData.serverUrl + "wp-json/email-validation/v2/add_tasks_entries", {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: postData,
-    })
-      .then((response) => {
-
-        if (!response.ok) {
-          throw new Error('Token validation failed');
-        }
-
-        if (response.ok && response.status < 400) {
-          response.json().then((res) => {
-
-
-            // var posts = res?.posts;
-            // var total = res?.total;
-            // var max_pages = res?.max_pages;
-
-            // settasksEntries({ posts: posts, total: total, maxPages: max_pages })
-            setloading(false);
-
-            fetchPosts()
-            setTimeout(() => {
-            }, 500);
-          });
-        }
-      })
-      .catch((_error) => {
-        //this.saveAsStatus = 'error';
-        // handle the error
-      });
-
-  }
-
-  function delete_tasks_entries() {
-
-    // const token = localStorage.getItem("token");
-
-    if (!token) {
-      throw new Error("No token found");
-    }
-
-
-    if (queryPrams.page < 0) {
-      return;
-    }
-
-    var postData = {
-      ids: selectedRows,
-    };
-    postData = JSON.stringify(postData);
-    setloading(true)
-    fetch(appData.serverUrl + "wp-json/email-validation/v2/delete_tasks_entries", {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: postData,
-    })
-      .then((response) => {
-
-        if (!response.ok) {
-          throw new Error('Token validation failed');
-        }
-
-        if (response.ok && response.status < 400) {
-          response.json().then((res) => {
-
-            var errors = res?.errors;
-            var success = res?.success;
-
-            setloading(false)
-
-
-            fetchPosts()
-
-            // setaddTask({ ...addTask, loading: false, errors: errors, success: success })
-
-            // setTimeout(() => {
-            // 	setaddTask({ ...addTask, title: "", success: null, errors: null })
-
-            // }, 3000);
-          });
-        }
-      })
-      .catch((_error) => {
-        //this.saveAsStatus = 'error';
-        // handle the error
-      });
-
-  }
-
-
-
-  function email_export() {
-    // const token = localStorage.getItem("token");
-
-    if (!token) {
-      throw new Error("No token found");
-    }
-
-    setloading(true);
-
-
-    var postData = {
-      task_id: id,
-      queryPrams: queryPrams,
-    };
-    postData = JSON.stringify(postData);
-
-    fetch(appData.serverUrl + "wp-json/email-validation/v2/email_export", {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: postData,
-    })
-      .then((response) => {
-
-        if (!response.ok) {
-          throw new Error('Token validation failed');
-        }
-
-        if (response.ok && response.status < 400) {
-          response.json().then((res) => {
-
-
-            var success = res?.success;
-            var file = res?.file;
-
-            if (success) {
-              window.location.href = file;
-
-            }
-
-
-            // var total = res?.total;
-            // var max_pages = res?.max_pages;
-
-            // settasksEntries({ posts: posts, total: total, maxPages: max_pages })
-            setloading(false);
-
-            fetchPosts()
-            setTimeout(() => {
-            }, 500);
-          });
-        }
-      })
-      .catch((_error) => {
-        //this.saveAsStatus = 'error';
-        // handle the error
-      });
-
-  }
-
-  // useEffect(() => {
-  // 	fetchPosts();
-  // }, []);
-
-  useEffect(() => {
-    fetchPosts();
-  }, [id]);
-
-
-  var columns = {
-    check: { label: "Check" },
-    // id: { label: "ID" },
-    email: { label: "Email" },
-    status: { label: "Status" },
-    result: { label: "Result" },
-    datetime: { label: "Datetime" },
-  }
-
-  useEffect(() => {
-
-    fetchPosts();
-  }, [queryPrams]);
-
-  function onChangeQueryPrams(args) {
-
-    if (args) {
-      setqueryPrams({ ...queryPrams, ...args })
-      //fetchPosts();
-    }
-
-  }
-
-  function onSelectRows(rows) {
-
-    console.log(rows);
-    setselectedRows(rows)
-  }
-
-
-
-
-
-  return (
+import EntriesTable from "../components/EntriesTable";
+import Layout from "../components/Layout";
+import Popover from "../components/Popover";
+import Spinner from "../components/Spinner";
+
+function TaskDetail({ user }) {
+	const { id } = useParams();
+
+	const { token } = useContext(AuthContext);
+	var [appData, setappData] = useState(window.appData);
+	var [queryPrams, setqueryPrams] = useState({
+		keyword: "",
+		page: 1,
+		order: "DESC",
+		limit: 10,
+		first_date: "",
+		last_date: "",
+	});
+	var [addEntries, setaddEntries] = useState({
+		emails: "",
+		edit: false,
+		loading: false,
+		success: false,
+		errors: false,
+	});
+
+	var [showExport, setshowExport] = useState(false);
+
+	var [tasksEntries, settasksEntries] = useState(null);
+	console.log(tasksEntries);
+	var [loading, setloading] = useState(false);
+	var [selectedRows, setselectedRows] = useState([]);
+	const [showSetting, setshowSetting] = useState(false);
+
+	function fetchPosts() {
+		// const token = localStorage.getItem("token");
+
+		if (!token) {
+			throw new Error("No token found");
+		}
+		var postData = {
+			task_id: id,
+			limit: queryPrams.limit,
+			page: queryPrams.page,
+			order: queryPrams.order,
+			status: queryPrams.status,
+			safeToSend: queryPrams.safeToSend,
+			isSyntaxValid: queryPrams.isSyntaxValid,
+			isValidEmail: queryPrams.isValidEmail,
+			hasValidDomain: queryPrams.hasValidDomain,
+			isDisposableDomain: queryPrams.isDisposableDomain,
+			isInboxFull: queryPrams.isInboxFull,
+			isFreeEmailProvider: queryPrams.isFreeEmailProvider,
+			isGibberishEmail: queryPrams.isGibberishEmail,
+			checkDomainReputation: queryPrams.checkDomainReputation,
+			isSMTPBlacklisted: queryPrams.isSMTPBlacklisted,
+			isRoleBasedEmail: queryPrams.isRoleBasedEmail,
+			isCatchAllDomain: queryPrams.isCatchAllDomain,
+			verifySMTP: queryPrams.verifySMTP,
+		};
+		postData = JSON.stringify(postData);
+
+		setloading(true);
+
+		fetch(appData.serverUrl + "wp-json/email-validation/v2/get_tasks_entries", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+			body: postData,
+		})
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error("Token validation failed");
+				}
+				if (response.status == 429) {
+					setloading(false);
+
+					throw new Error("Too Many Requests");
+				}
+
+				if (response.ok && response.status < 400) {
+					response.json().then((res) => {
+						var posts = res?.posts;
+						var total = res?.total;
+						var max_pages = res?.max_pages;
+
+						settasksEntries({
+							posts: posts,
+							total: total,
+							maxPages: max_pages,
+						});
+
+						setloading(false);
+
+						setTimeout(() => {}, 500);
+					});
+				}
+			})
+			.catch((_error) => {
+				//this.saveAsStatus = 'error';
+				// handle the error
+			});
+	}
+
+	function addTaskEntries() {
+		// const token = localStorage.getItem("token");
+
+		if (!token) {
+			throw new Error("No token found");
+		}
+
+		setloading(true);
+
+		var postData = {
+			task_id: id,
+			emails: addEntries.emails,
+		};
+		postData = JSON.stringify(postData);
+
+		fetch(appData.serverUrl + "wp-json/email-validation/v2/add_tasks_entries", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+			body: postData,
+		})
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error("Token validation failed");
+				}
+
+				if (response.ok && response.status < 400) {
+					response.json().then((res) => {
+						// var posts = res?.posts;
+						// var total = res?.total;
+						// var max_pages = res?.max_pages;
+
+						// settasksEntries({ posts: posts, total: total, maxPages: max_pages })
+						setloading(false);
+
+						fetchPosts();
+						setTimeout(() => {
+							setaddEntries({
+								...addEntries,
+								emails: "",
+								edit: !addEntries.edit,
+							});
+						}, 500);
+					});
+				}
+			})
+			.catch((_error) => {
+				//this.saveAsStatus = 'error';
+				// handle the error
+			});
+	}
+
+	function delete_tasks_entries() {
+		// const token = localStorage.getItem("token");
+
+		if (!token) {
+			throw new Error("No token found");
+		}
+
+		if (queryPrams.page < 0) {
+			return;
+		}
+
+		var postData = {
+			ids: selectedRows,
+		};
+		postData = JSON.stringify(postData);
+		setloading(true);
+		fetch(
+			appData.serverUrl + "wp-json/email-validation/v2/delete_tasks_entries",
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+				body: postData,
+			}
+		)
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error("Token validation failed");
+				}
+
+				if (response.ok && response.status < 400) {
+					response.json().then((res) => {
+						var errors = res?.errors;
+						var success = res?.success;
+
+						setloading(false);
+
+						fetchPosts();
+
+						// setaddTask({ ...addTask, loading: false, errors: errors, success: success })
+
+						// setTimeout(() => {
+						// 	setaddTask({ ...addTask, title: "", success: null, errors: null })
+
+						// }, 3000);
+					});
+				}
+			})
+			.catch((_error) => {
+				//this.saveAsStatus = 'error';
+				// handle the error
+			});
+	}
+
+	function email_export() {
+		// const token = localStorage.getItem("token");
+
+		if (!token) {
+			throw new Error("No token found");
+		}
+
+		setloading(true);
+
+		var postData = {
+			task_id: id,
+			queryPrams: queryPrams,
+		};
+		postData = JSON.stringify(postData);
+
+		fetch(appData.serverUrl + "wp-json/email-validation/v2/email_export", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+			body: postData,
+		})
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error("Token validation failed");
+				}
+
+				if (response.ok && response.status < 400) {
+					response.json().then((res) => {
+						var success = res?.success;
+						var file = res?.file;
+
+						if (success) {
+							window.location.href = file;
+						}
+
+						// var total = res?.total;
+						// var max_pages = res?.max_pages;
+
+						// settasksEntries({ posts: posts, total: total, maxPages: max_pages })
+						setloading(false);
+
+						fetchPosts();
+						setTimeout(() => {}, 500);
+					});
+				}
+			})
+			.catch((_error) => {
+				//this.saveAsStatus = 'error';
+				// handle the error
+			});
+	}
+
+	// useEffect(() => {
+	// 	fetchPosts();
+	// }, []);
+
+	useEffect(() => {
+		fetchPosts();
+	}, [id]);
+
+	var columns = {
+		check: { label: "Check" },
+		// id: { label: "ID" },
+		email: { label: "Email" },
+		status: { label: "Progress" },
+		result: { label: "Result" },
+		// datetime: { label: "Datetime" },
+	};
+
+	useEffect(() => {
+		fetchPosts();
+	}, [queryPrams]);
+
+	function onChangeQueryPrams(args) {
+		if (args) {
+			setqueryPrams({ ...queryPrams, ...args });
+			//fetchPosts();
+		}
+	}
+
+	function onSelectRows(rows) {
+		console.log(rows);
+		setselectedRows(rows);
+	}
+
+	return (
 		<Layout user={user}>
 			<div className="flex-1">
 				{/* {JSON.stringify(tasksEntries)} */}
 
-				<div className="flex justify-between p-4 ">
+				<div className="flex justify-between flex-wrap gap-4 p-4 ">
 					<div className="flex gap-3 items-center">
 						<div className="relative">
-              <div
-                className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer"
-                onClick={(ev) => {
-                  setaddEntries({ ...addEntries, edit: !addEntries.edit });
-                }}>
-                Add Emails
-              </div>
-              {addEntries.edit && (
-                <Dropdown className="top-full mt-2 bg-white px-4 py-3 rounded-sm">
-                  <textarea
-                    name=""
-                    id=""
-                    className="p-3 py-[5px] bg-gray-400 border rounded-sm border-solid w-[400px]"
-                    value={addEntries?.emails}
-                    onChange={(ev) => {
-                      setaddEntries({ ...addEntries, emails: ev.target.value });
-                    }}></textarea>
-                  <div
-                    onClick={(ev) => {
-                      addTaskEntries();
-                    }}
-                    className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
-                    Submit
-                  </div>
-                </Dropdown>
-              )}
-            </div>
+							<button
+								className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer"
+								onClick={(ev) => {
+									setaddEntries({ ...addEntries, edit: !addEntries.edit });
+								}}>
+								Add Emails
+							</button>
+							{addEntries.edit && (
+								<Popover className="top-full mt-2 bg-white px-4 py-3 rounded-sm shadow-lg border border-gray-200">
+									<textarea
+										name=""
+										id=""
+										placeholder="hello1@mail.com
+hello1@mail.com
+Each Mail Per Line.
+"
+										className="p-3  h-[150px] py-[5px] bg-gray-400 border rounded-sm border-solid w-[400px]"
+										value={addEntries?.emails}
+										onChange={(ev) => {
+											setaddEntries({ ...addEntries, emails: ev.target.value });
+										}}></textarea>
+									<button
+										onClick={(ev) => {
+											addTaskEntries();
+										}}
+										className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
+										Submit
+									</button>
+								</Popover>
+							)}
+						</div>
 
 						{addEntries.loading && (
 							<>
@@ -370,7 +354,7 @@ const { token } = useContext(AuthContext);
 						{addEntries.success && <>Task Added.</>}
 					</div>
 
-					<div className="gap-2 flex items-center">
+					<div className="gap-2 flex items-center flex-wrap">
 						<select
 							name=""
 							id=""
@@ -458,22 +442,26 @@ const { token } = useContext(AuthContext);
 
 					<div className="gap-2 flex items-center">
 						<div className="relative">
-							<div
+							<button
 								className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer"
 								onClick={() => {
-                  setshowExport(!showExport);
+									setshowExport(!showExport);
 								}}>
 								Export
-							</div>
-							<div className={`absolute top-full right-0 bg-white mt-2 px-4 py-3 ${showExport ? "" : "hidden"}`}>
-								<button className="text-nowrap cursor-pointer px-3 py-[5px] w-full rounded-sm bg-gray-600 hover:bg-gray-500 text-white mt-2"
+							</button>
+							<div
+								className={`absolute top-full right-0 bg-white mt-2 px-4 py-3 ${
+									showExport ? "" : "hidden"
+								}`}>
+								<button
+									className="text-nowrap cursor-pointer px-3 py-[5px] w-full rounded-sm bg-gray-600 hover:bg-gray-500 text-white mt-2"
 									onClick={() => {
 										email_export();
 									}}>
 									Export All
 								</button>
 								<button
-                className="text-nowrap cursor-pointer px-3 py-[5px] w-full rounded-sm bg-gray-600 hover:bg-gray-500 text-white mt-2"
+									className="text-nowrap cursor-pointer px-3 py-[5px] w-full rounded-sm bg-gray-600 hover:bg-gray-500 text-white mt-2"
 									onClick={() => {
 										email_export();
 									}}>
@@ -482,13 +470,13 @@ const { token } = useContext(AuthContext);
 							</div>
 						</div>
 
-						<div
+						<button
 							onClick={(ev) => {
 								fetchPosts();
 							}}
 							className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
 							Refresh
-						</div>
+						</button>
 						{selectedRows.length > 0 && (
 							<div
 								className="px-3 py-[5px] rounded-sm bg-red-600 hover:bg-red-500 text-white cursor-pointer"
@@ -498,13 +486,29 @@ const { token } = useContext(AuthContext);
 								Delete Tasks
 							</div>
 						)}
+						<button
+							className=" relative px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer"
+							onClick={() => {
+								setshowSetting(!showSetting);
+							}}>
+							<IconSettings />
+							{showSetting && (
+								<Popover className="top-full right-0 mt-2 bg-white px-4 py-3 rounded-sm border border-gray-200 text-gray-700 text-left">
+									Total Credits: 0 <br />
+									Used by Task: <br />
+									Used by API: <br />
+									Total Used: <br />
+									Reminaing Credits: NaN
+								</Popover>
+							)}
+						</button>
 					</div>
 				</div>
 
 				<EntriesTable
 					queryPrams={queryPrams}
 					columns={columns}
-					entries={data}
+					entries={tasksEntries}
 					itemPath={""}
 					onChange={onChangeQueryPrams}
 					loading={loading}
@@ -514,8 +518,6 @@ const { token } = useContext(AuthContext);
 			</div>
 		</Layout>
 	);
-
-
 }
 
 export default TaskDetail;
