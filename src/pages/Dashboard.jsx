@@ -7,6 +7,7 @@ import UserProfileEdit from "../components/UserProfileEdit";
 import Login from '../components/Login';
 import Register from '../components/Register';
 import { useState, useEffect } from "react";
+import ChartComponent from "../components/ChartComponent";
 
 const Dashboard = () => {
   const { userData, token } = useContext(AuthContext);
@@ -18,7 +19,7 @@ const Dashboard = () => {
   //   setappData(window.appData)
   // }, [window.appData]);
 
-  
+
 
   return (
     <Layout >
@@ -32,6 +33,8 @@ const Dashboard = () => {
               <UserProfileEdit />
             </div>
           )}
+
+          <ChartComponent />
 
 
         </div>
