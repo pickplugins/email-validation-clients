@@ -33,6 +33,7 @@ function App(appData) {
 
 
 
+  console.log(import.meta.env);
 
 
 
