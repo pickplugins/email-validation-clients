@@ -1,5 +1,17 @@
+import {
+	IconBasketCheck,
+	IconBrandCitymapper,
+	IconCards,
+	IconCloudDataConnection,
+	IconDashboard,
+	IconDatabaseEdit,
+	IconLayoutSidebarLeftCollapse,
+	IconLayoutSidebarRightCollapse,
+	IconList,
+	IconRotateRectangle,
+} from "@tabler/icons-react";
+import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { IconDashboard, IconList, IconBasketCheck, IconRotateRectangle, IconCards, IconDatabaseEdit, IconCloudDataConnection, IconBrandCitymapper } from "@tabler/icons-react";
 
 const Sidebar = ({ user }) => {
 	// const { user, loading } = useContext(AuthContext);
@@ -10,24 +22,35 @@ const Sidebar = ({ user }) => {
 
 	const location = useLocation();
 	var currentLocation = location.pathname;
+	console.log(currentLocation);
 
 	var navs = [
 		// { label: "Products", value: "products" },
 		{ label: "Dashboard", value: "dashboard", icon: <IconDashboard /> },
 		{ label: "Tasks", value: "tasks", icon: <IconList /> },
 		{ label: "Orders", value: "orders", icon: <IconBasketCheck /> },
-		{ label: "Subscriptions", value: "subscriptions", icon: <IconRotateRectangle /> },
+		{
+			label: "Subscriptions",
+			value: "subscriptions",
+			icon: <IconRotateRectangle />,
+		},
 		{ label: "Credits", value: "credits", icon: <IconCards /> },
 		{ label: "CreditsLogs", value: "creditslogs", icon: <IconDatabaseEdit /> },
 		// { label: "Licenses", value: "licenses", icon: ""  },
 		{ label: "API Keys", value: "apiKeys", icon: <IconCloudDataConnection /> },
-		{ label: "Validation Requests", value: "ValidationRequests", icon: <IconBrandCitymapper /> },
+		{
+			label: "Validation Requests",
+			value: "ValidationRequests",
+			icon: <IconBrandCitymapper />,
+		},
 	];
 
+	const [toggle, settoggle] = useState(false);
+
 	return (
-		<aside className="min-w-[300px] bg-gray-200 text-gray-800 p-0">
+		<aside className={`max-w-[300px]  border-r border-gray-800/50 bg-gray-200 text-gray-800 p-0 ${!toggle && "w-[300px]"}`}>
 			<div className="bg-blue-700 p-3 text-white h-[70px]">
-				<Link to={`${appData.appUrl}`} className="flex gap-3 items-center">
+				<Link to={`/`} className="flex gap-3 items-center">
 					<div className="w-[30px]">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
@@ -39,7 +62,7 @@ const Sidebar = ({ user }) => {
 							<circle cx="18" cy="16" r="1" />
 						</svg>
 					</div>
-					<div className="text-3xl">IsSpammy</div>
+					<div className={toggle ? "hidden" : "hidden md:block text-3xl"}>IsSpammy</div>
 				</Link>
 			</div>
 
@@ -52,15 +75,26 @@ const Sidebar = ({ user }) => {
 									cla
 									key={index}
 									to={`/${nav.value}`}
-									className={`${currentLocation == "/" + nav.value
-										? "bg-gray-200"
-										: "bg-white"
-										} hover:bg-gray-200 text-blue-500 border-0 border-b border-solid border-gray-300 cursor-pointer px-4 py-2 flex items-center gap-2`}>
-									<span className="">{nav.icon}</span> <span>{nav.label}</span>
+									className={`${
+										currentLocation == "/" + nav.value
+											? "bg-gray-200"
+											: "bg-white"
+									} hover:bg-gray-200 text-blue-500 border-0 border-b border-solid border-gray-300 cursor-pointer px-4 py-2 flex items-center gap-2`}>
+									<span className="">{nav.icon}</span>{" "}
+									<span className={`${toggle ? "hidden" : "hidden md:block"}`}>
+										{nav.label}
+									</span>
 								</Link>
 							);
 						})}
 					</div>
+					<button onClick={() => settoggle(!toggle)} className="px-4 py-2 hidden md:block ">
+						{toggle ? (
+							<IconLayoutSidebarRightCollapse />
+						) : (
+							<IconLayoutSidebarLeftCollapse />
+						)}
+					</button>
 				</>
 			) : (
 				<div className="flex flex-col">

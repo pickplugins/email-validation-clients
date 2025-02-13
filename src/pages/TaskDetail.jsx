@@ -1,33 +1,42 @@
+import { IconSettings } from "@tabler/icons-react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Layout from "../components/Layout";
-import { useState, useEffect, useContext } from "react";
-import EntriesTable from "../components/EntriesTable";
-import Spinner from "../components/Spinner";
 import { AuthContext } from "../components/AuthContext";
-import Dropdown from "../components/Dropdown";
+import EntriesTable from "../components/EntriesTable";
+import Layout from "../components/Layout";
+import Popover from "../components/Popover";
+import Spinner from "../components/Spinner";
 
 function TaskDetail({ user }) {
   const { id } = useParams();
 
   const { token } = useContext(AuthContext);
   var [appData, setappData] = useState(window.appData);
-  var [queryPrams, setqueryPrams] = useState({ keyword: "", page: 1, order: "DESC", limit: 10, first_date: "", last_date: "", });
-  var [addEntries, setaddEntries] = useState({ emails: "", edit: false, loading: false, success: false, errors: false });
+  var [queryPrams, setqueryPrams] = useState({
+    keyword: "",
+    page: 1,
+    order: "DESC",
+    limit: 10,
+    first_date: "",
+    last_date: "",
+  });
+  var [addEntries, setaddEntries] = useState({
+    emails: "",
+    edit: false,
+    loading: false,
+    success: false,
+    errors: false,
+  });
 
   var [showExport, setshowExport] = useState(false);
 
   var [tasksEntries, settasksEntries] = useState(null);
-  console.log(tasksEntries)
+  console.log(tasksEntries);
   var [loading, setloading] = useState(false);
   var [selectedRows, setselectedRows] = useState([]);
-
-
-
-
+  const [showSetting, setshowSetting] = useState(false);
 
   function fetchPosts() {
-
-
     // const token = localStorage.getItem("token");
 
     if (!token) {
@@ -51,50 +60,45 @@ function TaskDetail({ user }) {
       isSMTPBlacklisted: queryPrams.isSMTPBlacklisted,
       isRoleBasedEmail: queryPrams.isRoleBasedEmail,
       isCatchAllDomain: queryPrams.isCatchAllDomain,
-      verifySMTP: queryPrams.verifySMTP
-
-
+      verifySMTP: queryPrams.verifySMTP,
     };
     postData = JSON.stringify(postData);
 
     setloading(true);
 
-
     fetch(appData.serverUrl + "wp-json/email-validation/v2/get_tasks_entries", {
       method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: postData,
     })
       .then((response) => {
-
-
         if (!response.ok) {
-          throw new Error('Token validation failed');
+          throw new Error("Token validation failed");
         }
         if (response.status == 429) {
           setloading(false);
 
-          throw new Error('Too Many Requests');
+          throw new Error("Too Many Requests");
         }
 
         if (response.ok && response.status < 400) {
           response.json().then((res) => {
-
-
             var posts = res?.posts;
             var total = res?.total;
             var max_pages = res?.max_pages;
 
-            settasksEntries({ posts: posts, total: total, maxPages: max_pages })
+            settasksEntries({
+              posts: posts,
+              total: total,
+              maxPages: max_pages,
+            });
 
             setloading(false);
 
-
-            setTimeout(() => {
-            }, 500);
+            setTimeout(() => { }, 500);
           });
         }
       })
@@ -102,7 +106,6 @@ function TaskDetail({ user }) {
         //this.saveAsStatus = 'error';
         // handle the error
       });
-
   }
 
   function addTaskEntries() {
@@ -114,7 +117,6 @@ function TaskDetail({ user }) {
 
     setloading(true);
 
-
     var postData = {
       task_id: id,
       emails: addEntries.emails,
@@ -124,21 +126,18 @@ function TaskDetail({ user }) {
     fetch(appData.serverUrl + "wp-json/email-validation/v2/add_tasks_entries", {
       method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: postData,
     })
       .then((response) => {
-
         if (!response.ok) {
-          throw new Error('Token validation failed');
+          throw new Error("Token validation failed");
         }
 
         if (response.ok && response.status < 400) {
           response.json().then((res) => {
-
-
             // var posts = res?.posts;
             // var total = res?.total;
             // var max_pages = res?.max_pages;
@@ -146,10 +145,13 @@ function TaskDetail({ user }) {
             // settasksEntries({ posts: posts, total: total, maxPages: max_pages })
             setloading(false);
 
-            fetchPosts()
+            fetchPosts();
             setTimeout(() => {
-              setaddEntries({ ...addEntries, emails: "", edit: !addEntries.edit });
-
+              setaddEntries({
+                ...addEntries,
+                emails: "",
+                edit: !addEntries.edit,
+              });
             }, 500);
           });
         }
@@ -158,17 +160,14 @@ function TaskDetail({ user }) {
         //this.saveAsStatus = 'error';
         // handle the error
       });
-
   }
 
   function delete_tasks_entries() {
-
     // const token = localStorage.getItem("token");
 
     if (!token) {
       throw new Error("No token found");
     }
-
 
     if (queryPrams.page < 0) {
       return;
@@ -178,31 +177,31 @@ function TaskDetail({ user }) {
       ids: selectedRows,
     };
     postData = JSON.stringify(postData);
-    setloading(true)
-    fetch(appData.serverUrl + "wp-json/email-validation/v2/delete_tasks_entries", {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: postData,
-    })
+    setloading(true);
+    fetch(
+      appData.serverUrl + "wp-json/email-validation/v2/delete_tasks_entries",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: postData,
+      }
+    )
       .then((response) => {
-
         if (!response.ok) {
-          throw new Error('Token validation failed');
+          throw new Error("Token validation failed");
         }
 
         if (response.ok && response.status < 400) {
           response.json().then((res) => {
-
             var errors = res?.errors;
             var success = res?.success;
 
-            setloading(false)
+            setloading(false);
 
-
-            fetchPosts()
+            fetchPosts();
 
             // setaddTask({ ...addTask, loading: false, errors: errors, success: success })
 
@@ -217,10 +216,7 @@ function TaskDetail({ user }) {
         //this.saveAsStatus = 'error';
         // handle the error
       });
-
   }
-
-
 
   function email_export() {
     // const token = localStorage.getItem("token");
@@ -231,7 +227,6 @@ function TaskDetail({ user }) {
 
     setloading(true);
 
-
     var postData = {
       task_id: id,
       queryPrams: queryPrams,
@@ -241,29 +236,24 @@ function TaskDetail({ user }) {
     fetch(appData.serverUrl + "wp-json/email-validation/v2/email_export", {
       method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: postData,
     })
       .then((response) => {
-
         if (!response.ok) {
-          throw new Error('Token validation failed');
+          throw new Error("Token validation failed");
         }
 
         if (response.ok && response.status < 400) {
           response.json().then((res) => {
-
-
             var success = res?.success;
             var file = res?.file;
 
             if (success) {
               window.location.href = file;
-
             }
-
 
             // var total = res?.total;
             // var max_pages = res?.max_pages;
@@ -271,9 +261,8 @@ function TaskDetail({ user }) {
             // settasksEntries({ posts: posts, total: total, maxPages: max_pages })
             setloading(false);
 
-            fetchPosts()
-            setTimeout(() => {
-            }, 500);
+            fetchPosts();
+            setTimeout(() => { }, 500);
           });
         }
       })
@@ -281,7 +270,6 @@ function TaskDetail({ user }) {
         //this.saveAsStatus = 'error';
         // handle the error
       });
-
   }
 
   // useEffect(() => {
@@ -292,7 +280,6 @@ function TaskDetail({ user }) {
     fetchPosts();
   }, [id]);
 
-
   var columns = {
     check: { label: "Check" },
     // id: { label: "ID" },
@@ -300,49 +287,41 @@ function TaskDetail({ user }) {
     status: { label: "Progress" },
     result: { label: "Result" },
     // datetime: { label: "Datetime" },
-  }
+  };
 
   useEffect(() => {
-
     fetchPosts();
   }, [queryPrams]);
 
   function onChangeQueryPrams(args) {
-
     if (args) {
-      setqueryPrams({ ...queryPrams, ...args })
+      setqueryPrams({ ...queryPrams, ...args });
       //fetchPosts();
     }
-
   }
 
   function onSelectRows(rows) {
-
     console.log(rows);
-    setselectedRows(rows)
+    setselectedRows(rows);
   }
-
-
-
-
 
   return (
     <Layout user={user}>
       <div className="flex-1">
         {/* {JSON.stringify(tasksEntries)} */}
 
-        <div className="flex justify-between p-4 ">
+        <div className="flex justify-between flex-wrap gap-4 p-4 ">
           <div className="flex gap-3 items-center">
             <div className="relative">
-              <div
+              <button
                 className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer"
                 onClick={(ev) => {
                   setaddEntries({ ...addEntries, edit: !addEntries.edit });
                 }}>
                 Add Emails
-              </div>
+              </button>
               {addEntries.edit && (
-                <Dropdown className="top-full mt-2 bg-white px-4 py-3 rounded-sm shadow-lg border border-gray-200">
+                <Popover className="top-full mt-2 bg-white px-4 py-3 rounded-sm shadow-lg border border-gray-200">
                   <textarea
                     name=""
                     id=""
@@ -355,14 +334,14 @@ Each Mail Per Line.
                     onChange={(ev) => {
                       setaddEntries({ ...addEntries, emails: ev.target.value });
                     }}></textarea>
-                  <div
+                  <button
                     onClick={(ev) => {
                       addTaskEntries();
                     }}
                     className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
                     Submit
-                  </div>
-                </Dropdown>
+                  </button>
+                </Popover>
               )}
             </div>
 
@@ -375,7 +354,7 @@ Each Mail Per Line.
             {addEntries.success && <>Task Added.</>}
           </div>
 
-          <div className="gap-2 flex items-center">
+          <div className="gap-2 flex items-center flex-wrap">
             <select
               name=""
               id=""
@@ -463,15 +442,18 @@ Each Mail Per Line.
 
           <div className="gap-2 flex items-center">
             <div className="relative">
-              <div
+              <button
                 className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer"
                 onClick={() => {
                   setshowExport(!showExport);
                 }}>
                 Export
-              </div>
-              <div className={`absolute top-full right-0 bg-white mt-2 px-4 py-3 ${showExport ? "" : "hidden"}`}>
-                <button className="text-nowrap cursor-pointer px-3 py-[5px] w-full rounded-sm bg-gray-600 hover:bg-gray-500 text-white mt-2"
+              </button>
+              <div
+                className={`absolute top-full right-0 bg-white mt-2 px-4 py-3 ${showExport ? "" : "hidden"
+                  }`}>
+                <button
+                  className="text-nowrap cursor-pointer px-3 py-[5px] w-full rounded-sm bg-gray-600 hover:bg-gray-500 text-white mt-2"
                   onClick={() => {
                     email_export();
                   }}>
@@ -487,13 +469,13 @@ Each Mail Per Line.
               </div>
             </div>
 
-            <div
+            <button
               onClick={(ev) => {
                 fetchPosts();
               }}
               className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
               Refresh
-            </div>
+            </button>
             {selectedRows.length > 0 && (
               <div
                 className="px-3 py-[5px] rounded-sm bg-red-600 hover:bg-red-500 text-white cursor-pointer"
@@ -503,10 +485,24 @@ Each Mail Per Line.
                 Delete Tasks
               </div>
             )}
+            <button
+              className=" relative px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer"
+              onClick={() => {
+                setshowSetting(!showSetting);
+              }}>
+              <IconSettings />
+              {showSetting && (
+                <Popover className="top-full right-0 mt-2 bg-white px-4 py-3 rounded-sm border border-gray-200 text-gray-700 text-left">
+                  Total Credits: 0 <br />
+                  Used by Task: <br />
+                  Used by API: <br />
+                  Total Used: <br />
+                  Reminaing Credits: NaN
+                </Popover>
+              )}
+            </button>
           </div>
         </div>
-
-
 
         <EntriesTable
           queryPrams={queryPrams}
@@ -521,8 +517,6 @@ Each Mail Per Line.
       </div>
     </Layout>
   );
-
-
 }
 
 export default TaskDetail;

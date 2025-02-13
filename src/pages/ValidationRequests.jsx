@@ -5,7 +5,7 @@ import Spinner from "../components/Spinner";
 
 
 
-function ValidationRequests({ user }) {
+function ValidationRequests() {
 
 	var [appData, setappData] = useState(window.appData);
 
@@ -212,7 +212,7 @@ function ValidationRequests({ user }) {
 	}
 
 	return (
-		<Layout user={user}>
+		<Layout>
 			<div>
 
 				<EntriesTable queryPrams={queryPrams} columns={columns} entries={requestData} itemPath={"orders"} onChange={onChangeQueryPrams} loading={loading} />
@@ -231,11 +231,11 @@ function ValidationRequests({ user }) {
 							value={validateMailPrams.email} onChange={ev => {
 								setvalidateMailPrams({ ...validateMailPrams, email: ev.target.value })
 							}} />
-						<div
+						<button
 							className="p-3 py-[5px] bg-gray-600 text-white cursor-pointer rounded-sm"
 							onClick={ev => {
 								validateEmail()
-							}}>Validate</div>
+							}}>Validate</button>
 					</div>
 
 					{validateMailPrams.loading && (
