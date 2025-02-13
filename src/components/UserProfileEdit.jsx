@@ -117,12 +117,12 @@ console.log("Password Changed");
 	return (
 		<div className="">
 			<div className="">
-				<div className="grid grid-cols-12 gap-5">
-					<div className="col-span-8 bg-white rounded-sm">
+				<div className="grid md:grid-cols-12 gap-5">
+					<div className="md:col-span-8 bg-white rounded-sm">
 						<form action="" className="p-5">
 							<h3 className="my-5 text-2xl">General Information</h3>
 
-							<div className="grid grid-cols-2 gap-8">
+							<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 								<div className="">
 									<label htmlFor="" className="block">
 										First Name
@@ -186,7 +186,7 @@ console.log("Password Changed");
 
 							<h3 className="my-5 text-2xl">Address</h3>
 
-							<div className="grid grid-cols-2 gap-8">
+							<div className="grid md:grid-cols-2 gap-8">
 								<div className="">
 									<label htmlFor="" className="block">
 										Address 1
@@ -274,7 +274,7 @@ console.log("Password Changed");
 							</div>
 						</form>
 					</div>
-					<div className="col-span-4 bg-white rounded-sm p-5">
+					<div className="md:col-span-4 bg-white rounded-sm p-5">
 						<h3 className="my-5 text-2xl">Change Password</h3>
 						<form className="grid grid-cols-1 gap-8">
 							<div>

@@ -5,14 +5,12 @@ import { AuthContext } from "./AuthContext";
 const UserAccount = () => {
 	const navigate = useNavigate();
 
-	const { userData } = useContext(AuthContext);
+	const { userData, handleLogout } = useContext(AuthContext);
+	console.log(userData)
 
 	const token = localStorage.getItem("token");
 
-	const handleLogout = () => {
-		localStorage.removeItem("token");
-		navigate("/");
-	};
+	
 
 	var [modal, setmodal] = useState(false);
 	const [creditShow, setCreditShow] = useState(false);

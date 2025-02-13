@@ -20,7 +20,12 @@ const AuthProvider = ({ children }) => {
 
 
 	var appData = window.appData;
-
+const handleLogout = () => {
+	localStorage.removeItem("token");
+	setToken(null);
+	setuserData(null);
+	navigate("/");
+};
 	function fetchUser() {
 		// const token = localStorage.getItem("token");
 
@@ -97,11 +102,11 @@ const AuthProvider = ({ children }) => {
 						setToken(res.token);
 
 						localStorage.setItem("token", res.token);
+						// fetchUser()
 						navigate("/orders");
 						setTimeout(() => { }, 500);
 					});
 				}
-				fetchUser()
 				setlogging(false);
 			})
 			.catch((_error) => {
@@ -113,11 +118,21 @@ const AuthProvider = ({ children }) => {
 
 
 	useEffect(() => {
-	}, []);
+		fetchUser();
+	}, [token]);
 
 	return (
 		<AuthContext.Provider
-			value={{ user, setUser, loading, handleLogin, logging, userData, token }}>
+			value={{
+				user,
+				setUser,
+				loading,
+				handleLogin,
+				logging,
+				userData,
+				token,
+				handleLogout,
+			}}>
 			{children}
 		</AuthContext.Provider>
 	);

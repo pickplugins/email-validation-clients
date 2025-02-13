@@ -13,7 +13,7 @@ var appData = {
 }
 
 window.appData = appData;
-
+console.log(import.meta.env.VITE_APP)
 ReactDOM.createRoot(document.getElementById("root")).render(
 	<BrowserRouter>
 		<App appData={appData} />
