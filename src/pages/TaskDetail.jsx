@@ -12,6 +12,8 @@ function TaskDetail({ user }) {
 
   const { token } = useContext(AuthContext);
   var [appData, setappData] = useState(window.appData);
+  var [currentObject, setcurrentObject] = useState(null);
+
   var [queryPrams, setqueryPrams] = useState({
     keyword: "",
     page: 1,
@@ -217,6 +219,120 @@ function TaskDetail({ user }) {
         // handle the error
       });
   }
+  function get_current_object() {
+    // const token = localStorage.getItem("token");
+
+    if (!token) {
+      throw new Error("No token found");
+    }
+
+    if (queryPrams.page < 0) {
+      return;
+    }
+
+    var postData = {
+      id: id,
+    };
+    postData = JSON.stringify(postData);
+    setloading(true);
+    fetch(
+      appData.serverUrl + "wp-json/email-validation/v2/get_task",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: postData,
+      }
+    )
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Token validation failed");
+        }
+
+        if (response.ok && response.status < 400) {
+          response.json().then((res) => {
+            var errors = res?.errors;
+            var success = res?.success;
+
+            console.log(res)
+
+            setloading(false);
+            setcurrentObject(res)
+            // fetchPosts();
+
+            // setaddTask({ ...addTask, loading: false, errors: errors, success: success })
+
+            // setTimeout(() => {
+            // 	setaddTask({ ...addTask, title: "", success: null, errors: null })
+
+            // }, 3000);
+          });
+        }
+      })
+      .catch((_error) => {
+        //this.saveAsStatus = 'error';
+        // handle the error
+      });
+  }
+  function update_current_object() {
+    // const token = localStorage.getItem("token");
+
+    if (!token) {
+      throw new Error("No token found");
+    }
+
+    if (queryPrams.page < 0) {
+      return;
+    }
+
+    var postData = {
+      id: id,
+    };
+    postData = JSON.stringify(postData);
+    setloading(true);
+    fetch(
+      appData.serverUrl + "wp-json/email-validation/v2/update_task",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: postData,
+      }
+    )
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Token validation failed");
+        }
+
+        if (response.ok && response.status < 400) {
+          response.json().then((res) => {
+            var errors = res?.errors;
+            var success = res?.success;
+
+            console.log(res)
+
+            setloading(false);
+            //setcurrentObject(res)
+            // fetchPosts();
+
+            // setaddTask({ ...addTask, loading: false, errors: errors, success: success })
+
+            // setTimeout(() => {
+            // 	setaddTask({ ...addTask, title: "", success: null, errors: null })
+
+            // }, 3000);
+          });
+        }
+      })
+      .catch((_error) => {
+        //this.saveAsStatus = 'error';
+        // handle the error
+      });
+  }
 
   function email_export() {
     // const token = localStorage.getItem("token");
@@ -292,6 +408,10 @@ function TaskDetail({ user }) {
   useEffect(() => {
     fetchPosts();
   }, [queryPrams]);
+  useEffect(() => {
+    get_current_object();
+
+  }, []);
 
   function onChangeQueryPrams(args) {
     if (args) {
@@ -487,17 +607,14 @@ Each Mail Per Line.
             )}
             <button
               className=" relative px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer"
-              onClick={() => {
+            >
+              <div onClick={() => {
                 setshowSetting(!showSetting);
-              }}>
-              <IconSettings />
+              }}><IconSettings /></div>
+
               {showSetting && (
                 <Popover className="top-full right-0 mt-2 bg-white px-4 py-3 rounded-sm border border-gray-200 text-gray-700 text-left">
-                  Total Credits: 0 <br />
-                  Used by Task: <br />
-                  Used by API: <br />
-                  Total Used: <br />
-                  Reminaing Credits: NaN
+                  showSetting
                 </Popover>
               )}
             </button>

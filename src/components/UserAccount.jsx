@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "./AuthContext";
+import { Link, useLocation } from "react-router-dom";
 
 const UserAccount = () => {
 	const navigate = useNavigate();
@@ -10,7 +11,7 @@ const UserAccount = () => {
 
 	const token = localStorage.getItem("token");
 
-	
+
 
 	var [modal, setmodal] = useState(false);
 	const [creditShow, setCreditShow] = useState(false);
@@ -68,13 +69,19 @@ const UserAccount = () => {
 									{modal && (
 										<div className="absolute z-[99] shadow-lg border border-gray-200 right-0 top-[100%] bg-white p-3 w-[300px] rounded-sm">
 											<div className="mb-3">Welcome! {userData?.name}</div>
-											<div
-												className="p-2 inline hover:bg-gray-400 rounded-sm cursor-pointer px-4 bg-gray-600 text-white"
-												onClick={(ev) => {
-													handleLogout();
-												}}>
-												Log-out
+
+											<div className="flex gap-3 items-center">
+												<Link to={`/editprofile`} className="p-2 inline hover:bg-blue-400 rounded-sm cursor-pointer px-4 bg-blue-600 text-white">Edit Profile</Link>
+												<div
+													className="p-2 inline hover:bg-blue-400 rounded-sm cursor-pointer px-4 bg-blue-600 text-white"
+													onClick={(ev) => {
+														handleLogout();
+													}}>
+													Log-out
+												</div>
 											</div>
+
+
 										</div>
 									)}
 								</div>
