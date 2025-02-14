@@ -7,32 +7,7 @@ import UserProfileEdit from "../components/UserProfileEdit";
 import Login from '../components/Login';
 import Register from '../components/Register';
 import { useState, useEffect } from "react";
-// import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-// import { Doughnut } from "react-chartjs-2";
-
-// import {
-//   Chart as ChartJS,
-//   CategoryScale,
-//   LinearScale,
-//   PointElement,
-//   LineElement,
-//   Title,
-//   Tooltip,
-//   Legend,
-// } from 'chart.js';
-// import { Line } from 'react-chartjs-2';
-
-// ChartJS.register(
-//   CategoryScale,
-//   LinearScale,
-//   PointElement,
-//   LineElement,
-//   Title,
-//   Tooltip,
-//   Legend
-// );
-
-
+import ChartComponent from "../components/ChartComponent";
 import {
   IconBasketCheck,
   IconClipboardList,
@@ -44,53 +19,98 @@ import {
   IconLayoutSidebarRightCollapse,
   IconRotateRectangle,
 } from "@tabler/icons-react";
-
-
 const Dashboard = () => {
   const { userData, token } = useContext(AuthContext);
   // const token = localStorage.getItem("token");
 
   var [appData, setappData] = useState(window.appData);
+  var [queryPrams, setqueryPrams] = useState({ keyword: "", page: 1, order: "DESC", limit: 10, first_date: "", last_date: "" });
+  var [loading, setloading] = useState(false);
+  var [chartEntries, setchartEntries] = useState([]);
 
-  // useEffect(() => {
-  //   setappData(window.appData)
-  // }, [window.appData]);
+  useEffect(() => {
+    fetchPosts()
+  }, []);
 
-  // const options = {
-  //   responsive: true,
-  //   plugins: {
-  //     legend: {
-  //       position: 'top',
-  //     },
-  //     title: {
-  //       display: true,
-  //       text: 'Chart.js Line Chart',
-  //     },
-  //   },
-  // };
 
-  // const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
 
-  // const data = {
-  //   labels,
-  //   datasets: [
-  //     {
-  //       label: 'Dataset 1',
-  //       data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
-  //       borderColor: 'rgb(255, 99, 132)',
-  //       backgroundColor: 'rgba(255, 99, 132, 0.5)',
-  //     },
-  //     {
-  //       label: 'Dataset 2',
-  //       data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
-  //       borderColor: 'rgb(53, 162, 235)',
-  //       backgroundColor: 'rgba(53, 162, 235, 0.5)',
-  //     },
-  //   ],
-  // };
+  function fetchPosts() {
+
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      //throw new Error("No token found");
+      return;
+    }
+
+
+    if (queryPrams.page < 0) {
+      return;
+    }
+
+    var postData = {
+      limit: queryPrams.limit,
+      page: queryPrams.page,
+      order: queryPrams.order,
+    };
+    postData = JSON.stringify(postData);
+    setloading(true);
+
+    fetch(appData.serverUrl + "wp-json/email-validation/v2/get_chart_data", {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: postData,
+    })
+      .then((response) => {
+
+        if (!response.ok) {
+          throw new Error('Token validation failed');
+        }
+
+        if (response.ok && response.status < 400) {
+          response.json().then((res) => {
+
+            //console.log(res)
+            setchartEntries(res.items)
+            setloading(false);
+
+
+            setTimeout(() => {
+            }, 500);
+          });
+        }
+      })
+      .catch((_error) => {
+        //this.saveAsStatus = 'error';
+        // handle the error
+      });
+
+  }
+
 
   return (
     <Layout >
+
+      {JSON.stringify(userData)}
+
+      {!userData && (
+        <div className="grid grid-cols-2 md:grid-cols-1 gap-20 w-[1200px] px-10 mx-auto mt-10">
+          <div>
+            <h2 className="my-5 text-2xl">Register</h2>
+
+            <Register />
+          </div>
+          <div>
+            <h2 className="my-5 text-2xl">Login</h2>
+
+            <Login />
+          </div>
+
+        </div>
+      )}
       {userData && (
         <div className="p-5">
 
@@ -157,11 +177,14 @@ const Dashboard = () => {
 
 
 
+
           </div>
 
           <div>
-            {/* <Line options={options} data={data} /> */}
-            {/* <Doughnut data={data} /> */}
+            <div className="text-3xl mt-5">Last 7 Days Stats</div>
+
+            <ChartComponent entries={chartEntries} />
+
 
           </div>
 
