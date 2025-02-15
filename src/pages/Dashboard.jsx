@@ -94,7 +94,6 @@ const Dashboard = () => {
   return (
     <Layout >
 
-      {JSON.stringify(userData)}
 
       {!userData && (
         <div className="grid grid-cols-2 md:grid-cols-1 gap-20 w-[1200px] px-10 mx-auto mt-10">

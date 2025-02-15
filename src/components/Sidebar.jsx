@@ -15,14 +15,12 @@ import { Link, useLocation } from "react-router-dom";
 
 const Sidebar = ({ user }) => {
 	// const { user, loading } = useContext(AuthContext);
-	console.log(user);
 	var appData = window.appData;
 
 	const token = localStorage.getItem("token");
 
 	const location = useLocation();
 	var currentLocation = location.pathname;
-	console.log(currentLocation);
 
 	var navs = [
 		// { label: "Products", value: "products" },
@@ -76,8 +74,8 @@ const Sidebar = ({ user }) => {
 									key={index}
 									to={`/${nav.value}`}
 									className={`${currentLocation == "/" + nav.value
-											? "bg-gray-200"
-											: "bg-white"
+										? "bg-gray-200"
+										: "bg-white"
 										} hover:bg-gray-200 text-blue-500 border-0 border-b border-solid border-gray-300 cursor-pointer px-4 py-2 flex items-center gap-2`}>
 									<span className="">{nav.icon}</span>{" "}
 									<span className={`${toggle ? "hidden" : "hidden md:block"}`}>

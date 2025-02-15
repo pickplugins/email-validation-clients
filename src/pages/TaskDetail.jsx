@@ -12,7 +12,7 @@ import Spinner from "../components/Spinner";
 import Tab from "../components/Tab";
 import Tabs from "../components/Tabs";
 import {
-  IconRefresh, IconTableExport
+  IconRefresh, IconTableExport, IconChartHistogram
 } from "@tabler/icons-react";
 function TaskDetail({ user }) {
   const { id } = useParams();
@@ -40,9 +40,9 @@ function TaskDetail({ user }) {
   });
 
   var [showExport, setshowExport] = useState(false);
+  var [reportsPrams, setreportsPrams] = useState({ show: false });
 
   var [tasksEntries, settasksEntries] = useState(null);
-  console.log(tasksEntries);
   var [loading, setloading] = useState(false);
   var [selectedRows, setselectedRows] = useState([]);
   const [showSetting, setshowSetting] = useState(false);
@@ -173,6 +173,59 @@ function TaskDetail({ user }) {
         // handle the error
       });
   }
+  function addTaskEntriesCSV() {
+    // const token = localStorage.getItem("token");
+
+    if (!token) {
+      throw new Error("No token found");
+    }
+
+    setloading(true);
+
+    var postData = {
+      task_id: id,
+      emails: csvUploadPrams.emails,
+    };
+    postData = JSON.stringify(postData);
+
+    fetch(appData.serverUrl + "wp-json/email-validation/v2/add_tasks_entries", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: postData,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Token validation failed");
+        }
+
+        if (response.ok && response.status < 400) {
+          response.json().then((res) => {
+            // var posts = res?.posts;
+            // var total = res?.total;
+            // var max_pages = res?.max_pages;
+
+            // settasksEntries({ posts: posts, total: total, maxPages: max_pages })
+            setloading(false);
+
+            fetchPosts();
+            setTimeout(() => {
+              setcsvUploadPrams({
+                ...csvUploadPrams,
+                emails: "",
+
+              });
+            }, 500);
+          });
+        }
+      })
+      .catch((_error) => {
+        //this.saveAsStatus = 'error';
+        // handle the error
+      });
+  }
 
   function delete_tasks_entries() {
     // const token = localStorage.getItem("token");
@@ -266,7 +319,6 @@ function TaskDetail({ user }) {
             var errors = res?.errors;
             var success = res?.success;
 
-            console.log(res)
 
             setloading(false);
             setcurrentObject(res)
@@ -321,7 +373,6 @@ function TaskDetail({ user }) {
             var errors = res?.errors;
             var success = res?.success;
 
-            console.log(res)
 
             setloading(false);
             //setcurrentObject(res)
@@ -399,12 +450,80 @@ function TaskDetail({ user }) {
       });
   }
 
+
+  function get_task_report() {
+    // const token = localStorage.getItem("token");
+
+    if (!token) {
+      throw new Error("No token found");
+    }
+
+    setloading(true);
+
+    var postData = {
+      id: id,
+    };
+    postData = JSON.stringify(postData);
+
+    fetch(appData.serverUrl + "wp-json/email-validation/v2/get_task_report", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: postData,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Token validation failed");
+        }
+
+        if (response.ok && response.status < 400) {
+          response.json().then((res) => {
+            //var success = res?.success;
+            //var file = res?.file;
+            console.log("get_task_report")
+            console.log(res)
+            setreportsPrams({ ...reportsPrams, ...res })
+
+            // var total = res?.total;
+            // var max_pages = res?.max_pages;
+
+            // settasksEntries({ posts: posts, total: total, maxPages: max_pages })
+            setloading(false);
+
+            //fetchPosts();
+            setTimeout(() => { }, 500);
+          });
+        }
+      })
+      .catch((_error) => {
+        //this.saveAsStatus = 'error';
+        // handle the error
+      });
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   // useEffect(() => {
   // 	fetchPosts();
   // }, []);
 
   useEffect(() => {
     fetchPosts();
+    get_task_report()
   }, [id]);
 
 
@@ -435,14 +554,12 @@ function TaskDetail({ user }) {
   }
 
   function onSelectRows(rows) {
-    console.log(rows);
     setselectedRows(rows);
   }
 
 
   function parseCSV(csvText) {
     const rows = csvText.split("\n").map(row => row.split(","));
-    console.log(rows); // Logs CSV as an array of arrays
     // document.getElementById('output').textContent = JSON.stringify(rows, null, 2);
   }
 
@@ -462,14 +579,12 @@ function TaskDetail({ user }) {
     setcsvUploadPrams({ ...csvUploadPrams, emails: emails.join("\n") });
 
 
-    console.log(emails); // Output email list in console
     //document.getElementById("output").textContent = "Extracted Emails:\n" + emails.join("\n");
   }
 
   return (
     <Layout user={user}>
       <div className="flex-1">
-        {JSON.stringify(currentObject)}
 
         <div className="flex justify-between flex-wrap gap-4 p-4 ">
           <div className="flex gap-3 items-center">
@@ -495,7 +610,7 @@ function TaskDetail({ user }) {
 hello1@mail.com
 Each Mail Per Line.
 "
-                        className="p-3  h-[150px] py-[5px] bg-gray-400 border rounded-sm border-solid w-[400px]"
+                        className="p-3  h-[150px] py-[5px] bg-gray-400 border rounded-sm border-solid w-full"
                         value={addEntries?.emails}
                         onChange={(ev) => {
                           setaddEntries({ ...addEntries, emails: ev.target.value });
@@ -515,7 +630,6 @@ Each Mail Per Line.
 
                         <input type="file" className="p-3 bg-blue-100  py-[5px]  border-2 w-full cursor-pointer border-blue-500 rounded-sm border-solid " value={""} onChange={ev => {
 
-                          console.log(ev.target.value)
 
                           const file = ev.target.files[0];
                           if (!file) return;
@@ -540,14 +654,14 @@ Each Mail Per Line.
 hello1@mail.com
 Each Mail Per Line.
 "
-                          className="p-3  h-[150px] py-[5px] bg-gray-400 border rounded-sm border-solid w-[400px]"
+                          className="p-3 my-4 h-[150px] py-[5px] bg-gray-400 border rounded-sm border-solid w-full"
                           value={csvUploadPrams?.emails}
                           onChange={(ev) => {
                             setcsvUploadPrams({ ...csvUploadPrams, emails: ev.target.value });
                           }}></textarea>
                         <button
                           onClick={(ev) => {
-                            addTaskEntries();
+                            addTaskEntriesCSV();
                           }}
                           className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
                           Submit
@@ -698,6 +812,45 @@ Each Mail Per Line.
               className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
               <IconRefresh />
             </button>
+            <div className="relative">
+
+              <button
+                onClick={(ev) => {
+                  setreportsPrams({ ...reportsPrams, show: !reportsPrams?.show })
+                }}
+                className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
+                <IconChartHistogram />
+              </button>
+
+              {reportsPrams.show && (
+                <Popover className="top-full w-[500px] right-0 mt-2 bg-white px-4 py-3 rounded-sm border border-gray-200 text-gray-700 text-left">
+
+                  <div className="grid grid-cols-2 gap-4">
+
+                    <div>Completed: {reportsPrams.completeCount}</div>
+                    <div>Pending: {reportsPrams.pendingCount}</div>
+                    <div>Total Not Safe To Send: {reportsPrams.safeToSend}</div>
+                    <div>Total Syntax Invalid: {reportsPrams.isSyntaxValid}</div>
+                    <div>Total Invalid Domain: {reportsPrams.hasValidDomain}</div>
+                    <div>Total Invalid Email: {reportsPrams.isValidEmail}</div>
+                    <div>Total Disposable Domain: {reportsPrams.isDisposableDomain}</div>
+                    <div>Total Inbox Full: {reportsPrams.isInboxFull ?? 0}</div>
+                    <div>Total Free Email Provider: {reportsPrams.isFreeEmailProvider ?? 0}</div>
+                    <div>Total Gibberish Email: {reportsPrams.isGibberishEmail ?? 0}</div>
+                    <div>Total SMTP Blacklisted: {reportsPrams.isSMTPBlacklisted ?? 0}</div>
+                    <div>Total Role-Based Email: {reportsPrams.isRoleBasedEmail ?? 0}</div>
+                    <div>Total Catch-All Domain: {reportsPrams.isCatchAllDomain ?? 0}</div>
+                    <div>Total Verify SMTP: {reportsPrams.verifySMTP ?? 0}</div>
+
+
+
+                  </div>
+
+
+                </Popover>
+              )}
+            </div>
+
             {selectedRows.length > 0 && (
               <div
                 className="px-3 py-[5px] rounded-sm bg-red-600 hover:bg-red-500 text-white cursor-pointer"

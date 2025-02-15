@@ -1,20 +1,34 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "./AuthContext";
 import { Link, useLocation } from "react-router-dom";
+import {
+	IconMoodSad, IconDatabaseSmile
+} from "@tabler/icons-react";
+
 
 const UserAccount = () => {
 	const navigate = useNavigate();
 
 	const { userData, handleLogout } = useContext(AuthContext);
-	console.log(userData)
 
 	const token = localStorage.getItem("token");
 
 
 
+	var [hasCredit, sethasCredit] = useState(true);
 	var [modal, setmodal] = useState(false);
 	const [creditShow, setCreditShow] = useState(false);
+
+
+
+	useEffect(() => {
+
+		var remining = userData?.total_credit - userData?.total_credit_used;
+
+		if (remining <= 0)
+			sethasCredit(false)
+	}, [hasCredit]);
 
 	return (
 		<div className="">
@@ -29,10 +43,23 @@ const UserAccount = () => {
 							<div className="flex items-center gap-4">
 								<div className="relative">
 									<div
-										className="flex gap-3 text-white items-center bg-gray-600 px-3 py-2 rounded-sm"
+										className={`flex gap-3 text-white items-center ${hasCredit ? 'bg-gray-600' : 'bg-red-400 '}  px-3 py-2 rounded-sm`}
 										onClick={() => {
 											setCreditShow(!creditShow);
 										}}>
+
+										{!hasCredit && (
+											<span className="animate-bounce ">
+												<IconMoodSad />
+											</span>
+										)}
+										{hasCredit && (
+											<span className=" ">
+												<IconDatabaseSmile />
+											</span>
+										)}
+
+
 										<span>Credits: </span>
 										<span>{userData?.total_credit}</span> /
 										<span>{userData?.total_credit_used}</span>
