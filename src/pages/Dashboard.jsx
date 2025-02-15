@@ -116,7 +116,7 @@ const Dashboard = () => {
 
           <div className="grid gap-4 xl:grid-cols-5 md:grid-cols-3 sm:grid-cols-1 text-white">
 
-            <div className="bg-blue-600 p-3 rounded-sm">
+            <div className="bg-blue-500 p-3 rounded-sm">
               <div className="flex items-center gap-3">
                 <div className="w-[50px]">
                   <IconClipboardList size="40" />
@@ -127,7 +127,7 @@ const Dashboard = () => {
                 </div>
               </div>
             </div>
-            <div className="bg-blue-600 p-3 rounded-sm">
+            <div className="bg-blue-500 p-3 rounded-sm">
               <div className="flex items-center gap-3">
                 <div className="w-[50px]">
                   <IconMailSpark size="40" />
@@ -138,7 +138,7 @@ const Dashboard = () => {
                 </div>
               </div>
             </div>
-            <div className="bg-blue-600 p-3 rounded-sm">
+            <div className="bg-blue-500 p-3 rounded-sm">
               <div className="flex items-center gap-3">
                 <div className="w-[50px]">
                   <IconCloudDataConnection size="40" />
@@ -149,7 +149,7 @@ const Dashboard = () => {
                 </div>
               </div>
             </div>
-            <div className="bg-blue-600 p-3 rounded-sm">
+            <div className="bg-blue-500 p-3 rounded-sm">
               <div className="flex items-center gap-3">
                 <div className="w-[50px]">
                   <IconBasketCheck size="40" />
@@ -160,7 +160,7 @@ const Dashboard = () => {
                 </div>
               </div>
             </div>
-            <div className="bg-blue-600 p-3 rounded-sm">
+            <div className="bg-blue-500 p-3 rounded-sm">
               <div className="flex items-center gap-3">
                 <div className="w-[50px]">
                   <IconCalculator size="40" />

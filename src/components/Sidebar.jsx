@@ -35,7 +35,7 @@ const Sidebar = ({ user }) => {
 			icon: <IconRotateRectangle />,
 		},
 		{ label: "Credits", value: "credits", icon: <IconCards /> },
-		{ label: "CreditsLogs", value: "creditslogs", icon: <IconDatabaseEdit /> },
+		// { label: "CreditsLogs", value: "creditslogs", icon: <IconDatabaseEdit /> },
 		// { label: "Licenses", value: "licenses", icon: ""  },
 		{ label: "API Keys", value: "apiKeys", icon: <IconCloudDataConnection /> },
 		{
@@ -75,11 +75,10 @@ const Sidebar = ({ user }) => {
 									cla
 									key={index}
 									to={`/${nav.value}`}
-									className={`${
-										currentLocation == "/" + nav.value
+									className={`${currentLocation == "/" + nav.value
 											? "bg-gray-200"
 											: "bg-white"
-									} hover:bg-gray-200 text-blue-500 border-0 border-b border-solid border-gray-300 cursor-pointer px-4 py-2 flex items-center gap-2`}>
+										} hover:bg-gray-200 text-blue-500 border-0 border-b border-solid border-gray-300 cursor-pointer px-4 py-2 flex items-center gap-2`}>
 									<span className="">{nav.icon}</span>{" "}
 									<span className={`${toggle ? "hidden" : "hidden md:block"}`}>
 										{nav.label}

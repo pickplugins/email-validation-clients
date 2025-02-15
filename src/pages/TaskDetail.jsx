@@ -1,3 +1,6 @@
+
+import React from "react";
+
 import { IconSettings } from "@tabler/icons-react";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -6,7 +9,11 @@ import EntriesTable from "../components/EntriesTable";
 import Layout from "../components/Layout";
 import Popover from "../components/Popover";
 import Spinner from "../components/Spinner";
-
+import Tab from "../components/Tab";
+import Tabs from "../components/Tabs";
+import {
+  IconRefresh, IconTableExport
+} from "@tabler/icons-react";
 function TaskDetail({ user }) {
   const { id } = useParams();
 
@@ -22,6 +29,8 @@ function TaskDetail({ user }) {
     first_date: "",
     last_date: "",
   });
+
+
   var [addEntries, setaddEntries] = useState({
     emails: "",
     edit: false,
@@ -37,6 +46,7 @@ function TaskDetail({ user }) {
   var [loading, setloading] = useState(false);
   var [selectedRows, setselectedRows] = useState([]);
   const [showSetting, setshowSetting] = useState(false);
+  const [csvUploadPrams, setcsvUploadPrams] = useState(null);
 
   function fetchPosts() {
     // const token = localStorage.getItem("token");
@@ -283,13 +293,11 @@ function TaskDetail({ user }) {
       throw new Error("No token found");
     }
 
-    if (queryPrams.page < 0) {
-      return;
-    }
+    // if (currentObject.id < 0) {
+    //   return;
+    // }
 
-    var postData = {
-      id: id,
-    };
+    var postData = currentObject;
     postData = JSON.stringify(postData);
     setloading(true);
     fetch(
@@ -333,6 +341,9 @@ function TaskDetail({ user }) {
         // handle the error
       });
   }
+
+
+
 
   function email_export() {
     // const token = localStorage.getItem("token");
@@ -396,6 +407,9 @@ function TaskDetail({ user }) {
     fetchPosts();
   }, [id]);
 
+
+
+
   var columns = {
     check: { label: "Check" },
     // id: { label: "ID" },
@@ -425,10 +439,37 @@ function TaskDetail({ user }) {
     setselectedRows(rows);
   }
 
+
+  function parseCSV(csvText) {
+    const rows = csvText.split("\n").map(row => row.split(","));
+    console.log(rows); // Logs CSV as an array of arrays
+    // document.getElementById('output').textContent = JSON.stringify(rows, null, 2);
+  }
+
+  function extractEmails(csvText) {
+    const rows = csvText.trim().split("\n").map(row => row.split(","));
+    const headers = rows[0]; // First row as header
+    const emailIndex = headers.findIndex(header => header.toLowerCase().includes("email"));
+
+    if (emailIndex === -1) {
+      document.getElementById("output").textContent = "No 'email' column found!";
+      return;
+    }
+
+    // Extract emails from subsequent rows
+    const emails = rows.slice(1).map(row => row[emailIndex]).filter(email => email);
+
+    setcsvUploadPrams({ ...csvUploadPrams, emails: emails.join("\n") });
+
+
+    console.log(emails); // Output email list in console
+    //document.getElementById("output").textContent = "Extracted Emails:\n" + emails.join("\n");
+  }
+
   return (
     <Layout user={user}>
       <div className="flex-1">
-        {/* {JSON.stringify(tasksEntries)} */}
+        {JSON.stringify(currentObject)}
 
         <div className="flex justify-between flex-wrap gap-4 p-4 ">
           <div className="flex gap-3 items-center">
@@ -441,26 +482,84 @@ function TaskDetail({ user }) {
                 Add Emails
               </button>
               {addEntries.edit && (
-                <Popover className="top-full mt-2 bg-white px-4 py-3 rounded-sm shadow-lg border border-gray-200">
-                  <textarea
-                    name=""
-                    id=""
-                    placeholder="hello1@mail.com
+                <Popover className="top-full mt-2 w-[450px] bg-white px-4 py-3 rounded-sm shadow-lg border border-gray-200">
+
+                  <Tabs tabs={[{ label: "Manual" }, { label: "CSV Upload" }]}>
+                    <Tab index={0}>
+                      <h2>Add Emails Manually.</h2>
+
+                      <textarea
+                        name=""
+                        id=""
+                        placeholder="hello1@mail.com
 hello1@mail.com
 Each Mail Per Line.
 "
-                    className="p-3  h-[150px] py-[5px] bg-gray-400 border rounded-sm border-solid w-[400px]"
-                    value={addEntries?.emails}
-                    onChange={(ev) => {
-                      setaddEntries({ ...addEntries, emails: ev.target.value });
-                    }}></textarea>
-                  <button
-                    onClick={(ev) => {
-                      addTaskEntries();
-                    }}
-                    className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
-                    Submit
-                  </button>
+                        className="p-3  h-[150px] py-[5px] bg-gray-400 border rounded-sm border-solid w-[400px]"
+                        value={addEntries?.emails}
+                        onChange={(ev) => {
+                          setaddEntries({ ...addEntries, emails: ev.target.value });
+                        }}></textarea>
+                      <button
+                        onClick={(ev) => {
+                          addTaskEntries();
+                        }}
+                        className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
+                        Submit
+                      </button>
+                    </Tab>
+                    <Tab index={1}>
+                      <h2>Pick a CSV file</h2>
+
+                      <div className="my-4">
+
+                        <input type="file" className="p-3 bg-blue-100  py-[5px]  border-2 w-full cursor-pointer border-blue-500 rounded-sm border-solid " value={""} onChange={ev => {
+
+                          console.log(ev.target.value)
+
+                          const file = ev.target.files[0];
+                          if (!file) return;
+
+                          const reader = new FileReader();
+                          reader.onload = function (e) {
+                            const text = e.target.result;
+                            // parseCSV(text);
+                            extractEmails(text);
+
+                          };
+                          reader.readAsText(file);
+
+
+                        }} />
+
+
+                        <textarea
+                          name=""
+                          id=""
+                          placeholder="hello1@mail.com
+hello1@mail.com
+Each Mail Per Line.
+"
+                          className="p-3  h-[150px] py-[5px] bg-gray-400 border rounded-sm border-solid w-[400px]"
+                          value={csvUploadPrams?.emails}
+                          onChange={(ev) => {
+                            setcsvUploadPrams({ ...csvUploadPrams, emails: ev.target.value });
+                          }}></textarea>
+                        <button
+                          onClick={(ev) => {
+                            addTaskEntries();
+                          }}
+                          className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
+                          Submit
+                        </button>
+
+                      </div>
+
+                    </Tab>
+
+                  </Tabs>
+
+
                 </Popover>
               )}
             </div>
@@ -482,6 +581,9 @@ Each Mail Per Line.
               value={queryPrams?.status}
               onChange={(ev) => {
                 setqueryPrams({ ...queryPrams, status: ev.target.value });
+
+
+
               }}>
               <option value="">Status</option>
               <option value="valid">Valid</option>
@@ -567,7 +669,7 @@ Each Mail Per Line.
                 onClick={() => {
                   setshowExport(!showExport);
                 }}>
-                Export
+                <IconTableExport />
               </button>
               <div
                 className={`absolute top-full right-0 bg-white mt-2 px-4 py-3 ${showExport ? "" : "hidden"
@@ -594,7 +696,7 @@ Each Mail Per Line.
                 fetchPosts();
               }}
               className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
-              Refresh
+              <IconRefresh />
             </button>
             {selectedRows.length > 0 && (
               <div
@@ -602,7 +704,7 @@ Each Mail Per Line.
                 onClick={(ev) => {
                   delete_tasks_entries();
                 }}>
-                Delete Tasks
+                Delete Selected
               </div>
             )}
             <button
@@ -613,8 +715,63 @@ Each Mail Per Line.
               }}><IconSettings /></div>
 
               {showSetting && (
-                <Popover className="top-full right-0 mt-2 bg-white px-4 py-3 rounded-sm border border-gray-200 text-gray-700 text-left">
-                  showSetting
+                <Popover className="top-full w-[400px] right-0 mt-2 bg-white px-4 py-3 rounded-sm border border-gray-200 text-gray-700 text-left">
+
+                  <div>
+                    <label htmlFor="" className="my-3">Title</label>
+                    <input type="text" className="border rounded-sm border-solid py-[3px] px-2 w-full cursor-pointer block" value={currentObject?.title}
+
+                      onChange={(ev) => {
+                        setcurrentObject({
+                          ...currentObject,
+                          title: ev.target.value,
+                        });
+                      }} />
+                  </div>
+
+
+                  <div className="flex items-center gap-2 my-4">
+                    <label htmlFor="" >
+
+                      Merge CSV file on Export?
+                    </label>
+                    <input type="checkbox" value={""}
+                      checked={currentObject.mergeCSV ? true : false}
+                      onChange={(ev) => {
+                        setcurrentObject({
+                          ...currentObject,
+                          mergeCSV: !currentObject.mergeCSV,
+                        });
+                      }} />
+                  </div>
+                  <div className="flex items-center gap-2 my-4">
+                    <label htmlFor="" >
+
+                      Send Webhhok Request on Validation?
+                    </label>
+                    <input type="checkbox" value={""}
+                      checked={currentObject.sendWebhook ? true : false}
+                      onChange={(ev) => {
+                        setcurrentObject({
+                          ...currentObject,
+                          sendWebhook: !currentObject.sendWebhook,
+                        });
+                      }} />
+                  </div>
+
+                  <div className={`${currentObject.sendWebhook ? '' : 'hidden'}`}>
+                    <label htmlFor="" className="my-3">Webhook URL</label>
+                    <input type="text" className="border rounded-sm border-solid py-[3px] px-2 w-full cursor-pointer block" value={currentObject?.webhookUrl}
+
+                      onChange={(ev) => {
+                        setcurrentObject({
+                          ...currentObject,
+                          webhookUrl: ev.target.value,
+                        });
+                      }} />
+                  </div>
+
+
                 </Popover>
               )}
             </button>

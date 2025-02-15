@@ -41,6 +41,7 @@ function Credits() {
 		limit: 10,
 		first_date: "",
 		last_date: "",
+		type: "credit",
 	});
 
 	var [addCredits, setaddCredits] = useState({
@@ -72,9 +73,13 @@ function Credits() {
 		if (!token) {
 			throw new Error("No token found");
 		}
+
+		console.log(queryPrams.type);
+
 		var postData = {
 			limit: queryPrams.limit,
 			page: queryPrams.page,
+			type: queryPrams.type,
 		};
 		postData = JSON.stringify(postData);
 		setloading(true);
@@ -224,8 +229,9 @@ function Credits() {
 		check: { label: "Check" },
 		// id: { label: "ID" },
 		type: { label: "Type" },
-		source: { label: "Source" },
 		amount: { label: "Amount" },
+
+		source: { label: "Source" },
 		// userid: { label: "Userid" },
 		// status: { label: "Status" },
 		datetime: { label: "Datetime" },
@@ -318,11 +324,11 @@ function Credits() {
 									Add
 								</button>
 								{addCredits.edit && (
-									<Popover className="top-full left-0 min-w-[400px] mt-2 bg-white px-4 py-3 rounded-sm grid grid-cols-2 gap-4">
+									<Popover className="top-full left-0 min-w-[400px] mt-2 bg-white px-4 py-3 rounded-sm grid grid-cols-2 gap-4 border border-gray-400">
 										<input
 											type="text"
 											placeholder="100"
-											className="p-3 py-[5px] w-25 bg-gray-400 border rounded-sm border-solid "
+											className="p-3 py-[5px]  bg-gray-400 border rounded-sm border-solid "
 											value={addCredits?.amount}
 											onChange={(ev) => {
 												setaddCredits({ ...addCredits, amount: ev.target.value });
@@ -331,7 +337,7 @@ function Credits() {
 										<input
 											type="text"
 											placeholder="123"
-											className="p-3 py-[5px] w-20 bg-gray-400 border rounded-sm border-solid "
+											className="p-3 py-[5px]  bg-gray-400 border rounded-sm border-solid "
 											value={addCredits?.userid}
 											onChange={(ev) => {
 												setaddCredits({ ...addCredits, userid: ev.target.value });
@@ -340,19 +346,19 @@ function Credits() {
 										<select
 											name=""
 											id=""
-											className=" rounded-sm border-solid border-2 border-blue-500 py-[3px] px-2 cursor-pointer"
+											className=" rounded-sm border-solid border-2 border-blue-500 py-[5px] px-2 cursor-pointer"
 											value={addCredits?.type}
 											onChange={(ev) => {
 												setaddCredits({ ...addCredits, type: ev.target.value });
 											}}>
 											<option value="">Type..</option>
-											<option value="credit">credit</option>
-											<option value="debit">debit</option>
+											<option value="credit">Credit</option>
+											<option value="debit">Debit</option>
 										</select>
 										<select
 											name=""
 											id=""
-											className=" rounded-sm border-solid border-2 border-blue-500 py-[3px] px-2 cursor-pointer"
+											className=" rounded-sm border-solid border-2 border-blue-500 py-[5px] px-2 cursor-pointer"
 											value={addCredits?.source}
 											onChange={(ev) => {
 												setaddCredits({ ...addCredits, source: ev.target.value });
@@ -389,6 +395,23 @@ function Credits() {
 									Delete Tasks
 								</div>
 							)}
+
+
+							<div>
+								<select
+									name=""
+									id=""
+									className=" rounded-sm border-solid border-2 border-blue-500 py-[5px] px-2 cursor-pointer"
+									value={queryPrams?.type}
+									onChange={(ev) => {
+										setqueryPrams({ ...queryPrams, type: ev.target.value });
+									}}>
+									<option value="">Type..</option>
+									<option value="credit">Credit</option>
+									<option value="debit">Debit</option>
+								</select>
+							</div>
+
 						</div>
 					)}
 

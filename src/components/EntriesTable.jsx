@@ -234,18 +234,18 @@ function Html(props) {
 										return (
 											<td
 												key={columnIndex}
-												className={`px-5 py-2 ${columnIndex == "email" ? "text-left pl-5" : ""
+												className={`px-5 py-2 break-all ${columnIndex == "email" ? "text-left pl-5" : ""
 													} ${columnIndex == "title" ? "text-left pl-5" : ""}`}>
 												{columnIndex == "title" && (
 													<div className="flex items-center gap-2 select-none">
 														{itemPath.length > 0 && (
 															<Link className="" to={`/${itemPath}/${entry.id}`}>
-																{entry.title}
+																{entry.title.length == 0 ? "#" + entry.id : entry.title}
 															</Link>
 														)}
 														{itemPath.length == 0 && (
 															<span className="cursor-pointer select-none">
-																{entry.title}
+																{entry.title.length == 0 ? "#" + entry.id : entry.title}
 															</span>
 														)}
 													</div>
