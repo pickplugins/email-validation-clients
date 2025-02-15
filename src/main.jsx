@@ -4,9 +4,9 @@ import App from "./App";
 
 // var appData = {
 // 	serverUrl: "http://localhost/wordpress/",
-// 	serverUrl: "https://isspammy.com/",
 // 	appUrl: "http://localhost:5173/",
 // };
+
 var appData = {
 	serverUrl: "https://isspammy.com/",
 	appUrl: "https://app.isspammy.com/",

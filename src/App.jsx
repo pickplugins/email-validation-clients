@@ -17,6 +17,7 @@ import ApiKeys from "./pages/ApiKeys";
 import ValidationRequests from "./pages/ValidationRequests";
 import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
+import EditProfile from './pages/EditProfile';
 import PrivateRoute from './pages/PrivateRoute';
 import AuthProvider from './components/AuthContext';
 
@@ -33,6 +34,7 @@ function App(appData) {
 
 
 
+  console.log(import.meta.env);
 
 
 
@@ -48,6 +50,14 @@ function App(appData) {
           element={
             <PrivateRoute>
               <ApiKeys />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/editprofile"
+          element={
+            <PrivateRoute>
+              <EditProfile />
             </PrivateRoute>
           }
         />

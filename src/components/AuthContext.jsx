@@ -8,6 +8,7 @@ export const AuthContext = createContext(null); // Set default value to null
 const AuthProvider = ({ children }) => {
 	const navigate = useNavigate()
 	const [user, setUser] = useState(null);
+	const [error, setError] = useState(null);
 	var [userData, setuserData] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [logging, setlogging] = useState(false);
@@ -20,12 +21,12 @@ const AuthProvider = ({ children }) => {
 
 
 	var appData = window.appData;
-const handleLogout = () => {
-	localStorage.removeItem("token");
-	setToken(null);
-	setuserData(null);
-	navigate("/");
-};
+	const handleLogout = () => {
+		localStorage.removeItem("token");
+		setToken(null);
+		setuserData(null);
+		navigate("/");
+	};
 	function fetchUser() {
 		// const token = localStorage.getItem("token");
 

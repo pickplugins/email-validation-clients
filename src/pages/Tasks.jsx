@@ -1,22 +1,30 @@
 import Layout from "../components/Layout";
 import UserAccount from "../components/UserAccount";
 import EntriesTable from "../components/EntriesTable";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Spinner from "../components/Spinner";
-
+import { AuthContext } from "../components/AuthContext";
+import {
+	IconRefresh, IconTableExport
+} from "@tabler/icons-react";
 
 
 function Tasks({ user }) {
+
+
+	const { token } = useContext(AuthContext);
 
 	var [appData, setappData] = useState(window.appData);
 
 	var [addTask, setaddTask] = useState({ title: "", edit: false, loading: false, success: false, errors: false });
 	var [tasksData, settasksData] = useState(null);
-	console.log(tasksData)
 	var [queryPrams, setqueryPrams] = useState({ keyword: "", page: 1, order: "DESC", limit: 10, first_date: "", last_date: "" });
 
 	var [loading, setloading] = useState(false);
 	var [selectedRows, setselectedRows] = useState([]);
+	var [bulkUpdatePrams, setbulkUpdatePrams] = useState({
+		status: "",
+	});
 
 
 	var columns = {
@@ -69,7 +77,6 @@ function Tasks({ user }) {
 				if (response.ok && response.status < 400) {
 					response.json().then((res) => {
 
-						console.log(res)
 
 						var posts = res?.posts;
 						var total = res?.total;
@@ -132,7 +139,6 @@ function Tasks({ user }) {
 						var success = res?.success;
 
 
-						console.log(res);
 
 						fetchPosts()
 
@@ -192,7 +198,6 @@ function Tasks({ user }) {
 
 						setloading(false)
 
-						console.log(res);
 
 						fetchPosts()
 
@@ -217,11 +222,68 @@ function Tasks({ user }) {
 
 
 
+	function bulk_update_tasks() {
+		// const token = localStorage.getItem("token");
+
+		if (!token) {
+			throw new Error("No token found");
+		}
 
 
 
+		var postData = {
+			ids: selectedRows,
+			status: bulkUpdatePrams.status,
+		};
+		postData = JSON.stringify(postData);
+		setloading(true);
+		fetch(
+			appData.serverUrl + "wp-json/email-validation/v2/bulk_update_tasks",
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+				body: postData,
+			}
+		)
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error("Token validation failed");
+				}
+
+				if (response.ok && response.status < 400) {
+					response.json().then((res) => {
+						var errors = res?.errors;
+						var success = res?.success;
+
+						console.log(res)
+
+						setloading(false);
+						//setcurrentObject(res)
+						fetchPosts();
+
+						// setaddTask({ ...addTask, loading: false, errors: errors, success: success })
+
+						// setTimeout(() => {
+						// 	setaddTask({ ...addTask, title: "", success: null, errors: null })
+
+						// }, 3000);
+					});
+				}
+			})
+			.catch((_error) => {
+				//this.saveAsStatus = 'error';
+				// handle the error
+			});
+	}
 
 
+
+	useEffect(() => {
+		bulk_update_tasks();
+	}, [bulkUpdatePrams]);
 
 
 
@@ -240,7 +302,6 @@ function Tasks({ user }) {
 	}
 	function onSelectRows(rows) {
 
-		console.log(rows);
 		setselectedRows(rows)
 	}
 
@@ -292,15 +353,44 @@ function Tasks({ user }) {
 
 
 
-					<div>
+					<div className="flex gap-2 items-center">
 
 						{selectedRows.length > 0 && (
+							<div className="flex gap-2 items-center">
 
-							<div className="px-3 py-[5px] rounded-sm bg-red-600 hover:bg-red-500 text-white cursor-pointer" onClick={ev => {
-								delete_tasks();
-							}}>Delete Tasks</div>
+								<select
+									name=""
+									id=""
+									className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
+									value={bulkUpdatePrams.status}
+									onChange={(ev) => {
+
+										setbulkUpdatePrams({ ...bulkUpdatePrams, status: ev.target.value });
+
+									}}>
+									<option value="">Makred as</option>
+									<option value="completed">Completed</option>
+									<option value="pending">Pending</option>
+
+								</select>
+
+
+								<div className="px-3 py-[5px] rounded-sm bg-red-600 hover:bg-red-500 text-white cursor-pointer" onClick={ev => {
+									delete_tasks();
+								}}>Delete Tasks</div>
+							</div>
 
 						)}
+
+						<button
+							onClick={(ev) => {
+								fetchPosts();
+							}}
+							className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
+							<IconRefresh />
+						</button>
+
+
 					</div>
 				</div>
 

@@ -10,7 +10,7 @@ import { IconCopy, IconX } from "@tabler/icons-react";
 function ApiKeys() {
 
 	var [appData, setappData] = useState(window.appData);
-	const {token} = useContext(AuthContext);
+	const { token } = useContext(AuthContext);
 
 	var [apiKeysData, setapiKeysData] = useState(null);
 	var [queryPrams, setqueryPrams] = useState({ keyword: "", page: 1, order: "DESC", limit: 10, first_date: "", last_date: "" });
@@ -76,7 +76,7 @@ function ApiKeys() {
 
 	}
 
-const [popup, setpopup] = useState(null);
+	const [popup, setpopup] = useState(null);
 
 	function createApiKey() {
 
@@ -123,7 +123,7 @@ const [popup, setpopup] = useState(null);
 						setaddApiKey({ ...addApiKey, title: "", loading: false, errors: errors, success: success })
 
 						setpopup({
-							title: "API Key",	
+							title: "API Key",
 							message: "API key created.",
 							apikey: res?.apikey,
 							display: true
@@ -285,18 +285,18 @@ const [popup, setpopup] = useState(null);
 
 	return (
 		<Layout>
-			<div  className="relative">
-				{popup && popup.display &&  (
-					<Popover className="fixed inset-0 flex items-center justify-center">
-						<div className="bg-white p-6 shadow-lg rounded-sm relative">
+			<div className="relative">
+				{popup && popup.display && (
+					<Popover className="fixed inset-0 flex items-center justify-center ">
+						<div className="bg-white p-6 shadow-lg rounded-sm relative border-2 border-blue-400">
 							<IconX className="absolute top-3 right-3 cursor-pointer hover:rotate-90 hover:text-red-500 transition-all duration-300" onClick={() => {
 								setpopup({ ...popup, apikey: "", display: false })
 							}} />
 							<h2 className="text-2xl mb-5">API key created.</h2>
 							<span className="flex items-center gap-3 px-3 py-2 border border-gray-200"><span className="">{popup?.apikey}</span>
-							<IconCopy className="cursor-pointer hover:text-blue-500 transition-all duration-300" onClick={() => {
-								navigator.clipboard.writeText(popup?.apikey)	
-							}}/>
+								<IconCopy className="cursor-pointer hover:text-blue-500 transition-all duration-300" onClick={() => {
+									navigator.clipboard.writeText(popup?.apikey)
+								}} />
 							</span>
 						</div>
 					</Popover>
