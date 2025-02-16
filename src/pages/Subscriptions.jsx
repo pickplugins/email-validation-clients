@@ -2,6 +2,7 @@ import Layout from "../components/Layout";
 import { useState, useEffect } from "react";
 import EntriesTable from "../components/EntriesTable";
 import Spinner from "../components/Spinner";
+import { IconRefresh } from "@tabler/icons-react";
 
 
 
@@ -161,12 +162,36 @@ function Subscriptions({ user }) {
 	return (
 		<Layout user={user}>
 			<div>
+				<div className="flex w-full md:justify-end p-4">
+					{selectedRows.length > 0 && (
+						<div
+							className="px-3 py-[5px] rounded-sm bg-red-600 hover:bg-red-500 text-white cursor-pointer"
+							onClick={() => {
+								delete_subscriptions();
+							}}>
+							Delete Subscriptions
+						</div>
+					)}
 
-				<EntriesTable queryPrams={queryPrams} columns={columns} entries={subscriptionsData} itemPath={"orders"} onChange={onChangeQueryPrams} loading={loading} selectedRows={selectedRows} onSelectRows={onSelectRows} />
+					<button
+						onClick={() => {
+							fetchPosts();
+						}}
+						className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
+						<IconRefresh />
+					</button>
+				</div>
 
-
-
-
+				<EntriesTable
+					queryPrams={queryPrams}
+					columns={columns}
+					entries={subscriptionsData}
+					itemPath={"orders"}
+					onChange={onChangeQueryPrams}
+					loading={loading}
+					selectedRows={selectedRows}
+					onSelectRows={onSelectRows}
+				/>
 			</div>
 		</Layout>
 	);

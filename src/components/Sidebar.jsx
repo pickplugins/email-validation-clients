@@ -96,7 +96,7 @@ const Sidebar = ({ user }) => {
 					</div>
 					<button
 						onClick={() => setnavToggle(!navToggle)}
-						className="px-4 py-2 hidden md:block ">
+						className="px-4 py-2 hidden md:block w-full ">
 						{navToggle ? (
 							<IconLayoutSidebarRightCollapse />
 						) : (
