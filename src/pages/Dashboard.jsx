@@ -113,7 +113,7 @@ const Dashboard = () => {
       {userData && (
         <div className="p-5">
 
-          <div className="grid gap-4 xl:grid-cols-5 md:grid-cols-3 sm:grid-cols-1 text-white">
+          <div className=" hidden gap-4 xl:grid-cols-5 md:grid-cols-3 sm:grid-cols-1 text-white">
 
             <div className="bg-blue-500 p-3 rounded-sm">
               <div className="flex items-center gap-3">
