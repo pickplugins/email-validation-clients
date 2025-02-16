@@ -23,7 +23,6 @@ const Sidebar = ({ user }) => {
 
 	const location = useLocation();
 	var currentLocation = location.pathname;
-	console.log(currentLocation);
 
 	var navs = [
 		// { label: "Products", value: "products" },
