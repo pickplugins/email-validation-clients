@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
 
@@ -19,6 +19,20 @@ const AuthProvider = ({ children }) => {
 		localStorage.removeItem("token");
 	};
 
+	const [theme, setTheme] = useState("light");
+	const toggleTheme = useCallback(() => {
+		setTheme((prevTheme) => {
+			const newTheme = prevTheme === "light" ? "dark" : "light";
+
+			if (typeof window !== "undefined") {
+				localStorage.setItem("theme", newTheme);
+				document.documentElement.classList.remove("light", "dark");
+				document.documentElement.classList.add(newTheme);
+			}
+
+			return newTheme;
+		});
+	}, []);
 
 	var appData = window.appData;
 	const handleLogout = () => {
@@ -133,6 +147,8 @@ const AuthProvider = ({ children }) => {
 				userData,
 				token,
 				handleLogout,
+				theme,
+				toggleTheme
 			}}>
 			{children}
 		</AuthContext.Provider>

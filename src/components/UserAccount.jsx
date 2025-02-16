@@ -2,14 +2,15 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "./AuthContext";
 import { Link, useLocation } from "react-router-dom";
+import { MoonIcon, SunIcon } from "./Icons";
 
 const UserAccount = () => {
 	const navigate = useNavigate();
 
-	const { userData, handleLogout } = useContext(AuthContext);
+	const { userData, theme, toggleTheme, token } = useContext(AuthContext);
+	
 	console.log(userData)
 
-	const token = localStorage.getItem("token");
 
 
 
@@ -17,11 +18,21 @@ const UserAccount = () => {
 	const [creditShow, setCreditShow] = useState(false);
 
 	return (
-		<div className="">
-
+		<div className=" flex items-center gap-4">
 			{/* {JSON.stringify(userData)} */}
-
-
+			<button
+				onClick={toggleTheme}
+				className={`ml-3 flex items-center justify-center rounded-full p-1 ${
+					theme === "light"
+						? "!bg-primary-300 !text-primary-800"
+						: "!bg-primary-600 !text-primary-200"
+				}`}>
+				{theme === "dark" ? (
+					<SunIcon className={"fill-primary-400"} />
+				) : (
+					<MoonIcon className={"fill-primary-400"} />
+				)}
+			</button>
 			<div>
 				{token ? (
 					<>
@@ -44,10 +55,15 @@ const UserAccount = () => {
 													<li>Total Credits: {userData?.total_credit}</li>
 													<li>Used by Task: {userData?.credit_used_cron}</li>
 													<li>Used by API: {userData?.credit_used_api}</li>
-													<li className="font-bold">Total Used: {userData?.total_credit_used}</li>
-													<li className="font-bold">Reminaing Credits: {userData?.total_credit - userData?.total_credit_used}</li>
+													<li className="font-bold">
+														Total Used: {userData?.total_credit_used}
+													</li>
+													<li className="font-bold">
+														Reminaing Credits:{" "}
+														{userData?.total_credit -
+															userData?.total_credit_used}
+													</li>
 												</ul>
-
 											</div>
 										</div>
 									)}
@@ -71,7 +87,11 @@ const UserAccount = () => {
 											<div className="mb-3">Welcome! {userData?.name}</div>
 
 											<div className="flex gap-3 items-center">
-												<Link to={`/editprofile`} className="p-2 inline hover:bg-blue-400 rounded-sm cursor-pointer px-4 bg-blue-600 text-white">Edit Profile</Link>
+												<Link
+													to={`/editprofile`}
+													className="p-2 inline hover:bg-blue-400 rounded-sm cursor-pointer px-4 bg-blue-600 text-white">
+													Edit Profile
+												</Link>
 												<div
 													className="p-2 inline hover:bg-blue-400 rounded-sm cursor-pointer px-4 bg-blue-600 text-white"
 													onClick={(ev) => {
@@ -80,8 +100,6 @@ const UserAccount = () => {
 													Log-out
 												</div>
 											</div>
-
-
 										</div>
 									)}
 								</div>

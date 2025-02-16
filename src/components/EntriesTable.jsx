@@ -87,12 +87,12 @@ function Html(props) {
 
 	return (
 		<div className="w-full">
-			<div className="bg-gray-200 p-3 flex justify-between flex-wrap gap-3 px-5">
+			<div className="bg-primary-900 dark:bg-primary-200 text-primary-100 dark:text-primary-900 p-3 flex justify-between flex-wrap gap-3 px-5">
 				<div className="flex gap-2 items-center">
 					<input
 						type="text"
 						placeholder="Search..."
-						className="p-3 py-[5px] bg-blue-200 border-2 border-blue-500 rounded-sm "
+						className="p-3 py-[5px] border-2 rounded-sm "
 						value={queryPrams?.keyword}
 						onChange={(ev) => {
 							setqueryPrams({ ...queryPrams, keyword: ev.target.value });
@@ -167,7 +167,7 @@ function Html(props) {
 			<div className="overflow-x-auto w-full">
 				<table className="table-auto md:table-fixed w-full text-center border-collapse">
 					<thead>
-						<tr className="bg-gray-300 border border-solid border-gray-200">
+						<tr className=" border border-solid border-gray-200">
 							{Object.entries(columns).map((args) => {
 								var columnIndex = args[0];
 								var columnData = args[1];
