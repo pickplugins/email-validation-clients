@@ -13,6 +13,7 @@ const AuthProvider = ({ children }) => {
 	const [loading, setLoading] = useState(true);
 	const [logging, setlogging] = useState(false);
 	const [token, setToken] = useState(localStorage.getItem("token") || null);
+	const [navToggle, setnavToggle] = useState(false);
 	const logout = () => {
 		setToken(null);
 		setUser(null);
@@ -133,6 +134,8 @@ const AuthProvider = ({ children }) => {
 				userData,
 				token,
 				handleLogout,
+				navToggle,
+				setnavToggle,
 			}}>
 			{children}
 		</AuthContext.Provider>
