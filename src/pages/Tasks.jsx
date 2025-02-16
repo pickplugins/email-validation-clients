@@ -33,6 +33,8 @@ function Tasks({ user }) {
 		title: { label: "Title" },
 		status: { label: "Status" },
 		total: { label: "Total" },
+		completed: { label: "Completed" },
+		pending: { label: "Pending" },
 
 		datetime: { label: "Datetime" },
 	}
@@ -258,7 +260,6 @@ function Tasks({ user }) {
 						var errors = res?.errors;
 						var success = res?.success;
 
-						console.log(res)
 
 						setloading(false);
 						//setcurrentObject(res)
