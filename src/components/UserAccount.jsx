@@ -2,6 +2,8 @@ import { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "./AuthContext";
 import { Link, useLocation } from "react-router-dom";
+import Popover from "../components/Popover";
+
 import {
 	IconMoodSad, IconDatabaseSmile
 } from "@tabler/icons-react";
@@ -16,6 +18,7 @@ const UserAccount = () => {
 
 
 
+	var [buyCreditsPrams, setbuyCreditsPrams] = useState({ showPopup: false });
 	var [hasCredit, sethasCredit] = useState(true);
 	var [modal, setmodal] = useState(false);
 	const [creditShow, setCreditShow] = useState(false);
@@ -36,7 +39,32 @@ const UserAccount = () => {
 			{/* {JSON.stringify(userData)} */}
 
 
-			<div>
+			<div className="flex items-center gap-3">
+
+				<a href="https://isspammy.lemonsqueezy.com/buy/24f14039-0d6e-47c7-92ce-3d6a716f5d2d?embed=1" class="lemonsqueezy-button px-3 py-2 rounded-sm bg-amber-500 text-white cursor-pointer">Buy  Credits</a><script src="https://assets.lemonsqueezy.com/lemon.js" defer></script>
+
+				{/* <div className="relative">
+					<div className="px-3 py-2 rounded-sm bg-amber-500 text-white cursor-pointer"
+						onClick={(ev) => {
+							setbuyCreditsPrams({ ...buyCreditsPrams, show: !buyCreditsPrams?.show })
+						}}
+					>Buy Credits</div>
+					{buyCreditsPrams.show && (
+						<Popover className="top-full w-[500px] right-0 mt-2 bg-white px-4 py-3 rounded-sm border border-gray-200 text-gray-700 text-left">
+
+							<div className="flex gap-3 items-center">
+
+
+								
+							</div>
+
+
+						</Popover>
+					)}
+
+				</div> */}
+
+
 				{token ? (
 					<>
 						{userData && (

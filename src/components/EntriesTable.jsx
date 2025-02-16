@@ -236,6 +236,24 @@ function Html(props) {
 												key={columnIndex}
 												className={`px-5 py-2 break-all ${columnIndex == "email" ? "text-left pl-5" : ""
 													} ${columnIndex == "title" ? "text-left pl-5" : ""}`}>
+
+
+
+
+												{columnIndex == "id" && (
+													<div className="flex items-center gap-2 select-none">
+														{itemPath.length > 0 && (
+															<Link className="" to={`/${itemPath}/${entry.id}`}>
+																{"#" + entry.id}
+															</Link>
+														)}
+														{itemPath.length == 0 && (
+															<span className="cursor-pointer select-none">
+																{"#" + entry.id}
+															</span>
+														)}
+													</div>
+												)}
 												{columnIndex == "title" && (
 													<div className="flex items-center gap-2 select-none">
 														{itemPath.length > 0 && (
@@ -250,7 +268,11 @@ function Html(props) {
 														)}
 													</div>
 												)}
-												{columnIndex != "title" && columnIndex != "check" && columnIndex != 'apikey' && (
+
+
+
+
+												{columnIndex != "title" && columnIndex != "check" && columnIndex != 'apikey' && columnIndex != 'id' && (
 													<span
 														className={`${columnIndex == "email" ? "text-left pl-5" : ""
 															} `}>

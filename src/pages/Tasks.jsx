@@ -29,8 +29,11 @@ function Tasks({ user }) {
 
 	var columns = {
 		check: { label: "Check" },
+		user_name: { label: "User" },
+
 		// id: { label: "ID" },
 		title: { label: "Title" },
+
 		status: { label: "Status" },
 		total: { label: "Total" },
 		completed: { label: "Completed" },
