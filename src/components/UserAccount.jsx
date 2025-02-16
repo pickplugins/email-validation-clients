@@ -41,7 +41,10 @@ const UserAccount = () => {
 
 			<div className="flex items-center gap-3">
 
-				<a href="https://isspammy.lemonsqueezy.com/buy/24f14039-0d6e-47c7-92ce-3d6a716f5d2d?embed=1" class="lemonsqueezy-button px-3 py-2 rounded-sm bg-amber-500 text-white cursor-pointer">Buy  Credits</a><script src="https://assets.lemonsqueezy.com/lemon.js" defer></script>
+				{/* <a href="https://isspammy.lemonsqueezy.com/buy/24f14039-0d6e-47c7-92ce-3d6a716f5d2d?embed=1" class="lemonsqueezy-button px-3 py-2 rounded-sm bg-amber-500 text-white cursor-pointer">Buy  Credits</a> */}
+
+
+				<a href="https://pickplugins.lemonsqueezy.com/buy/62eb8580-ca3f-441f-8ef2-c1efe297e8e4?embed=1" class="lemonsqueezy-button lemonsqueezy-button px-3 py-2 rounded-sm bg-amber-500 text-white cursor-pointer">Buy  Credits</a><script src="https://assets.lemonsqueezy.com/lemon.js" defer></script>
 
 				{/* <div className="relative">
 					<div className="px-3 py-2 rounded-sm bg-amber-500 text-white cursor-pointer"

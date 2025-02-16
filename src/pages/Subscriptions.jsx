@@ -141,12 +141,14 @@ function Subscriptions({ user }) {
 	var columns = {
 		check: { label: "Check" },
 		id: { label: "ID" },
-		order_id: { label: "Order id" },
+		// order_id: { label: "Order id" },
+		user_name: { label: "User name" },
 		user_email: { label: "Email" },
-		total: { label: "Total" },
-		test_mode: { label: "Test Mode" },
+		// test_mode: { label: "Test Mode" },
 		trial_ends_at: { label: "Trial Ends" },
 		renews_at: { label: "Renews" },
+		total: { label: "Total" },
+
 		datetime: { label: "Datetime" },
 
 	}
@@ -162,7 +164,7 @@ function Subscriptions({ user }) {
 	return (
 		<Layout user={user}>
 			<div>
-				<div className="flex w-full md:justify-end p-4">
+				<div className="flex w-full gap-2 md:justify-end p-4">
 					{selectedRows.length > 0 && (
 						<div
 							className="px-3 py-[5px] rounded-sm bg-red-600 hover:bg-red-500 text-white cursor-pointer"
@@ -186,7 +188,7 @@ function Subscriptions({ user }) {
 					queryPrams={queryPrams}
 					columns={columns}
 					entries={subscriptionsData}
-					itemPath={"orders"}
+					itemPath={"subscriptions"}
 					onChange={onChangeQueryPrams}
 					loading={loading}
 					selectedRows={selectedRows}

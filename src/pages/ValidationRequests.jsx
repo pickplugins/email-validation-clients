@@ -260,7 +260,9 @@ function ValidationRequests() {
 
 	var columns = {
 		id: { label: "ID" },
+		username: { label: "User Name" },
 		email: { label: "Email" },
+		// apikeyid: { label: "API key" },
 		result: { label: "Result" },
 		datetime: { label: "Datetime" },
 	}
@@ -298,7 +300,7 @@ function ValidationRequests() {
 					queryPrams={queryPrams}
 					columns={columns}
 					entries={requestData}
-					itemPath={"orders"}
+					itemPath={""}
 					onChange={onChangeQueryPrams}
 					loading={loading}
 					selectedRows={selectedRows}
@@ -384,11 +386,11 @@ function ValidationRequests() {
 																		id == "verifySMTP" ||
 																		id == "isInboxFull" ||
 																		id == "isValidEmail") && (
-																		<>
-																			{value == "yes" && <> No</>}
-																			{value != "yes" && <> Yes</>}
-																		</>
-																	)}
+																			<>
+																				{value == "yes" && <> No</>}
+																				{value != "yes" && <> Yes</>}
+																			</>
+																		)}
 																</div>
 															</td>
 														</tr>
