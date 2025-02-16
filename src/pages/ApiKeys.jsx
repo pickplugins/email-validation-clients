@@ -188,7 +188,7 @@ function ApiKeys() {
 
 	}
 
-	function delete_tasks_entries() {
+	function delete_api_keys() {
 		// const token = localStorage.getItem("token");
 
 		if (!token) {
@@ -205,7 +205,7 @@ function ApiKeys() {
 		postData = JSON.stringify(postData);
 		setloading(true);
 		fetch(
-			appData.serverUrl + "wp-json/email-validation/v2/delete_api_entries",
+			appData.serverUrl + "wp-json/email-validation/v2/delete_api_keys",
 			{
 				method: "POST",
 				headers: {
@@ -342,9 +342,9 @@ function ApiKeys() {
 							<div
 								className="px-3 py-[5px] rounded-sm bg-red-600 hover:bg-red-500 text-white cursor-pointer"
 								onClick={(ev) => {
-									delete_tasks_entries();
+									delete_api_keys();
 								}}>
-								Delete API
+								Delete API Keys
 							</div>
 						)}
 					</div>

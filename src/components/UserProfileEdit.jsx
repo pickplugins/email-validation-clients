@@ -6,7 +6,7 @@ import { AuthContext } from "./AuthContext";
 
 const UserProfileEdit = ({ user }) => {
 
-const { token, userData } = useContext(AuthContext);
+	const { token, userData } = useContext(AuthContext);
 	// var [userData, setuserData] = useState(user);
 	var [editUserData, seteditUserData] = useState({});
 
@@ -109,7 +109,7 @@ const { token, userData } = useContext(AuthContext);
 	}, []);
 
 	const updateUserPassword = () => {
-console.log("Password Changed");
+		console.log("Password Changed");
 	}
 
 
@@ -120,7 +120,7 @@ console.log("Password Changed");
 				<div className="grid md:grid-cols-12 gap-5">
 					<div className="md:col-span-8 bg-white rounded-sm">
 						<form action="" className="p-5">
-							<h3 className="my-5 text-2xl">General Information</h3>
+							<h3 className="mb-5 text-2xl">General Information</h3>
 
 							<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 								<div className="">
@@ -275,7 +275,7 @@ console.log("Password Changed");
 						</form>
 					</div>
 					<div className="md:col-span-4 bg-white rounded-sm p-5">
-						<h3 className="my-5 text-2xl">Change Password</h3>
+						<h3 className="mb-5 text-2xl">Change Password</h3>
 						<form className="grid grid-cols-1 gap-8">
 							<div>
 								<label htmlFor="" className="block">

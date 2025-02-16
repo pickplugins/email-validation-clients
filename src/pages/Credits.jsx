@@ -252,16 +252,16 @@ function Credits() {
 			fetchPosts();
 		}
 	}
-	function delete_credit_entries() {
+	function delete_credits() {
 		// const token = localStorage.getItem("token");
 
 		if (!token) {
 			throw new Error("No token found");
 		}
 
-		if (queryPrams.page < 0) {
-			return;
-		}
+		// if (queryPrams.page < 0) {
+		// 	return;
+		// }
 
 		var postData = {
 			ids: selectedRows,
@@ -269,7 +269,7 @@ function Credits() {
 		postData = JSON.stringify(postData);
 		setloading(true);
 		fetch(
-			appData.serverUrl + "wp-json/email-validation/v2/delete_credit_entries",
+			appData.serverUrl + "wp-json/email-validation/v2/delete_credits",
 			{
 				method: "POST",
 				headers: {
@@ -387,18 +387,10 @@ function Credits() {
 							{addCredits.loading && <>Loading...</>}
 							{addCredits.errors && <>There is an error.</>}
 							{addCredits.success && <>Task Added.</>}
-							{selectedRows.length > 0 && (
-								<div
-									className="px-3 py-[5px] rounded-sm bg-red-600 hover:bg-red-500 text-white cursor-pointer"
-									onClick={(ev) => {
-										delete_credit_entries();
-									}}>
-									Delete Tasks
-								</div>
-							)}
 
 
-							<div>
+
+							<div className="flex items-center gap-2">
 								<select
 									name=""
 									id=""
@@ -411,6 +403,16 @@ function Credits() {
 									<option value="credit">Credit</option>
 									<option value="debit">Debit</option>
 								</select>
+
+								{selectedRows.length > 0 && (
+									<div
+										className="px-3 py-[5px] rounded-sm bg-red-600 hover:bg-red-500 text-white cursor-pointer"
+										onClick={(ev) => {
+											delete_credits();
+										}}>
+										Delete Credits
+									</div>
+								)}
 							</div>
 
 						</div>
