@@ -140,10 +140,10 @@ function Subscriptions({ user }) {
 	var columns = {
 		check: { label: "Check" },
 		id: { label: "ID" },
-		order_id: { label: "Order id" },
+		// order_id: { label: "Order id" },
 		user_email: { label: "Email" },
 		total: { label: "Total" },
-		test_mode: { label: "Test Mode" },
+		// test_mode: { label: "Test Mode" },
 		trial_ends_at: { label: "Trial Ends" },
 		renews_at: { label: "Renews" },
 		datetime: { label: "Datetime" },

@@ -25,64 +25,64 @@ function Orders({ user }) {
 		id: { label: "ID" },
 		user_name: { label: "User Name" },
 		status: { label: "Status" },
-		discount_total: { label: "Discount" },
-		subtotal: { label: "Total" },
-		refunded_total: { label: "Refunded" },
+		// discount_total: { label: "Discount" },
+		total: { label: "Total" },
+		// refunded_total: { label: "Refunded" },
 		datetime: { label: "Datetime" },
 	};
 
-function delete_orders() {
-	const token = localStorage.getItem("token");
+	function delete_orders() {
+		const token = localStorage.getItem("token");
 
-	if (!token) {
-		throw new Error("No token found");
-	}
+		if (!token) {
+			throw new Error("No token found");
+		}
 
-	if (queryPrams.page < 0) {
-		return;
-	}
+		if (queryPrams.page < 0) {
+			return;
+		}
 
-	var postData = {
-		ids: selectedRows,
-	};
-	postData = JSON.stringify(postData);
-	setloading(true);
-	fetch(appData.serverUrl + "wp-json/email-validation/v2/delete_orders", {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-			Authorization: `Bearer ${token}`,
-		},
-		body: postData,
-	})
-		.then((response) => {
-			if (!response.ok) {
-				throw new Error("Token validation failed");
-			}
-
-			if (response.ok && response.status < 400) {
-				response.json().then((res) => {
-					var errors = res?.errors;
-					var success = res?.success;
-
-					setloading(false);
-
-					fetchPosts();
-
-					// setaddTask({ ...addTask, loading: false, errors: errors, success: success })
-
-					// setTimeout(() => {
-					// 	setaddTask({ ...addTask, title: "", success: null, errors: null })
-
-					// }, 3000);
-				});
-			}
+		var postData = {
+			ids: selectedRows,
+		};
+		postData = JSON.stringify(postData);
+		setloading(true);
+		fetch(appData.serverUrl + "wp-json/email-validation/v2/delete_orders", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+			body: postData,
 		})
-		.catch((_error) => {
-			//this.saveAsStatus = 'error';
-			// handle the error
-		});
-}
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error("Token validation failed");
+				}
+
+				if (response.ok && response.status < 400) {
+					response.json().then((res) => {
+						var errors = res?.errors;
+						var success = res?.success;
+
+						setloading(false);
+
+						fetchPosts();
+
+						// setaddTask({ ...addTask, loading: false, errors: errors, success: success })
+
+						// setTimeout(() => {
+						// 	setaddTask({ ...addTask, title: "", success: null, errors: null })
+
+						// }, 3000);
+					});
+				}
+			})
+			.catch((_error) => {
+				//this.saveAsStatus = 'error';
+				// handle the error
+			});
+	}
 
 	function fetchPosts() {
 

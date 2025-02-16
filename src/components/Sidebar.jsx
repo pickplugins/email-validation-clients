@@ -49,9 +49,8 @@ const Sidebar = ({ user }) => {
 
 	return (
 		<aside
-			className={`max-w-[300px]  border-r border-gray-800/50 bg-gray-200 text-gray-800 p-0 ${
-				!navToggle && "w-[300px]"
-			}`}>
+			className={`max-w-[300px]  border-r border-gray-800/50 bg-gray-200 text-gray-800 p-0 ${!navToggle && "w-[300px]"
+				}`}>
 			<div className="bg-blue-700 p-3 text-white h-[70px]">
 				<Link to={`/`} className="flex gap-3 items-center">
 					<div className="w-[30px]">
@@ -68,6 +67,7 @@ const Sidebar = ({ user }) => {
 					<div className={navToggle ? "hidden" : "hidden md:block text-3xl"}>
 						IsSpammy
 					</div>
+					<div className="bg-blue-800 text-white rounded-sm px-3">Beta</div>
 				</Link>
 			</div>
 
@@ -80,11 +80,10 @@ const Sidebar = ({ user }) => {
 									cla
 									key={index}
 									to={`/${nav.value}`}
-									className={`${
-										currentLocation == "/" + nav.value
-											? "bg-gray-200"
-											: "bg-white"
-									} hover:bg-gray-200 text-blue-500 border-0 border-b border-solid border-gray-300 cursor-pointer px-4 py-2 flex items-center gap-2`}>
+									className={`${currentLocation == "/" + nav.value
+										? "bg-gray-200"
+										: "bg-white"
+										} hover:bg-gray-200 text-blue-500 border-0 border-b border-solid border-gray-300 cursor-pointer px-4 py-2 flex items-center gap-2`}>
 									<span className="">{nav.icon}</span>{" "}
 									<span
 										className={`${navToggle ? "hidden" : "hidden md:block"}`}>
