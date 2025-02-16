@@ -6,7 +6,7 @@ import Spinner from "../components/Spinner";
 
 
 
-function Orders({user}) {
+function Orders({ user }) {
 
 	var [appData, setappData] = useState(window.appData);
 
@@ -18,9 +18,10 @@ function Orders({user}) {
 
 	var columns = {
 		id: { label: "ID" },
+		user_name: { label: "User Name" },
 		status: { label: "Status" },
 		discount_total: { label: "Discount" },
-		total: { label: "Total" },
+		subtotal: { label: "Total" },
 		refunded_total: { label: "Refunded" },
 		datetime: { label: "Datetime" },
 	}
