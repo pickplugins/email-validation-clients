@@ -255,6 +255,7 @@ function ApiKeys() {
 		title: { label: "Title" },
 		apikey: { label: "API key" },
 		status: { label: "Status" },
+		username: { label: "User name" },
 		datetime: { label: "Datetime" },
 	}
 

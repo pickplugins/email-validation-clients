@@ -52,7 +52,7 @@ const Sidebar = ({ user }) => {
 			className={`max-w-[300px]  border-r border-gray-800/50 bg-gray-200 text-gray-800 p-0 ${!navToggle && "w-[300px]"
 				}`}>
 			<div className="bg-blue-700 p-3 text-white h-[70px]">
-				<Link to={`/`} className="flex gap-3 items-center">
+				<div className="flex gap-3 items-center">
 					<div className="w-[30px]">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
@@ -64,11 +64,15 @@ const Sidebar = ({ user }) => {
 							<circle cx="18" cy="16" r="1" />
 						</svg>
 					</div>
-					<div className={navToggle ? "hidden" : "hidden md:block text-3xl"}>
-						IsSpammy
+					<div className={`${navToggle ? "hidden" : "hidden md:block text-3xl"} flex gap-3 justify-between items-center w-full`}>
+						<div className="flex gap-3 items-center">
+							<Link to={`/`}>IsSpammy</Link>
+							<span className="bg-blue-800 text-white rounded-sm px-3 py-1 inline text-[14px]">Beta 1.0</span>
+
+						</div>
+
 					</div>
-					<div className="bg-blue-800 text-white rounded-sm px-3">Beta</div>
-				</Link>
+				</div>
 			</div>
 
 			{token ? (
@@ -93,15 +97,15 @@ const Sidebar = ({ user }) => {
 							);
 						})}
 					</div>
-					<button
+					<div
 						onClick={() => setnavToggle(!navToggle)}
-						className="px-4 py-2 hidden md:block ">
+						className="px-4 py-2 hidden md:block w-full cursor-pointer text-white bg-blue-500">
 						{navToggle ? (
 							<IconLayoutSidebarRightCollapse />
 						) : (
 							<IconLayoutSidebarLeftCollapse />
 						)}
-					</button>
+					</div>
 				</>
 			) : (
 				<div className="flex flex-col">

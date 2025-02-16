@@ -3,6 +3,7 @@ import UserAccount from "../components/UserAccount";
 import EntriesTable from "../components/EntriesTable";
 import { useState, useEffect } from "react";
 import Spinner from "../components/Spinner";
+import { IconRefresh } from "@tabler/icons-react";
 
 
 
@@ -169,6 +170,25 @@ function Orders({ user }) {
 	return (
 		<Layout user={user}>
 			<div>
+				<div className="flex gap-3 w-full md:justify-end p-4">
+					{selectedRows.length > 0 && (
+						<div
+							className="px-3 py-[5px] rounded-sm bg-red-600 hover:bg-red-500 text-white cursor-pointer"
+							onClick={() => {
+								delete_orders();
+							}}>
+							Delete Orders
+						</div>
+					)}
+
+					<button
+						onClick={() => {
+							fetchPosts();
+						}}
+						className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
+						<IconRefresh />
+					</button>
+				</div>
 				<EntriesTable
 					queryPrams={queryPrams}
 					columns={columns}

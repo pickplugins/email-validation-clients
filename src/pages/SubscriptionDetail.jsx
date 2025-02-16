@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import Layout from "../components/Layout";
 import { useState, useEffect } from "react";
 
-function OrderDetail({user}) {
+function OrderDetail({ user }) {
   const { id } = useParams();
 
 
@@ -96,7 +96,7 @@ function OrderDetail({user}) {
   return (
     <Layout user={user} >
 
-      <div>
+      <div className="p-5">
 
         <h3 className="text-xl my-5">Subscription </h3>
 

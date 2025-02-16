@@ -2,6 +2,7 @@ import Layout from "../components/Layout";
 import { useState, useEffect } from "react";
 import EntriesTable from "../components/EntriesTable";
 import Spinner from "../components/Spinner";
+import { IconRefresh } from "@tabler/icons-react";
 
 
 
@@ -141,11 +142,13 @@ function Subscriptions({ user }) {
 		check: { label: "Check" },
 		id: { label: "ID" },
 		// order_id: { label: "Order id" },
+		user_name: { label: "User name" },
 		user_email: { label: "Email" },
-		total: { label: "Total" },
 		// test_mode: { label: "Test Mode" },
 		trial_ends_at: { label: "Trial Ends" },
 		renews_at: { label: "Renews" },
+		total: { label: "Total" },
+
 		datetime: { label: "Datetime" },
 
 	}
@@ -161,12 +164,36 @@ function Subscriptions({ user }) {
 	return (
 		<Layout user={user}>
 			<div>
+				<div className="flex w-full gap-2 md:justify-end p-4">
+					{selectedRows.length > 0 && (
+						<div
+							className="px-3 py-[5px] rounded-sm bg-red-600 hover:bg-red-500 text-white cursor-pointer"
+							onClick={() => {
+								delete_subscriptions();
+							}}>
+							Delete Subscriptions
+						</div>
+					)}
 
-				<EntriesTable queryPrams={queryPrams} columns={columns} entries={subscriptionsData} itemPath={"orders"} onChange={onChangeQueryPrams} loading={loading} selectedRows={selectedRows} onSelectRows={onSelectRows} />
+					<button
+						onClick={() => {
+							fetchPosts();
+						}}
+						className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
+						<IconRefresh />
+					</button>
+				</div>
 
-
-
-
+				<EntriesTable
+					queryPrams={queryPrams}
+					columns={columns}
+					entries={subscriptionsData}
+					itemPath={"subscriptions"}
+					onChange={onChangeQueryPrams}
+					loading={loading}
+					selectedRows={selectedRows}
+					onSelectRows={onSelectRows}
+				/>
 			</div>
 		</Layout>
 	);
