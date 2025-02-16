@@ -7,17 +7,17 @@
 }
 
 @theme{
-  --color-amazon-50: #f1f8f3;
---color-amazon-100: #ddeee0;
---color-amazon-200: #bedcc5;
---color-amazon-300: #92c3a2;
---color-amazon-400: #63a479;
---color-amazon-500: #42875c;
---color-amazon-600: #367850;
---color-amazon-700: #26563a;
---color-amazon-800: #20452f;
---color-amazon-900: #1b3928;
---color-amazon-950: #0e2016;
+  --color-primary-50: #f1f8f3;
+--color-primary-100: #ddeee0;
+--color-primary-200: #bedcc5;
+--color-primary-300: #92c3a2;
+--color-primary-400: #63a479;
+--color-primary-500: #42875c;
+--color-primary-600: #367850;
+--color-primary-700: #26563a;
+--color-primary-800: #20452f;
+--color-primary-900: #1b3928;
+--color-primary-950: #0e2016;
 }
 
 input[type="text"],

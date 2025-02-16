@@ -11,7 +11,7 @@ const Layout = ({ children }) => {
 
 
 	return (
-		<div className={`flex max-w-screen min-h-screen`}>
+		<div className={`flex max-w-screen min-h-screen bg-primary-200 dark:bg-primary-900`}>
 			<Sidebar />
 			<main className="flex-1 w-full">
 				<GlobalHeader />
