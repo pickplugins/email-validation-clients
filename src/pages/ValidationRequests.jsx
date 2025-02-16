@@ -18,6 +18,66 @@ function ValidationRequests() {
 
 	var [loading, setloading] = useState(false);
 
+	var [selectedRows, setselectedRows] = useState([]);
+
+
+	function onSelectRows(rows) {
+		setselectedRows(rows);
+	}
+
+	function delete_validation() {
+		const token = localStorage.getItem("token");
+
+		if (!token) {
+			throw new Error("No token found");
+		}
+
+		if (queryPrams.page < 0) {
+			return;
+		}
+
+		var postData = {
+			ids: selectedRows,
+		};
+		postData = JSON.stringify(postData);
+		setloading(true);
+		fetch(appData.serverUrl + "wp-json/email-validation/v2/delete_validation", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+			body: postData,
+		})
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error("Token validation failed");
+				}
+
+				if (response.ok && response.status < 400) {
+					response.json().then((res) => {
+						var errors = res?.errors;
+						var success = res?.success;
+
+						setloading(false);
+
+						fetchPosts();
+
+						// setaddTask({ ...addTask, loading: false, errors: errors, success: success })
+
+						// setTimeout(() => {
+						// 	setaddTask({ ...addTask, title: "", success: null, errors: null })
+
+						// }, 3000);
+					});
+				}
+			})
+			.catch((_error) => {
+				//this.saveAsStatus = 'error';
+				// handle the error
+			});
+	}
+
 
 	function fetchPosts() {
 		const token = localStorage.getItem("token");
@@ -214,42 +274,50 @@ function ValidationRequests() {
 	return (
 		<Layout>
 			<div>
-
-				<EntriesTable queryPrams={queryPrams} columns={columns} entries={requestData} itemPath={"orders"} onChange={onChangeQueryPrams} loading={loading} />
-
-
-
-
+				<EntriesTable
+					queryPrams={queryPrams}
+					columns={columns}
+					entries={requestData}
+					itemPath={"orders"}
+					onChange={onChangeQueryPrams}
+					loading={loading}
+					selectedRows={selectedRows}
+					onSelectRows={onSelectRows}
+				/>
 
 				<div className="p-5">
-
 					<div className="my-5 text-2xl font-bold">Single Validation</div>
 
 					<div className="flex gap-2 items-center">
-						<input type="email"
+						<input
+							type="email"
 							className="bg-gray-200 px-2 py-[5px] border border-solid rounded-sm"
-							value={validateMailPrams.email} onChange={ev => {
-								setvalidateMailPrams({ ...validateMailPrams, email: ev.target.value })
-							}} />
+							value={validateMailPrams.email}
+							onChange={(ev) => {
+								setvalidateMailPrams({
+									...validateMailPrams,
+									email: ev.target.value,
+								});
+							}}
+						/>
 						<button
 							className="p-3 py-[5px] bg-gray-600 text-white cursor-pointer rounded-sm"
-							onClick={ev => {
-								validateEmail()
-							}}>Validate</button>
+							onClick={(ev) => {
+								validateEmail();
+							}}>
+							Validate
+						</button>
 					</div>
 
-					{validateMailPrams.loading && (
-						<>Loading...</>
-					)}
+					{validateMailPrams.loading && <>Loading...</>}
 
 					{validateMailPrams.result != null && (
-
 						<>
 							<table className="table-fixed border-collapse my-5">
 								<tbody>
-									{Object.entries(validateMailPrams.result).map(args => {
-										var id = args[0]
-										var value = args[1]
+									{Object.entries(validateMailPrams.result).map((args) => {
+										var id = args[0];
+										var value = args[1];
 
 										// console.log(args);
 
@@ -258,57 +326,35 @@ function ValidationRequests() {
 												{validationPrams[id] != undefined && (
 													<>
 														<tr className=" " key={id}>
-															<td className="w-[250px] py-4 border-0 border-b border-solid border-gray-400">{validationPrams[id]?.label}</td>
+															<td className="w-[250px] py-4 border-0 border-b border-solid border-gray-400">
+																{validationPrams[id]?.label}
+															</td>
 															<td className="w-[250px] py-4  border-0 border-b border-solid border-gray-400">
-
 																<div className="flex items-center">
-
-
-
 																	{id == "status" && (
-																		<>
-																			{JSON.stringify(value)}
-
-																		</>
+																		<>{JSON.stringify(value)}</>
 																	)}
 																	{id == "safeToSend" && (
 																		<>
-																			{value != 'yes' && (
-																				<> No</>
-																			)}
-																			{value == 'yes' && (
-																				<> Yes</>
-																			)}
+																			{value != "yes" && <> No</>}
+																			{value == "yes" && <> Yes</>}
 																		</>
 																	)}
 
-
-
 																	{id == "isGibberishEmail" && (
 																		<>
-																			{value != 'yes' && (
-																				<> No</>
-																			)}
-																			{value == 'yes' && (
-																				<> Yes</>
-																			)}
+																			{value != "yes" && <> No</>}
+																			{value == "yes" && <> Yes</>}
 																		</>
 																	)}
 																	{id == "isSMTPBlacklisted" && (
 																		<>
-																			{value != 'yes' && (
-																				<> No</>
-																			)}
-																			{value == 'yes' && (
-																				<> Yes</>
-																			)}
+																			{value != "yes" && <> No</>}
+																			{value == "yes" && <> Yes</>}
 																		</>
 																	)}
 
-
-
-																	{(
-																		id == "isSyntaxValid" ||
+																	{(id == "isSyntaxValid" ||
 																		id == "hasValidDomain" ||
 																		id == "isDisposableDomain" ||
 																		id == "isFreeEmailProvider" ||
@@ -317,41 +363,25 @@ function ValidationRequests() {
 																		id == "isCatchAllDomain" ||
 																		id == "verifySMTP" ||
 																		id == "isInboxFull" ||
-																		id == "isValidEmail"
-																	)
-																		&& (
-																			<>
-																				{value == 'yes' && (
-																					<> No</>
-																				)}
-																				{value != 'yes' && (
-																					<> Yes</>
-																				)}
-																			</>
-																		)}
-
+																		id == "isValidEmail") && (
+																		<>
+																			{value == "yes" && <> No</>}
+																			{value != "yes" && <> Yes</>}
+																		</>
+																	)}
 																</div>
-
 															</td>
 														</tr>
 													</>
 												)}
-
 											</>
-										)
-
+										);
 									})}
 								</tbody>
-
-
-
 							</table>
 						</>
-
 					)}
 				</div>
-
-
 			</div>
 		</Layout>
 	);

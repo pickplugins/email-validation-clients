@@ -14,9 +14,14 @@ function Orders({ user }) {
 	var [queryPrams, setqueryPrams] = useState({ keyword: "", page: 1, order: "DESC", limit: 10, first_date: "", last_date: "" });
 
 	var [loading, setloading] = useState(false);
+	var [selectedRows, setselectedRows] = useState([]);
+	function onSelectRows(rows) {
+		setselectedRows(rows);
+	}
 
 
 	var columns = {
+		check: { label: "Check" },
 		id: { label: "ID" },
 		user_name: { label: "User Name" },
 		status: { label: "Status" },
@@ -24,9 +29,60 @@ function Orders({ user }) {
 		subtotal: { label: "Total" },
 		refunded_total: { label: "Refunded" },
 		datetime: { label: "Datetime" },
+	};
+
+function delete_orders() {
+	const token = localStorage.getItem("token");
+
+	if (!token) {
+		throw new Error("No token found");
 	}
 
+	if (queryPrams.page < 0) {
+		return;
+	}
 
+	var postData = {
+		ids: selectedRows,
+	};
+	postData = JSON.stringify(postData);
+	setloading(true);
+	fetch(appData.serverUrl + "wp-json/email-validation/v2/delete_orders", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: `Bearer ${token}`,
+		},
+		body: postData,
+	})
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error("Token validation failed");
+			}
+
+			if (response.ok && response.status < 400) {
+				response.json().then((res) => {
+					var errors = res?.errors;
+					var success = res?.success;
+
+					setloading(false);
+
+					fetchPosts();
+
+					// setaddTask({ ...addTask, loading: false, errors: errors, success: success })
+
+					// setTimeout(() => {
+					// 	setaddTask({ ...addTask, title: "", success: null, errors: null })
+
+					// }, 3000);
+				});
+			}
+		})
+		.catch((_error) => {
+			//this.saveAsStatus = 'error';
+			// handle the error
+		});
+}
 
 	function fetchPosts() {
 
@@ -113,11 +169,16 @@ function Orders({ user }) {
 	return (
 		<Layout user={user}>
 			<div>
-
-				<EntriesTable queryPrams={queryPrams} columns={columns} entries={ordersData} itemPath={"orders"} onChange={onChangeQueryPrams} loading={loading} />
-
-
-
+				<EntriesTable
+					queryPrams={queryPrams}
+					columns={columns}
+					entries={ordersData}
+					itemPath={"orders"}
+					onChange={onChangeQueryPrams}
+					loading={loading}
+					selectedRows={selectedRows}
+					onSelectRows={onSelectRows}
+				/>
 			</div>
 		</Layout>
 	);

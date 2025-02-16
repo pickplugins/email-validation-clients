@@ -15,6 +15,64 @@ function Subscriptions({ user }) {
 
 	var [loading, setloading] = useState(false);
 
+	var [selectedRows, setselectedRows] = useState([]);
+
+	function onSelectRows(rows) {
+		setselectedRows(rows);
+	}
+
+	function delete_subscriptions() {
+		const token = localStorage.getItem("token");
+
+		if (!token) {
+			throw new Error("No token found");
+		}
+
+		if (queryPrams.page < 0) {
+			return;
+		}
+
+		var postData = {
+			ids: selectedRows,
+		};
+		postData = JSON.stringify(postData);
+		setloading(true);
+		fetch(appData.serverUrl + "wp-json/email-validation/v2/delete_subscriptions", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+			body: postData,
+		})
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error("Token validation failed");
+				}
+
+				if (response.ok && response.status < 400) {
+					response.json().then((res) => {
+						var errors = res?.errors;
+						var success = res?.success;
+
+						setloading(false);
+
+						fetchPosts();
+
+						// setaddTask({ ...addTask, loading: false, errors: errors, success: success })
+
+						// setTimeout(() => {
+						// 	setaddTask({ ...addTask, title: "", success: null, errors: null })
+
+						// }, 3000);
+					});
+				}
+			})
+			.catch((_error) => {
+				//this.saveAsStatus = 'error';
+				// handle the error
+			});
+	}
 
 
 	function fetchPosts() {
@@ -80,6 +138,7 @@ function Subscriptions({ user }) {
 
 
 	var columns = {
+		check: { label: "Check" },
 		id: { label: "ID" },
 		order_id: { label: "Order id" },
 		user_email: { label: "Email" },
@@ -103,7 +162,7 @@ function Subscriptions({ user }) {
 		<Layout user={user}>
 			<div>
 
-				<EntriesTable queryPrams={queryPrams} columns={columns} entries={subscriptionsData} itemPath={"orders"} onChange={onChangeQueryPrams} loading={loading} />
+				<EntriesTable queryPrams={queryPrams} columns={columns} entries={subscriptionsData} itemPath={"orders"} onChange={onChangeQueryPrams} loading={loading} selectedRows={selectedRows} onSelectRows={onSelectRows} />
 
 
 
