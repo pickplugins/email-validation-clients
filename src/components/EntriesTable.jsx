@@ -140,10 +140,11 @@ function Html(props) {
 						<option value="200">200</option>
 					</select>
 
-					<div className="
+					<div
+						className="
 					flex items-center gap-3">
 						<div
-							className="px-3 py-[5px] rounded-sm bg-blue-600 hover:bg-blue-500 text-white cursor-pointer"
+							className="px-3 py-[5px] rounded-sm bg-primary-600 hover:bg-primary-500 text-primary-100 dark:text-primary-800 cursor-pointer"
 							onClick={(ev) => {
 								var page = queryPrams.page;
 								if (page == 1) return;
@@ -152,7 +153,7 @@ function Html(props) {
 							<IconArrowNarrowLeftDashed />
 						</div>
 						<div
-							className="p-3 py-[5px] rounded-sm bg-blue-600 hover:bg-blue-500 text-white cursor-pointer"
+							className="p-3 py-[5px] rounded-sm bg-primary-600 hover:bg-primary-500 text-primary-100 dark:text-primary-800 cursor-pointer"
 							onClick={(ev) => {
 								var page = queryPrams.page + 1;
 								if (page > entries?.maxPages) return;
@@ -165,18 +166,20 @@ function Html(props) {
 			</div>
 
 			<div className="overflow-x-auto w-full">
-				<table className="table-auto md:table-fixed w-full text-center border-collapse">
+				<table className="table-auto md:table-fixed w-full text-center">
 					<thead>
-						<tr className=" border border-solid border-gray-200">
+						<tr className="border-y border-y-gray-200 bg-primary-900 dark:bg-primary-200 text-primary-100 dark:text-primary-900">
 							{Object.entries(columns).map((args) => {
 								var columnIndex = args[0];
 								var columnData = args[1];
 								return (
 									<th
 										key={columnIndex}
-										className={`px-5 py-2 ${columnIndex == "check" ? "w-12 " : ""
-											} ${columnIndex == "id" ? "w-20 " : ""} ${columnIndex == "email" ? "text-left pl-5" : ""
-											} ${columnIndex == "title" ? "text-left pl-5" : ""}`}>
+										className={`px-5 py-2 ${
+											columnIndex == "check" ? "w-12 " : ""
+										} ${columnIndex == "id" ? "w-20 " : ""} ${
+											columnIndex == "email" ? "text-left pl-5" : ""
+										} ${columnIndex == "title" ? "text-left pl-5" : ""}`}>
 										{columnIndex == "check" && (
 											<div
 												onClick={(ev) => {
@@ -191,12 +194,12 @@ function Html(props) {
 													setLastCheckedId(null);
 												}}>
 												{selectedAll && (
-													<span className="cursor-pointer text-blue-500">
+													<span className="cursor-pointer text-primary-500">
 														<IconCheckbox />
 													</span>
 												)}
 												{!selectedAll && (
-													<span className="cursor-pointer text-blue-500">
+													<span className="cursor-pointer text-primary-500">
 														<IconSquare />
 													</span>
 												)}
@@ -204,8 +207,9 @@ function Html(props) {
 										)}
 										{columnIndex != "check" && (
 											<span
-												className={`${columnIndex == "email" ? "text-left pl-5" : ""
-													}`}>
+												className={`${
+													columnIndex == "email" ? "text-left pl-5" : ""
+												}`}>
 												{columnData.label}
 											</span>
 										)}
@@ -227,40 +231,51 @@ function Html(props) {
 							return (
 								<tr
 									key={index}
-									className="border-0 border-b border-solid border-gray-200">
+									className="border-0 border-b border-b-gray-200 dark:bg-primary-600">
 									{Object.entries(columns).map((args) => {
 										var columnIndex = args[0];
 										var columnData = args[1];
 										return (
 											<td
 												key={columnIndex}
-												className={`px-5 py-2 break-all ${columnIndex == "email" ? "text-left pl-5" : ""
-													} ${columnIndex == "title" ? "text-left pl-5" : ""}`}>
+												className={`px-5 py-2 break-all ${
+													columnIndex == "email" ? "text-left pl-5" : ""
+												} ${columnIndex == "title" ? "text-left pl-5" : ""}`}>
 												{columnIndex == "title" && (
 													<div className="flex items-center gap-2 select-none">
 														{itemPath.length > 0 && (
-															<Link className="" to={`/${itemPath}/${entry.id}`}>
-																{entry.title.length == 0 ? "#" + entry.id : entry.title}
+															<Link
+																className=""
+																to={`/${itemPath}/${entry.id}`}>
+																{entry.title.length == 0
+																	? "#" + entry.id
+																	: entry.title}
 															</Link>
 														)}
 														{itemPath.length == 0 && (
 															<span className="cursor-pointer select-none">
-																{entry.title.length == 0 ? "#" + entry.id : entry.title}
+																{entry.title.length == 0
+																	? "#" + entry.id
+																	: entry.title}
 															</span>
 														)}
 													</div>
 												)}
-												{columnIndex != "title" && columnIndex != "check" && columnIndex != 'apikey' && (
-													<span
-														className={`${columnIndex == "email" ? "text-left pl-5" : ""
+												{columnIndex != "title" &&
+													columnIndex != "check" &&
+													columnIndex != "apikey" && (
+														<span
+															className={`${
+																columnIndex == "email" ? "text-left pl-5" : ""
 															} `}>
-														{entry[columnIndex]}
-													</span>
-												)}
+															{entry[columnIndex]}
+														</span>
+													)}
 												{columnIndex == "apikey" && (
 													<span
-														className={`${columnIndex == "email" ? "text-left pl-5" : ""
-															} break-all`}>
+														className={`${
+															columnIndex == "email" ? "text-left pl-5" : ""
+														} break-all`}>
 														{maskMiddle(entry[columnIndex])}
 														{/* {entry[columnIndex]} */}
 													</span>
@@ -308,9 +323,11 @@ function Html(props) {
 								return (
 									<th
 										key={columnIndex}
-										className={`px-5 py-2 ${columnIndex == "check" ? "w-12 " : ""
-											} ${columnIndex == "id" ? "w-20 " : ""} ${columnIndex == "email" ? "text-left pl-5" : ""
-											} ${columnIndex == "title" ? "text-left pl-5" : ""}`}>
+										className={`px-5 py-2 ${
+											columnIndex == "check" ? "w-12 " : ""
+										} ${columnIndex == "id" ? "w-20 " : ""} ${
+											columnIndex == "email" ? "text-left pl-5" : ""
+										} ${columnIndex == "title" ? "text-left pl-5" : ""}`}>
 										{columnIndex == "check" && (
 											<div
 												onClick={(ev) => {
@@ -341,8 +358,9 @@ function Html(props) {
 										)}
 										{columnIndex != "check" && (
 											<span
-												className={`${columnIndex == "email" ? "text-left pl-5" : ""
-													}`}>
+												className={`${
+													columnIndex == "email" ? "text-left pl-5" : ""
+												}`}>
 												{columnData.label}
 											</span>
 										)}
