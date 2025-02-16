@@ -825,6 +825,19 @@ Each Mail Per Line.
               {reportsPrams.show && (
                 <Popover className="top-full w-[500px] right-0 mt-2 bg-white px-4 py-3 rounded-sm border border-gray-200 text-gray-700 text-left">
 
+                  <div className="flex items-center mb-4 gap-3">
+                    <div className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer" onClick={ev => {
+                      get_task_report()
+                    }}>Update</div>
+
+                    {loading && (
+                      <div>
+                        <Spinner />
+                      </div>
+                    )}
+
+                  </div>
+
                   <div className="grid grid-cols-2 gap-4">
 
                     <div>Completed: {reportsPrams.completeCount}</div>
