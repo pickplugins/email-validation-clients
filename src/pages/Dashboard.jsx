@@ -19,8 +19,9 @@ import {
   IconLayoutSidebarRightCollapse,
   IconRotateRectangle,
 } from "@tabler/icons-react";
+import { useTranslation } from "react-i18next";
 const Dashboard = () => {
-  const { userData, token } = useContext(AuthContext);
+  const { userData, token, t } = useContext(AuthContext);
   // const token = localStorage.getItem("token");
 
   var [appData, setappData] = useState(window.appData);
@@ -92,105 +93,90 @@ const Dashboard = () => {
 
 
   return (
-    <Layout >
+		<Layout>
+			{!userData && (
+				<div className="grid grid-cols-2 md:grid-cols-1 gap-20 w-[1200px] px-10 mx-auto mt-10">
+					<div>
+						<h2 className="my-5 text-2xl">{t("Register")}</h2>
 
+						<Register />
+					</div>
+					<div>
+						<h2 className="my-5 text-2xl">{t("Login")}</h2>
 
-      {!userData && (
-        <div className="grid grid-cols-2 md:grid-cols-1 gap-20 w-[1200px] px-10 mx-auto mt-10">
-          <div>
-            <h2 className="my-5 text-2xl">Register</h2>
+						<Login />
+					</div>
+				</div>
+			)}
+			{userData && (
+				<div className="p-5">
+					<div className=" hidden gap-4 xl:grid-cols-5 md:grid-cols-3 sm:grid-cols-1 text-white">
+						<div className="bg-blue-500 p-3 rounded-sm">
+							<div className="flex items-center gap-3">
+								<div className="w-[50px]">
+									<IconClipboardList size="40" />
+								</div>
+								<div>
+									<div className="text-md">{t("Total Task")}</div>
+									<div className="text-3xl">123</div>
+								</div>
+							</div>
+						</div>
+						<div className="bg-blue-500 p-3 rounded-sm">
+							<div className="flex items-center gap-3">
+								<div className="w-[50px]">
+									<IconMailSpark size="40" />
+								</div>
+								<div>
+									<div className="text-md">{t("Total Email Validated")}</div>
+									<div className="text-3xl">123</div>
+								</div>
+							</div>
+						</div>
+						<div className="bg-blue-500 p-3 rounded-sm">
+							<div className="flex items-center gap-3">
+								<div className="w-[50px]">
+									<IconCloudDataConnection size="40" />
+								</div>
+								<div>
+									<div className="text-md">{t("Total API Keys")}</div>
+									<div className="text-3xl">123</div>
+								</div>
+							</div>
+						</div>
+						<div className="bg-blue-500 p-3 rounded-sm">
+							<div className="flex items-center gap-3">
+								<div className="w-[50px]">
+									<IconBasketCheck size="40" />
+								</div>
+								<div>
+									<div className="text-md">{t("Total Orders")}</div>
+									<div className="text-3xl">123</div>
+								</div>
+							</div>
+						</div>
+						<div className="bg-blue-500 p-3 rounded-sm">
+							<div className="flex items-center gap-3">
+								<div className="w-[50px]">
+									<IconCalculator size="40" />
+								</div>
+								<div>
+									<div className="text-md">{t("Total Credits Used")}</div>
+									<div className="text-3xl">123</div>
+								</div>
+							</div>
+						</div>
+					</div>
 
-            <Register />
-          </div>
-          <div>
-            <h2 className="my-5 text-2xl">Login</h2>
+					<div>
+						<div className="text-3xl mt-5">{t("Last 7 Days Stats")}</div>
 
-            <Login />
-          </div>
-
-        </div>
-      )}
-      {userData && (
-        <div className="p-5">
-
-          <div className="grid gap-4 xl:grid-cols-5 md:grid-cols-3 sm:grid-cols-1 text-white">
-
-            <div className="bg-blue-500 p-3 rounded-sm">
-              <div className="flex items-center gap-3">
-                <div className="w-[50px]">
-                  <IconClipboardList size="40" />
-                </div>
-                <div>
-                  <div className="text-md">Total Task</div>
-                  <div className="text-3xl">123</div>
-                </div>
-              </div>
-            </div>
-            <div className="bg-blue-500 p-3 rounded-sm">
-              <div className="flex items-center gap-3">
-                <div className="w-[50px]">
-                  <IconMailSpark size="40" />
-                </div>
-                <div>
-                  <div className="text-md">Total Email Validated</div>
-                  <div className="text-3xl">123</div>
-                </div>
-              </div>
-            </div>
-            <div className="bg-blue-500 p-3 rounded-sm">
-              <div className="flex items-center gap-3">
-                <div className="w-[50px]">
-                  <IconCloudDataConnection size="40" />
-                </div>
-                <div>
-                  <div className="text-md">Total API Keys</div>
-                  <div className="text-3xl">123</div>
-                </div>
-              </div>
-            </div>
-            <div className="bg-blue-500 p-3 rounded-sm">
-              <div className="flex items-center gap-3">
-                <div className="w-[50px]">
-                  <IconBasketCheck size="40" />
-                </div>
-                <div>
-                  <div className="text-md">Total Orders</div>
-                  <div className="text-3xl">123</div>
-                </div>
-              </div>
-            </div>
-            <div className="bg-blue-500 p-3 rounded-sm">
-              <div className="flex items-center gap-3">
-                <div className="w-[50px]">
-                  <IconCalculator size="40" />
-                </div>
-                <div>
-                  <div className="text-md">Total Credits Used</div>
-                  <div className="text-3xl">123</div>
-                </div>
-              </div>
-            </div>
-
-
-
-
-
-
-
-          </div>
-
-          <div>
-            <div className="text-3xl mt-5">Last 7 Days Stats</div>
-
-            <ChartComponent entries={chartEntries} />
-
-
-          </div>
-
-        </div>
-      )}
-    </Layout>
-  );
+						<ChartComponent entries={chartEntries} />
+					</div>
+				</div>
+			)}
+		</Layout>
+	);
 };
 
 export default Dashboard;

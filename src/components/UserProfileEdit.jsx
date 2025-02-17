@@ -6,7 +6,7 @@ import { AuthContext } from "./AuthContext";
 
 const UserProfileEdit = ({ user }) => {
 
-const { token, userData } = useContext(AuthContext);
+	const { token, userData, t } = useContext(AuthContext);
 	// var [userData, setuserData] = useState(user);
 	var [editUserData, seteditUserData] = useState({});
 
@@ -109,7 +109,7 @@ const { token, userData } = useContext(AuthContext);
 	}, []);
 
 	const updateUserPassword = () => {
-console.log("Password Changed");
+		console.log("Password Changed");
 	}
 
 
@@ -120,12 +120,12 @@ console.log("Password Changed");
 				<div className="grid md:grid-cols-12 gap-5">
 					<div className="md:col-span-8 bg-white rounded-sm">
 						<form action="" className="p-5">
-							<h3 className="my-5 text-2xl">General Information</h3>
+							<h3 className="mb-5 text-2xl">{t("General Information")}</h3>
 
 							<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 								<div className="">
 									<label htmlFor="" className="block">
-										First Name
+										{t("First Name")}
 									</label>
 									<input
 										type="text"
@@ -140,7 +140,7 @@ console.log("Password Changed");
 
 								<div className="">
 									<label htmlFor="" className="block">
-										Last Name
+										{t("Last Name")}
 									</label>
 									<input
 										type="text"
@@ -154,7 +154,7 @@ console.log("Password Changed");
 								</div>
 								<div className="">
 									<label htmlFor="" className="block">
-										Email
+										{t("Email")}
 									</label>
 									<input
 										type="text"
@@ -170,7 +170,7 @@ console.log("Password Changed");
 
 								<div className="">
 									<label htmlFor="" className="block">
-										Phone
+										{t("Phone")}
 									</label>
 									<input
 										type="text"
@@ -189,7 +189,7 @@ console.log("Password Changed");
 							<div className="grid md:grid-cols-2 gap-8">
 								<div className="">
 									<label htmlFor="" className="block">
-										Address 1
+										{t("Address 1")}
 									</label>
 									<input
 										type="text"
@@ -203,7 +203,7 @@ console.log("Password Changed");
 								</div>
 								<div className="">
 									<label htmlFor="" className="block">
-										Address 2
+										{t("Address 2")}
 									</label>
 									<input
 										type="text"
@@ -218,7 +218,7 @@ console.log("Password Changed");
 
 								<div className="">
 									<label htmlFor="" className="block">
-										Zip
+										{t("Zip Code")}
 									</label>
 									<input
 										type="text"
@@ -232,7 +232,7 @@ console.log("Password Changed");
 								</div>
 								<div className="">
 									<label htmlFor="" className="block">
-										City
+										{t("City")}
 									</label>
 									<input
 										type="text"
@@ -246,7 +246,7 @@ console.log("Password Changed");
 								</div>
 								<div className="">
 									<label htmlFor="" className="block">
-										Country
+										{t("Country")}
 									</label>
 									<input
 										type="text"
@@ -263,7 +263,7 @@ console.log("Password Changed");
 							<div className="my-5">
 								<input
 									type="submit"
-									value={"Update"}
+									value={t("Update")}
 									onClick={(ev) => {
 										ev.preventDefault();
 
@@ -275,11 +275,11 @@ console.log("Password Changed");
 						</form>
 					</div>
 					<div className="md:col-span-4 bg-white rounded-sm p-5">
-						<h3 className="my-5 text-2xl">Change Password</h3>
+						<h3 className="mb-5 text-2xl">{t("Change Password")}</h3>
 						<form className="grid grid-cols-1 gap-8">
 							<div>
 								<label htmlFor="" className="block">
-									Old Password
+									{t("Current Password")}
 								</label>
 								<input
 									type="password"
@@ -288,7 +288,7 @@ console.log("Password Changed");
 							</div>
 							<div>
 								<label htmlFor="" className="block">
-									New Password
+									{t("New Password")}
 								</label>
 								<input
 									type="password"
@@ -297,7 +297,7 @@ console.log("Password Changed");
 							</div>
 							<div>
 								<label htmlFor="" className="block">
-									Confirm Password
+									{t("Confirm Password")}
 								</label>
 								<input
 									type="password"
@@ -306,7 +306,7 @@ console.log("Password Changed");
 							</div>
 							<input
 								type="submit"
-								value={"Update"}
+								value={t("Update")}
 								onClick={(ev) => {
 									ev.preventDefault();
 
@@ -319,7 +319,7 @@ console.log("Password Changed");
 				</div>
 			</div>
 		</div>
-	);
+	);	
 }
 
 export default UserProfileEdit

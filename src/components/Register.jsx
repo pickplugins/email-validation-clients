@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
 import Layout from "../components/Layout";
 import { Navigate } from "react-router-dom";
 import Spinner from "./Spinner";
+import { AuthContext } from "./AuthContext";
 
 
 const Register = () => {
 	const [user, setUser] = useState({ email: "", password: "" });
+	const { t } = useContext(AuthContext);
 	const [messages, setMessages] = useState(null);
 	const [errors, seterrors] = useState(null);
 	const [token, setToken] = useState("");
@@ -88,26 +90,26 @@ const Register = () => {
 			<form onSubmit={handleRegister}>
 				<div className="grid grid-cols-1 gap-5">
 					<div>
-						<label htmlFor="" className="block">Email</label>
+						<label htmlFor="" className="block">{t("Email")}</label>
 						<input
 							className="p-3 py-[5px] bg-gray-400 border rounded-sm border-solid w-full"
 							type="email"
 							name="email"
-							placeholder="Username"
+							placeholder={t("Email")}
 							onChange={handleChange}
 							required
 						/>
 					</div>
 
 					<div>
-						<label htmlFor="" className="block">Password</label>
+						<label htmlFor="" className="block">{t("Password")}</label>
 
 						<input
 							className="p-3 py-[5px] bg-gray-400 border rounded-sm border-solid w-full"
 
 							type="password"
 							name="password"
-							placeholder="Password"
+							placeholder={t("Password")}
 							onChange={handleChange}
 							required
 						/>
@@ -115,7 +117,7 @@ const Register = () => {
 					<button
 						className="p-3 py-[5px] bg-gray-700 text-white cursor-pointer border rounded-sm border-solid w-full flex gap-2 items-center justify-center"
 
-						type="submit">Register {logging && <Spinner />}</button>
+						type="submit">{t("Register")} {logging && <Spinner />}</button>
 				</div>
 			</form>
 

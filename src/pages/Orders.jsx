@@ -1,15 +1,17 @@
 import Layout from "../components/Layout";
 import UserAccount from "../components/UserAccount";
 import EntriesTable from "../components/EntriesTable";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Spinner from "../components/Spinner";
 import { IconRefresh } from "@tabler/icons-react";
+import { AuthContext } from "../components/AuthContext";
 
 
 
 function Orders({ user }) {
 
 	var [appData, setappData] = useState(window.appData);
+	const { t } = useContext(AuthContext);
 
 	var [ordersData, setordersData] = useState(null);
 	var [queryPrams, setqueryPrams] = useState({ keyword: "", page: 1, order: "DESC", limit: 10, first_date: "", last_date: "" });
@@ -22,14 +24,14 @@ function Orders({ user }) {
 
 
 	var columns = {
-		check: { label: "Check" },
-		id: { label: "ID" },
-		user_name: { label: "User Name" },
-		status: { label: "Status" },
+		check: { label: t("Check") },
+		id: { label: t("ID") },
+		user_name: { label: t("User Name") },
+		status: { label: t("Status") },
 		// discount_total: { label: "Discount" },
-		total: { label: "Total" },
+		total: { label: t("Total") },
 		// refunded_total: { label: "Refunded" },
-		datetime: { label: "Datetime" },
+		datetime: { label: t("Datetime") },
 	};
 
 	function delete_orders() {
@@ -177,7 +179,7 @@ function Orders({ user }) {
 							onClick={() => {
 								delete_orders();
 							}}>
-							Delete Orders
+							{t("Delete Orders")}
 						</div>
 					)}
 
