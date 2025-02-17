@@ -232,6 +232,7 @@ function Credits() {
 		amount: { label: "Amount" },
 
 		source: { label: "Source" },
+		username: { label: "User name" },
 		// userid: { label: "Userid" },
 		// status: { label: "Status" },
 		datetime: { label: "Datetime" },

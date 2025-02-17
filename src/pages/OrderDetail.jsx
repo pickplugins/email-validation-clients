@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import Layout from "../components/Layout";
 import { useState, useEffect } from "react";
 
-function OrderDetail({user}) {
+function OrderDetail({ user }) {
   const { id } = useParams();
 
 
@@ -96,7 +96,7 @@ function OrderDetail({user}) {
     <Layout user={user} >
 
 
-      <div className="p-5">
+      <div className="p-5 grid grid-cols-2 gap-4">
         <div>
 
           <h3 className="text-xl my-4">Order Details</h3>
@@ -150,65 +150,7 @@ function OrderDetail({user}) {
 
         </div>
 
-        <div>
 
-          <h3 className="text-xl my-5">License </h3>
-
-
-          <div className="border-0 border-b border-solid border-gray-200 flex gap-3 items-center">
-            <div className=" px-5 py-2 w-40 font-bold">License Key</div>
-            <div className=""> {licenseData?.license_key}</div>
-
-          </div>
-          <div className="border-0 border-b border-solid border-gray-200 flex gap-3 items-center ">
-            <div className=" px-5 py-2 w-40 font-bold">Activation Limit</div>
-
-            <div className=""> {licenseData?.activation_limit}</div>
-
-          </div>
-          <div className="border-0 border-b border-solid border-gray-200 flex gap-3 items-center ">
-            <div className=" px-5 py-2 w-40 font-bold">Instances Count</div>
-
-            <div className=""> {licenseData?.instances_count}</div>
-
-          </div>
-          <div className="border-0 border-b border-solid border-gray-200 flex gap-3 items-center ">
-            <div className=" px-5 py-2 w-40 font-bold">Test Mode</div>
-
-            <div className=""> {licenseData?.test_mode}</div>
-
-          </div>
-          <div className="border-0 border-b border-solid border-gray-200 flex gap-3 items-center ">
-            <div className=" px-5 py-2 w-40 font-bold">Status</div>
-
-            <div className=""> {licenseData?.status}</div>
-          </div>
-          <div className="border-0 border-b border-solid border-gray-200 flex gap-3 items-center ">
-            <div className=" px-5 py-2 w-40 font-bold">User Email</div>
-
-            <div className=""> {licenseData?.user_email}</div>
-          </div>
-
-
-          <div className="border-0 border-b border-solid border-gray-200 flex gap-3 items-center ">
-            <div className=" px-5 py-2 w-40 font-bold" >Created at</div>
-
-            <div className=""> {licenseData?.created_at}</div>
-
-          </div>
-          <div className="border-0 border-b border-solid border-gray-200 flex gap-3 items-center ">
-            <div className=" px-5 py-2 w-40 font-bold">Expires at</div>
-
-            <div className=""> {licenseData?.expires_at}</div>
-          </div>
-
-
-
-
-
-
-
-        </div>
         <div>
 
           <h3 className="text-xl my-5">Subscription </h3>
@@ -271,6 +213,66 @@ function OrderDetail({user}) {
             <div className=" px-5 py-2 w-40 font-bold">Ends at</div>
 
             <div className=""> {subscriptionData?.ends_at}</div>
+          </div>
+
+
+
+
+
+
+
+        </div>
+
+        <div className="hidden">
+
+          <h3 className="text-xl my-5">License </h3>
+
+
+          <div className="border-0 border-b border-solid border-gray-200 flex gap-3 items-center">
+            <div className=" px-5 py-2 w-40 font-bold">License Key</div>
+            <div className=""> {licenseData?.license_key}</div>
+
+          </div>
+          <div className="border-0 border-b border-solid border-gray-200 flex gap-3 items-center ">
+            <div className=" px-5 py-2 w-40 font-bold">Activation Limit</div>
+
+            <div className=""> {licenseData?.activation_limit}</div>
+
+          </div>
+          <div className="border-0 border-b border-solid border-gray-200 flex gap-3 items-center ">
+            <div className=" px-5 py-2 w-40 font-bold">Instances Count</div>
+
+            <div className=""> {licenseData?.instances_count}</div>
+
+          </div>
+          <div className="border-0 border-b border-solid border-gray-200 flex gap-3 items-center ">
+            <div className=" px-5 py-2 w-40 font-bold">Test Mode</div>
+
+            <div className=""> {licenseData?.test_mode}</div>
+
+          </div>
+          <div className="border-0 border-b border-solid border-gray-200 flex gap-3 items-center ">
+            <div className=" px-5 py-2 w-40 font-bold">Status</div>
+
+            <div className=""> {licenseData?.status}</div>
+          </div>
+          <div className="border-0 border-b border-solid border-gray-200 flex gap-3 items-center ">
+            <div className=" px-5 py-2 w-40 font-bold">User Email</div>
+
+            <div className=""> {licenseData?.user_email}</div>
+          </div>
+
+
+          <div className="border-0 border-b border-solid border-gray-200 flex gap-3 items-center ">
+            <div className=" px-5 py-2 w-40 font-bold" >Created at</div>
+
+            <div className=""> {licenseData?.created_at}</div>
+
+          </div>
+          <div className="border-0 border-b border-solid border-gray-200 flex gap-3 items-center ">
+            <div className=" px-5 py-2 w-40 font-bold">Expires at</div>
+
+            <div className=""> {licenseData?.expires_at}</div>
           </div>
 
 

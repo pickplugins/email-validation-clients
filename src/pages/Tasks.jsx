@@ -29,10 +29,15 @@ function Tasks({ user }) {
 
 	var columns = {
 		check: { label: "Check" },
+
 		// id: { label: "ID" },
 		title: { label: "Title" },
+
 		status: { label: "Status" },
 		total: { label: "Total" },
+		completed: { label: "Completed" },
+		pending: { label: "Pending" },
+		user_name: { label: "User" },
 
 		datetime: { label: "Datetime" },
 	}
@@ -258,7 +263,6 @@ function Tasks({ user }) {
 						var errors = res?.errors;
 						var success = res?.success;
 
-						console.log(res)
 
 						setloading(false);
 						//setcurrentObject(res)
@@ -326,7 +330,7 @@ function Tasks({ user }) {
 
 						{addTask.edit && (
 							<>
-								<input type="text" placeholder="Task Title" className="p-3 py-[5px] bg-gray-400 border rounded-sm border-solid " value={addTask?.title} onChange={ev => {
+								<input type="text" placeholder="Task Title" className="p-3 py-[5px] border rounded-sm border-solid " value={addTask?.title} onChange={ev => {
 									setaddTask({ ...addTask, title: ev.target.value })
 
 								}} />

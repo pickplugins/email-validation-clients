@@ -241,6 +241,22 @@ function Html(props) {
 												className={`px-5 py-2 break-all ${
 													columnIndex == "email" ? "text-left pl-5" : ""
 												} ${columnIndex == "title" ? "text-left pl-5" : ""}`}>
+												{columnIndex == "id" && (
+													<div className="flex items-center gap-2 select-none">
+														{itemPath.length > 0 && (
+															<Link
+																className=""
+																to={`/${itemPath}/${entry.id}`}>
+																{"#" + entry.id}
+															</Link>
+														)}
+														{itemPath.length == 0 && (
+															<span className="cursor-pointer select-none">
+																{"#" + entry.id}
+															</span>
+														)}
+													</div>
+												)}
 												{columnIndex == "title" && (
 													<div className="flex items-center gap-2 select-none">
 														{itemPath.length > 0 && (
@@ -261,9 +277,11 @@ function Html(props) {
 														)}
 													</div>
 												)}
+
 												{columnIndex != "title" &&
 													columnIndex != "check" &&
-													columnIndex != "apikey" && (
+													columnIndex != "apikey" &&
+													columnIndex != "id" && (
 														<span
 															className={`${
 																columnIndex == "email" ? "text-left pl-5" : ""
@@ -287,12 +305,12 @@ function Html(props) {
 															handleRowSelection(entry.id, ev.shiftKey)
 														}>
 														{selectedRows?.includes(entry.id) && (
-															<span className="cursor-pointer text-blue-500">
+															<span className="cursor-pointer text-primary-500 dark:text-primary-400">
 																<IconCheckbox />
 															</span>
 														)}
 														{!selectedRows?.includes(entry.id) && (
-															<span className="cursor-pointer text-blue-500">
+															<span className="cursor-pointer text-primary-500 dark:text-primary-400">
 																<IconSquare />
 															</span>
 														)}
@@ -316,7 +334,7 @@ function Html(props) {
 						})}
 					</tbody>
 					<thead>
-						<tr className="bg-gray-300 border border-solid border-gray-200">
+						<tr className="border-y border-y-gray-200 bg-primary-900 dark:bg-primary-200 text-primary-100 dark:text-primary-900">
 							{Object.entries(columns).map((args) => {
 								var columnIndex = args[0];
 								var columnData = args[1];
@@ -345,12 +363,12 @@ function Html(props) {
 													}
 												}}>
 												{selectedAll && (
-													<span className="cursor-pointer text-blue-500">
+													<span className="cursor-pointer text-primary-500">
 														<IconCheckbox />
 													</span>
 												)}
 												{!selectedAll && (
-													<span className="cursor-pointer text-blue-500">
+													<span className="cursor-pointer text-primary-500">
 														<IconSquare />
 													</span>
 												)}

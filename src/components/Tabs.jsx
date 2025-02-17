@@ -13,16 +13,16 @@ const Spinner = ({ tabs, children }) => {
     <div className="w-full  mx-auto ">
       <div className="flex border-b border-gray-300">
         {tabs.map((tab, index) => (
-          <button
+          <div
             key={index}
-            className={`py-2 px-4 text-sm font-medium focus:outline-none transition-all cursor-pointer ${activeTab === index
-              ? "border-b-2 border-blue-500 text-blue-500"
-              : "text-gray-500 hover:text-blue-500"
+            className={`py-2 px-4 text-sm text-white bg-blue-400 font-medium focus:outline-none transition-all cursor-pointer ${activeTab === index
+              ? "border-b-2 border-blue-500 bg-blue-500 "
+              : " "
               }`}
             onClick={() => setActiveTab(index)}
           >
             {tab.label}
-          </button>
+          </div>
         ))}
       </div>
       <div className="mt-4 p-4 ">
