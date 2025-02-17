@@ -27,7 +27,7 @@ input[type="password"], textarea {
 }
 
 input[type="submit"], button {
-  @apply bg-blue-200 hover:bg-blue-400 text-white;
+  @apply bg-blue-700 hover:bg-blue-600 text-white;
 }
 
 select {
