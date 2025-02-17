@@ -81,7 +81,6 @@ const Sidebar = ({ user }) => {
 						{navs.map((nav, index) => {
 							return (
 								<Link
-									cla
 									key={index}
 									to={`/${nav.value}`}
 									className={`${currentLocation == "/" + nav.value
