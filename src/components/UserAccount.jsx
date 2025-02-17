@@ -29,7 +29,7 @@ const UserAccount = () => {
 		<div className="">
 			{/* {JSON.stringify(userData)} */}
 
-			<div className="flex items-center gap-3">
+			<div className="flex items-center gap-3 flex-wrap">
 				{/* <a href="https://isspammy.lemonsqueezy.com/buy/24f14039-0d6e-47c7-92ce-3d6a716f5d2d?embed=1" class="lemonsqueezy-button px-3 py-2 rounded-sm bg-amber-500 text-white cursor-pointer">Buy  Credits</a> */}
 
 				<div className=" px-3 py-2 rounded-sm bg-amber-500 text-white cursor-pointer flex items-center gap-3">

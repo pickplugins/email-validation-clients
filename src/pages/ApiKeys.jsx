@@ -311,7 +311,7 @@ function ApiKeys() {
 				)}
 				<div className=" p-4 ">
 					<div className="flex gap-3 items-center justify-between">
-						<div className="flex gap-3 items-center">
+						<div className="flex gap-3 flex-wrap items-center">
 							<button
 								className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer"
 								onClick={(ev) => {

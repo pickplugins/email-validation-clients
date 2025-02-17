@@ -12,12 +12,12 @@ import Spinner from "../components/Spinner";
 import Tab from "../components/Tab";
 import Tabs from "../components/Tabs";
 import {
-  IconRefresh, IconTableExport, IconChartHistogram
+  IconRefresh, IconTableExport, IconChartHistogram, IconFilterCog
 } from "@tabler/icons-react";
 function TaskDetail({ user }) {
   const { id } = useParams();
 
-  const { token } = useContext(AuthContext);
+  const { token, t } = useContext(AuthContext);
   var [appData, setappData] = useState(window.appData);
   var [currentObject, setcurrentObject] = useState(null);
 
@@ -39,6 +39,7 @@ function TaskDetail({ user }) {
     errors: false,
   });
 
+  var [addFiltersPrams, setaddFiltersPrams] = useState({ show: false });
   var [showExport, setshowExport] = useState(false);
   var [reportsPrams, setreportsPrams] = useState({ show: false });
 
@@ -530,11 +531,11 @@ function TaskDetail({ user }) {
 
 
   var columns = {
-    check: { label: "Check" },
+    check: { label: t("Check") },
     // id: { label: "ID" },
-    email: { label: "Email" },
-    status: { label: "Progress" },
-    result: { label: "Result" },
+    email: { label: t("Email") },
+    status: { label: t("Progress") },
+    result: { label: t("Result") },
     // datetime: { label: "Datetime" },
   };
 
@@ -583,380 +584,554 @@ function TaskDetail({ user }) {
   }
 
   return (
-    <Layout user={user}>
-      <div className="flex-1">
+		<Layout user={user}>
+			<div className="flex-1">
+				<div className="flex justify-between flex-wrap gap-4 p-4 ">
+					<div className="flex gap-3 items-center">
+						<div className="relative">
+							<button
+								className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer"
+								onClick={(ev) => {
+									setaddEntries({ ...addEntries, edit: !addEntries.edit });
+								}}>
+								{t("Add Emails")}
+							</button>
+							{addEntries.edit && (
+								<Popover className="top-full mt-2 w-[450px] bg-white px-4 py-3 rounded-sm shadow-lg border border-gray-200">
+									<Tabs tabs={[{ label: "Manual" }, { label: "CSV Upload" }]}>
+										<Tab index={0}>
+											<h2>{t("Add Emails Manually.")}</h2>
 
-        <div className="flex justify-between flex-wrap gap-4 p-4 ">
-          <div className="flex gap-3 items-center">
-            <div className="relative">
-              <button
-                className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer"
-                onClick={(ev) => {
-                  setaddEntries({ ...addEntries, edit: !addEntries.edit });
-                }}>
-                Add Emails
-              </button>
-              {addEntries.edit && (
-                <Popover className="top-full mt-2 w-[450px] bg-white px-4 py-3 rounded-sm shadow-lg border border-gray-200">
-
-                  <Tabs tabs={[{ label: "Manual" }, { label: "CSV Upload" }]}>
-                    <Tab index={0}>
-                      <h2>Add Emails Manually.</h2>
-
-                      <textarea
-                        name=""
-                        id=""
-                        placeholder="hello1@mail.com
+											<textarea
+												name=""
+												id=""
+												placeholder="hello1@mail.com
 hello1@mail.com
 Each Mail Per Line.
 "
-                        className="p-3  h-[150px] py-[5px] bg-gray-400 border rounded-sm border-solid w-full"
-                        value={addEntries?.emails}
-                        onChange={(ev) => {
-                          setaddEntries({ ...addEntries, emails: ev.target.value });
-                        }}></textarea>
-                      <button
-                        onClick={(ev) => {
-                          addTaskEntries();
-                        }}
-                        className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
-                        Submit
-                      </button>
-                    </Tab>
-                    <Tab index={1}>
-                      <h2>Pick a CSV file</h2>
+												className="p-3  h-[150px] py-[5px] bg-gray-400 border rounded-sm border-solid w-full"
+												value={addEntries?.emails}
+												onChange={(ev) => {
+													setaddEntries({
+														...addEntries,
+														emails: ev.target.value,
+													});
+												}}></textarea>
+											<button
+												onClick={(ev) => {
+													addTaskEntries();
+												}}
+												className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
+												{t("Submit")}
+											</button>
+										</Tab>
+										<Tab index={1}>
+											<h2>{t("Pick a CSV file")}</h2>
 
-                      <div className="my-4">
+											<div className="my-4">
+												<input
+													type="file"
+													className="p-3 bg-blue-100  py-[5px]  border-2 w-full cursor-pointer border-blue-500 rounded-sm border-solid "
+													value={""}
+													onChange={(ev) => {
+														const file = ev.target.files[0];
+														if (!file) return;
 
-                        <input type="file" className="p-3 bg-blue-100  py-[5px]  border-2 w-full cursor-pointer border-blue-500 rounded-sm border-solid " value={""} onChange={ev => {
+														const reader = new FileReader();
+														reader.onload = function (e) {
+															const text = e.target.result;
+															// parseCSV(text);
+															extractEmails(text);
+														};
+														reader.readAsText(file);
+													}}
+												/>
 
-
-                          const file = ev.target.files[0];
-                          if (!file) return;
-
-                          const reader = new FileReader();
-                          reader.onload = function (e) {
-                            const text = e.target.result;
-                            // parseCSV(text);
-                            extractEmails(text);
-
-                          };
-                          reader.readAsText(file);
-
-
-                        }} />
-
-
-                        <textarea
-                          name=""
-                          id=""
-                          placeholder="hello1@mail.com
+												<textarea
+													name=""
+													id=""
+													placeholder="hello1@mail.com
 hello1@mail.com
 Each Mail Per Line.
 "
-                          className="p-3 my-4 h-[150px] py-[5px] bg-gray-400 border rounded-sm border-solid w-full"
-                          value={csvUploadPrams?.emails}
-                          onChange={(ev) => {
-                            setcsvUploadPrams({ ...csvUploadPrams, emails: ev.target.value });
-                          }}></textarea>
-                        <button
-                          onClick={(ev) => {
-                            addTaskEntriesCSV();
-                          }}
-                          className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
-                          Submit
-                        </button>
+													className="p-3 my-4 h-[150px] py-[5px] bg-gray-400 border rounded-sm border-solid w-full"
+													value={csvUploadPrams?.emails}
+													onChange={(ev) => {
+														setcsvUploadPrams({
+															...csvUploadPrams,
+															emails: ev.target.value,
+														});
+													}}></textarea>
+												<button
+													onClick={(ev) => {
+														addTaskEntriesCSV();
+													}}
+													className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
+													Submit
+												</button>
+											</div>
+										</Tab>
+									</Tabs>
+								</Popover>
+							)}
+						</div>
 
-                      </div>
+						<div>
+							{addEntries.loading && (
+								<>
+									<Spinner />
+								</>
+							)}
+							{addEntries.errors && <>{t("There is an error.")}</>}
+							{addEntries.success && <>{t("Task Added.")}</>}
+						</div>
 
-                    </Tab>
+						<div className="relative">
+							<button
+								className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer"
+								onClick={(ev) => {
+									setaddFiltersPrams({
+										...addFiltersPrams,
+										show: !addFiltersPrams.show,
+									});
+								}}>
+								<IconFilterCog />
+							</button>
+							{addFiltersPrams.show && (
+								<Popover className="top-full mt-2 w-[450px] bg-white px-4 py-3 rounded-sm shadow-lg border border-gray-200">
+									<div>
+										<div className="flex justify-between my-4">
+											<label htmlFor="" className="w-[150px]">
+												{t("Status")}
+											</label>
+											<select
+												name=""
+												id=""
+												className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
+												value={queryPrams?.status}
+												onChange={(ev) => {
+													setqueryPrams({
+														...queryPrams,
+														status: ev.target.value,
+													});
+												}}>
+												<option value="">{t("Choose...")}</option>
+												<option value="valid">{t("Valid")}</option>
+												<option value="disposable">{t("disposable")}</option>
+												<option value="invalidEmail">
+													{t("invalidEmail")}
+												</option>
+												<option value="invalidDomain">
+													{t("invalidDomain")}
+												</option>
+												<option value="syntaxNotValid">
+													{t("syntaxNotValid")}
+												</option>
+											</select>
+										</div>
 
-                  </Tabs>
+										<div className="flex justify-between my-4">
+											<label htmlFor="" className="w-[150px]">
+												{t("Safe To Send")}
+											</label>
+											<select
+												name=""
+												id=""
+												className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
+												value={queryPrams?.safeToSend}
+												onChange={(ev) => {
+													setqueryPrams({
+														...queryPrams,
+														safeToSend: ev.target.value,
+													});
+												}}>
+												<option value="">Choose...</option>
+												<option value="yes">yes</option>
+												<option value="no">no</option>
+											</select>
+										</div>
+										<div className="flex justify-between my-4">
+											<label htmlFor="" className="w-[150px]">
+												{t("Disposable Domain")}
+											</label>
+											<select
+												name=""
+												id=""
+												className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
+												value={queryPrams?.isDisposableDomain}
+												onChange={(ev) => {
+													setqueryPrams({
+														...queryPrams,
+														isDisposableDomain: ev.target.value,
+													});
+												}}>
+												<option value="">Choose...</option>
+												<option value="yes">yes</option>
+												<option value="no">no</option>
+											</select>
+										</div>
+										<div className="flex justify-between my-4">
+											<label htmlFor="" className="w-[150px]">
+												{t("Valid Domain")}
+											</label>
+											<select
+												name=""
+												id=""
+												className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
+												value={queryPrams?.hasValidDomain}
+												onChange={(ev) => {
+													setqueryPrams({
+														...queryPrams,
+														hasValidDomain: ev.target.value,
+													});
+												}}>
+												<option value="">Choose...</option>
+												<option value="yes">yes</option>
+												<option value="no">no</option>
+											</select>
+										</div>
+										<div className="flex justify-between my-4">
+											<label htmlFor="" className="w-[150px]">
+												{t("Free Email")}
+											</label>
+											<select
+												name=""
+												id=""
+												className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
+												value={queryPrams?.isFreeEmailProvider}
+												onChange={(ev) => {
+													setqueryPrams({
+														...queryPrams,
+														isFreeEmailProvider: ev.target.value,
+													});
+												}}>
+												<option value="">Choose...</option>
+												<option value="yes">yes</option>
+												<option value="no">no</option>
+											</select>
+										</div>
+										<div className="flex justify-between my-4">
+											<label htmlFor="" className="w-[150px]">
+												{t("Gibberish Email")}
+											</label>
 
+											<select
+												name=""
+												id=""
+												className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
+												value={queryPrams?.isGibberishEmail}
+												onChange={(ev) => {
+													setqueryPrams({
+														...queryPrams,
+														isGibberishEmail: ev.target.value,
+													});
+												}}>
+												<option value="">Choose...</option>
+												<option value="yes">yes</option>
+												<option value="no">no</option>
+											</select>
+										</div>
+										<div className="flex justify-between my-4">
+											<label htmlFor="" className="w-[150px]">
+												{t("SMTP Blacklisted")}
+											</label>
 
-                </Popover>
-              )}
-            </div>
+											<select
+												name=""
+												id=""
+												className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
+												value={queryPrams?.isSMTPBlacklisted}
+												onChange={(ev) => {
+													setqueryPrams({
+														...queryPrams,
+														isSMTPBlacklisted: ev.target.value,
+													});
+												}}>
+												<option value="">Choose...</option>
+												<option value="yes">yes</option>
+												<option value="no">no</option>
+											</select>
+										</div>
+										<div className="flex justify-between my-4">
+											<label htmlFor="" className="w-[150px]">
+												{t("Role Based")}
+											</label>
 
-            {addEntries.loading && (
-              <>
-                <Spinner />
-              </>
-            )}
-            {addEntries.errors && <>There is an error.</>}
-            {addEntries.success && <>Task Added.</>}
-          </div>
+											<select
+												name=""
+												id=""
+												className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
+												value={queryPrams?.isRoleBasedEmail}
+												onChange={(ev) => {
+													setqueryPrams({
+														...queryPrams,
+														isRoleBasedEmail: ev.target.value,
+													});
+												}}>
+												<option value="">Choose...</option>
+												<option value="yes">yes</option>
+												<option value="no">no</option>
+											</select>
+										</div>
+										<div className="flex justify-between my-4">
+											<label htmlFor="" className="w-[150px]">
+												{t("Catch All Domain")}
+											</label>
+											<select
+												name=""
+												id=""
+												className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
+												value={queryPrams?.isCatchAllDomain}
+												onChange={(ev) => {
+													setqueryPrams({
+														...queryPrams,
+														isCatchAllDomain: ev.target.value,
+													});
+												}}>
+												<option value="">Choose...</option>
+												<option value="yes">yes</option>
+												<option value="no">no</option>
+											</select>
+										</div>
+										<div className="flex justify-between my-4">
+											<label htmlFor="" className="w-[150px]">
+												{t("Verified SMTP")}
+											</label>
+											<select
+												name=""
+												id=""
+												className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
+												value={queryPrams?.verifySMTP}
+												onChange={(ev) => {
+													setqueryPrams({
+														...queryPrams,
+														verifySMTP: ev.target.value,
+													});
+												}}>
+												<option value="">Choose...</option>
+												<option value="yes">yes</option>
+												<option value="no">no</option>
+											</select>
+										</div>
+									</div>
+								</Popover>
+							)}
+						</div>
+					</div>
 
-          <div className="gap-2 flex items-center flex-wrap">
-            <select
-              name=""
-              id=""
-              className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
-              value={queryPrams?.status}
-              onChange={(ev) => {
-                setqueryPrams({ ...queryPrams, status: ev.target.value });
+					<div className="gap-2 flex items-center flex-wrap"></div>
 
+					<div className="gap-2 flex items-center">
+						<div className="relative">
+							<button
+								className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer"
+								onClick={() => {
+									setshowExport(!showExport);
+								}}>
+								<IconTableExport />
+							</button>
+							<div
+								className={`absolute top-full right-0 bg-white mt-2 px-4 py-3 ${
+									showExport ? "" : "hidden"
+								}`}>
+								<button
+									className="text-nowrap cursor-pointer px-3 py-[5px] w-full rounded-sm bg-gray-600 hover:bg-gray-500 text-white mt-2"
+									onClick={() => {
+										email_export();
+									}}>
+									{t("Export All")}
+								</button>
+								<button
+									className="text-nowrap cursor-pointer px-3 py-[5px] w-full rounded-sm bg-gray-600 hover:bg-gray-500 text-white mt-2"
+									onClick={() => {
+										email_export();
+									}}>
+									{t("Export Selected")}
+								</button>
+							</div>
+						</div>
 
+						<button
+							onClick={(ev) => {
+								fetchPosts();
+							}}
+							className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
+							<IconRefresh />
+						</button>
+						<div className="relative">
+							<button
+								onClick={(ev) => {
+									setreportsPrams({
+										...reportsPrams,
+										show: !reportsPrams?.show,
+									});
+								}}
+								className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
+								<IconChartHistogram />
+							</button>
 
-              }}>
-              <option value="">Status</option>
-              <option value="valid">Valid</option>
-              <option value="disposable">disposable</option>
-              <option value="invalidEmail">invalidEmail</option>
-              <option value="invalidDomain">invalidDomain</option>
-              <option value="syntaxNotValid">syntaxNotValid</option>
-            </select>
-            <select
-              name=""
-              id=""
-              className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
-              value={queryPrams?.safeToSend}
-              onChange={(ev) => {
-                setqueryPrams({ ...queryPrams, safeToSend: ev.target.value });
-              }}>
-              <option value="">Safe To Send</option>
-              <option value="yes">yes</option>
-              <option value="no">no</option>
-            </select>
+							{reportsPrams.show && (
+								<Popover className="top-full w-[500px] right-0 mt-2 bg-white px-4 py-3 rounded-sm border border-gray-200 text-gray-700 text-left">
+									<div className="flex items-center mb-4 gap-3">
+										<div
+											className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer"
+											onClick={(ev) => {
+												get_task_report();
+											}}>
+											{t("Update")}
+										</div>
 
-            <select
-              name=""
-              id=""
-              className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
-              value={queryPrams?.isRoleBasedEmail}
-              onChange={(ev) => {
-                setqueryPrams({
-                  ...queryPrams,
-                  isRoleBasedEmail: ev.target.value,
-                });
-              }}>
-              <option value="">Role Based</option>
-              <option value="yes">yes</option>
-              <option value="no">no</option>
-            </select>
-            <select
-              name=""
-              id=""
-              className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
-              value={queryPrams?.hasValidDomain}
-              onChange={(ev) => {
-                setqueryPrams({
-                  ...queryPrams,
-                  hasValidDomain: ev.target.value,
-                });
-              }}>
-              <option value="">Valid Domain</option>
-              <option value="1">yes</option>
-              <option value="0">no</option>
-            </select>
-            <select
-              name=""
-              id=""
-              className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
-              value={queryPrams?.isFreeEmailProvider}
-              onChange={(ev) => {
-                setqueryPrams({
-                  ...queryPrams,
-                  isFreeEmailProvider: ev.target.value,
-                });
-              }}>
-              <option value="">Free Email</option>
-              <option value="1">yes</option>
-              <option value="0">no</option>
-            </select>
-            {/* <select name="" id=""
-              className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
-              value={queryPrams?.verifySMTP} onChange={ev => {
-                setqueryPrams({ ...queryPrams, verifySMTP: ev.target.value })
+										{loading && (
+											<div>
+												<Spinner />
+											</div>
+										)}
+									</div>
 
-              }}>
-              <option value="">Verified SMTP</option>
-              <option value="1">yes</option>
-              <option value="0">no</option>
-            </select> */}
-          </div>
+									<div className="grid grid-cols-2 gap-4">
+										<div>{t("Completed:")} {reportsPrams.completeCount}</div>
+										<div>{t("Pending:")} {reportsPrams.pendingCount}</div>
+										<div>{t("Total Not Safe To Send:")} {reportsPrams.safeToSend}</div>
+										<div>
+											{t("Total Syntax Invalid:")} {reportsPrams.isSyntaxValid}
+										</div>
+										<div>
+											{t("Total Invalid Domain:")} {reportsPrams.hasValidDomain}
+										</div>
+										<div>{t("Total Invalid Email:")} {reportsPrams.isValidEmail}</div>
+										<div>
+											{t("Total Disposable Domain:")} {reportsPrams.isDisposableDomain}
+										</div>
+										<div>{t("Total Inbox Full:")} {reportsPrams.isInboxFull ?? 0}</div>
+										<div>
+											{t("Total Free Email Provider:")}{" "}
+											{reportsPrams.isFreeEmailProvider ?? 0}
+										</div>
+										<div>
+											{t("Total Gibberish Email:")}{" "}
+											{reportsPrams.isGibberishEmail ?? 0}
+										</div>
+										<div>
+											{t("Total SMTP Blacklisted:")}{" "}
+											{reportsPrams.isSMTPBlacklisted ?? 0}
+										</div>
+										<div>
+											{t("Total Role-Based Email:")}{" "}
+											{reportsPrams.isRoleBasedEmail ?? 0}
+										</div>
+										<div>
+											{t("Total Catch-All Domain:")}{" "}
+											{reportsPrams.isCatchAllDomain ?? 0}
+										</div>
+										<div>{t("Total Verify SMTP:")} {reportsPrams.verifySMTP ?? 0}</div>
+									</div>
+								</Popover>
+							)}
+						</div>
 
-          <div className="gap-2 flex items-center">
-            <div className="relative">
-              <button
-                className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer"
-                onClick={() => {
-                  setshowExport(!showExport);
-                }}>
-                <IconTableExport />
-              </button>
-              <div
-                className={`absolute top-full right-0 bg-white mt-2 px-4 py-3 ${showExport ? "" : "hidden"
-                  }`}>
-                <button
-                  className="text-nowrap cursor-pointer px-3 py-[5px] w-full rounded-sm bg-gray-600 hover:bg-gray-500 text-white mt-2"
-                  onClick={() => {
-                    email_export();
-                  }}>
-                  Export All
-                </button>
-                <button
-                  className="text-nowrap cursor-pointer px-3 py-[5px] w-full rounded-sm bg-gray-600 hover:bg-gray-500 text-white mt-2"
-                  onClick={() => {
-                    email_export();
-                  }}>
-                  Export Selected
-                </button>
-              </div>
-            </div>
+						{selectedRows.length > 0 && (
+							<div
+								className="px-3 py-[5px] rounded-sm bg-red-600 hover:bg-red-500 text-white cursor-pointer"
+								onClick={(ev) => {
+									delete_tasks_entries();
+								}}>
+								{t("Delete Selected")}
+							</div>
+						)}
+						<button className=" relative px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
+							<div
+								onClick={() => {
+									setshowSetting(!showSetting);
+								}}>
+								<IconSettings />
+							</div>
 
-            <button
-              onClick={(ev) => {
-                fetchPosts();
-              }}
-              className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
-              <IconRefresh />
-            </button>
-            <div className="relative">
+							{showSetting && (
+								<Popover className="top-full w-[400px] right-0 mt-2 bg-white px-4 py-3 rounded-sm border border-gray-200 text-gray-700 text-left">
+									<div>
+										<label htmlFor="" className="my-3">
+											{t("Title")}
+										</label>
+										<input
+											type="text"
+											className="border rounded-sm border-solid py-[3px] px-2 w-full cursor-pointer block"
+											value={currentObject?.title}
+											onChange={(ev) => {
+												setcurrentObject({
+													...currentObject,
+													title: ev.target.value,
+												});
+											}}
+										/>
+									</div>
 
-              <button
-                onClick={(ev) => {
-                  setreportsPrams({ ...reportsPrams, show: !reportsPrams?.show })
-                }}
-                className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
-                <IconChartHistogram />
-              </button>
+									<div className="flex items-center gap-2 my-4">
+										<label htmlFor="">{t("Merge CSV file on Export?")}</label>
+										<input
+											type="checkbox"
+											value={""}
+											checked={currentObject.mergeCSV ? true : false}
+											onChange={(ev) => {
+												setcurrentObject({
+													...currentObject,
+													mergeCSV: !currentObject.mergeCSV,
+												});
+											}}
+										/>
+									</div>
+									<div className="flex items-center gap-2 my-4">
+										<label htmlFor="">
+											{t("Send Webhhok Request on Validation?")}
+										</label>
+										<input
+											type="checkbox"
+											value={""}
+											checked={currentObject.sendWebhook ? true : false}
+											onChange={(ev) => {
+												setcurrentObject({
+													...currentObject,
+													sendWebhook: !currentObject.sendWebhook,
+												});
+											}}
+										/>
+									</div>
 
-              {reportsPrams.show && (
-                <Popover className="top-full w-[500px] right-0 mt-2 bg-white px-4 py-3 rounded-sm border border-gray-200 text-gray-700 text-left">
+									<div
+										className={`${currentObject.sendWebhook ? "" : "hidden"}`}>
+										<label htmlFor="" className="my-3">
+											{t("Webhook URL")}
+										</label>
+										<input
+											type="text"
+											className="border rounded-sm border-solid py-[3px] px-2 w-full cursor-pointer block"
+											value={currentObject?.webhookUrl}
+											onChange={(ev) => {
+												setcurrentObject({
+													...currentObject,
+													webhookUrl: ev.target.value,
+												});
+											}}
+										/>
+									</div>
+								</Popover>
+							)}
+						</button>
+					</div>
+				</div>
 
-                  <div className="flex items-center mb-4 gap-3">
-                    <div className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer" onClick={ev => {
-                      get_task_report()
-                    }}>Update</div>
-
-                    {loading && (
-                      <div>
-                        <Spinner />
-                      </div>
-                    )}
-
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-
-                    <div>Completed: {reportsPrams.completeCount}</div>
-                    <div>Pending: {reportsPrams.pendingCount}</div>
-                    <div>Total Not Safe To Send: {reportsPrams.safeToSend}</div>
-                    <div>Total Syntax Invalid: {reportsPrams.isSyntaxValid}</div>
-                    <div>Total Invalid Domain: {reportsPrams.hasValidDomain}</div>
-                    <div>Total Invalid Email: {reportsPrams.isValidEmail}</div>
-                    <div>Total Disposable Domain: {reportsPrams.isDisposableDomain}</div>
-                    <div>Total Inbox Full: {reportsPrams.isInboxFull ?? 0}</div>
-                    <div>Total Free Email Provider: {reportsPrams.isFreeEmailProvider ?? 0}</div>
-                    <div>Total Gibberish Email: {reportsPrams.isGibberishEmail ?? 0}</div>
-                    <div>Total SMTP Blacklisted: {reportsPrams.isSMTPBlacklisted ?? 0}</div>
-                    <div>Total Role-Based Email: {reportsPrams.isRoleBasedEmail ?? 0}</div>
-                    <div>Total Catch-All Domain: {reportsPrams.isCatchAllDomain ?? 0}</div>
-                    <div>Total Verify SMTP: {reportsPrams.verifySMTP ?? 0}</div>
-
-
-
-                  </div>
-
-
-                </Popover>
-              )}
-            </div>
-
-            {selectedRows.length > 0 && (
-              <div
-                className="px-3 py-[5px] rounded-sm bg-red-600 hover:bg-red-500 text-white cursor-pointer"
-                onClick={(ev) => {
-                  delete_tasks_entries();
-                }}>
-                Delete Selected
-              </div>
-            )}
-            <button
-              className=" relative px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer"
-            >
-              <div onClick={() => {
-                setshowSetting(!showSetting);
-              }}><IconSettings /></div>
-
-              {showSetting && (
-                <Popover className="top-full w-[400px] right-0 mt-2 bg-white px-4 py-3 rounded-sm border border-gray-200 text-gray-700 text-left">
-
-                  <div>
-                    <label htmlFor="" className="my-3">Title</label>
-                    <input type="text" className="border rounded-sm border-solid py-[3px] px-2 w-full cursor-pointer block" value={currentObject?.title}
-
-                      onChange={(ev) => {
-                        setcurrentObject({
-                          ...currentObject,
-                          title: ev.target.value,
-                        });
-                      }} />
-                  </div>
-
-
-                  <div className="flex items-center gap-2 my-4">
-                    <label htmlFor="" >
-
-                      Merge CSV file on Export?
-                    </label>
-                    <input type="checkbox" value={""}
-                      checked={currentObject.mergeCSV ? true : false}
-                      onChange={(ev) => {
-                        setcurrentObject({
-                          ...currentObject,
-                          mergeCSV: !currentObject.mergeCSV,
-                        });
-                      }} />
-                  </div>
-                  <div className="flex items-center gap-2 my-4">
-                    <label htmlFor="" >
-
-                      Send Webhhok Request on Validation?
-                    </label>
-                    <input type="checkbox" value={""}
-                      checked={currentObject.sendWebhook ? true : false}
-                      onChange={(ev) => {
-                        setcurrentObject({
-                          ...currentObject,
-                          sendWebhook: !currentObject.sendWebhook,
-                        });
-                      }} />
-                  </div>
-
-                  <div className={`${currentObject.sendWebhook ? '' : 'hidden'}`}>
-                    <label htmlFor="" className="my-3">Webhook URL</label>
-                    <input type="text" className="border rounded-sm border-solid py-[3px] px-2 w-full cursor-pointer block" value={currentObject?.webhookUrl}
-
-                      onChange={(ev) => {
-                        setcurrentObject({
-                          ...currentObject,
-                          webhookUrl: ev.target.value,
-                        });
-                      }} />
-                  </div>
-
-
-                </Popover>
-              )}
-            </button>
-          </div>
-        </div>
-
-        <EntriesTable
-          queryPrams={queryPrams}
-          columns={columns}
-          entries={tasksEntries}
-          itemPath={""}
-          onChange={onChangeQueryPrams}
-          loading={loading}
-          selectedRows={selectedRows}
-          onSelectRows={onSelectRows}
-        />
-      </div>
-    </Layout>
-  );
+				<EntriesTable
+					queryPrams={queryPrams}
+					columns={columns}
+					entries={tasksEntries}
+					itemPath={""}
+					onChange={onChangeQueryPrams}
+					loading={loading}
+					selectedRows={selectedRows}
+					onSelectRows={onSelectRows}
+				/>
+			</div>
+		</Layout>
+	);
 }
 
 export default TaskDetail;

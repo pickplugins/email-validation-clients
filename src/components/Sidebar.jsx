@@ -50,7 +50,7 @@ const Sidebar = ({ user }) => {
 	return (
 		<aside
 			className={`max-w-[300px]  border-r border-gray-800/50 bg-gray-200 text-gray-800 p-0 ${
-				!navToggle && "w-[300px]"
+				!navToggle && "lg:w-[300px]"
 			}`}>
 			<div className="bg-blue-700 p-3 text-white h-[70px]">
 				<div className="flex gap-3 items-center">
