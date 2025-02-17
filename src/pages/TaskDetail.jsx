@@ -12,7 +12,7 @@ import Spinner from "../components/Spinner";
 import Tab from "../components/Tab";
 import Tabs from "../components/Tabs";
 import {
-  IconRefresh, IconTableExport, IconChartHistogram
+  IconRefresh, IconTableExport, IconChartHistogram, IconFilterCog
 } from "@tabler/icons-react";
 function TaskDetail({ user }) {
   const { id } = useParams();
@@ -39,6 +39,7 @@ function TaskDetail({ user }) {
     errors: false,
   });
 
+  var [addFiltersPrams, setaddFiltersPrams] = useState({ show: false });
   var [showExport, setshowExport] = useState(false);
   var [reportsPrams, setreportsPrams] = useState({ show: false });
 
@@ -678,102 +679,229 @@ Each Mail Per Line.
               )}
             </div>
 
-            {addEntries.loading && (
-              <>
-                <Spinner />
-              </>
-            )}
-            {addEntries.errors && <>There is an error.</>}
-            {addEntries.success && <>Task Added.</>}
+            <div>
+              {addEntries.loading && (
+                <>
+                  <Spinner />
+                </>
+              )}
+              {addEntries.errors && <>There is an error.</>}
+              {addEntries.success && <>Task Added.</>}
+            </div>
+
+
+            <div className="relative">
+              <button
+                className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer"
+                onClick={(ev) => {
+                  setaddFiltersPrams({ ...addFiltersPrams, show: !addFiltersPrams.show });
+                }}>
+                <IconFilterCog />
+              </button>
+              {addFiltersPrams.show && (
+                <Popover className="top-full mt-2 w-[450px] bg-white px-4 py-3 rounded-sm shadow-lg border border-gray-200">
+
+
+                  <div>
+
+                    <div className="flex justify-between my-4">
+                      <label htmlFor="" className="w-[150px]">Status</label>
+                      <select
+                        name=""
+                        id=""
+                        className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
+                        value={queryPrams?.status}
+                        onChange={(ev) => {
+                          setqueryPrams({ ...queryPrams, status: ev.target.value });
+
+
+
+                        }}>
+                        <option value="">Choose...</option>
+                        <option value="valid">Valid</option>
+                        <option value="disposable">disposable</option>
+                        <option value="invalidEmail">invalidEmail</option>
+                        <option value="invalidDomain">invalidDomain</option>
+                        <option value="syntaxNotValid">syntaxNotValid</option>
+                      </select>
+                    </div>
+
+
+                    <div className="flex justify-between my-4">
+                      <label htmlFor="" className="w-[150px]">Safe To Send</label>
+                      <select
+                        name=""
+                        id=""
+                        className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
+                        value={queryPrams?.safeToSend}
+                        onChange={(ev) => {
+                          setqueryPrams({ ...queryPrams, safeToSend: ev.target.value });
+                        }}>
+                        <option value="">Choose...</option>
+                        <option value="yes">yes</option>
+                        <option value="no">no</option>
+                      </select>
+                    </div>
+                    <div className="flex justify-between my-4">
+                      <label htmlFor="" className="w-[150px]">Disposable Domain</label>
+                      <select
+                        name=""
+                        id=""
+                        className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
+                        value={queryPrams?.isDisposableDomain}
+                        onChange={(ev) => {
+                          setqueryPrams({ ...queryPrams, isDisposableDomain: ev.target.value });
+                        }}>
+                        <option value="">Choose...</option>
+                        <option value="yes">yes</option>
+                        <option value="no">no</option>
+                      </select>
+                    </div>
+                    <div className="flex justify-between my-4">
+                      <label htmlFor="" className="w-[150px]">Valid Domain</label>
+                      <select
+                        name=""
+                        id=""
+                        className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
+                        value={queryPrams?.hasValidDomain}
+                        onChange={(ev) => {
+                          setqueryPrams({
+                            ...queryPrams,
+                            hasValidDomain: ev.target.value,
+                          });
+                        }}>
+                        <option value="">Choose...</option>
+                        <option value="yes">yes</option>
+                        <option value="no">no</option>
+                      </select>
+                    </div>
+                    <div className="flex justify-between my-4">
+                      <label htmlFor="" className="w-[150px]">Free Email</label>
+                      <select
+                        name=""
+                        id=""
+                        className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
+                        value={queryPrams?.isFreeEmailProvider}
+                        onChange={(ev) => {
+                          setqueryPrams({
+                            ...queryPrams,
+                            isFreeEmailProvider: ev.target.value,
+                          });
+                        }}>
+                        <option value="">Choose...</option>
+                        <option value="yes">yes</option>
+                        <option value="no">no</option>
+                      </select>
+                    </div>
+                    <div className="flex justify-between my-4">
+                      <label htmlFor="" className="w-[150px]">Gibberish Email</label>
+
+                      <select
+                        name=""
+                        id=""
+                        className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
+                        value={queryPrams?.isGibberishEmail}
+                        onChange={(ev) => {
+                          setqueryPrams({
+                            ...queryPrams,
+                            isGibberishEmail: ev.target.value,
+                          });
+                        }}>
+                        <option value="">Choose...</option>
+                        <option value="yes">yes</option>
+                        <option value="no">no</option>
+                      </select>
+                    </div>
+                    <div className="flex justify-between my-4">
+                      <label htmlFor="" className="w-[150px]">SMTP Blacklisted</label>
+
+                      <select
+                        name=""
+                        id=""
+                        className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
+                        value={queryPrams?.isSMTPBlacklisted}
+                        onChange={(ev) => {
+                          setqueryPrams({
+                            ...queryPrams,
+                            isSMTPBlacklisted: ev.target.value,
+                          });
+                        }}>
+                        <option value="">Choose...</option>
+                        <option value="yes">yes</option>
+                        <option value="no">no</option>
+                      </select>
+                    </div>
+                    <div className="flex justify-between my-4">
+                      <label htmlFor="" className="w-[150px]">Role Based</label>
+
+                      <select
+                        name=""
+                        id=""
+                        className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
+                        value={queryPrams?.isRoleBasedEmail}
+                        onChange={(ev) => {
+                          setqueryPrams({
+                            ...queryPrams,
+                            isRoleBasedEmail: ev.target.value,
+                          });
+                        }}>
+                        <option value="">Choose...</option>
+                        <option value="yes">yes</option>
+                        <option value="no">no</option>
+                      </select>
+                    </div>
+                    <div className="flex justify-between my-4">
+                      <label htmlFor="" className="w-[150px]">Catch All Domain</label>
+                      <select name="" id=""
+                        className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
+                        value={queryPrams?.isCatchAllDomain} onChange={ev => {
+                          setqueryPrams({ ...queryPrams, isCatchAllDomain: ev.target.value })
+
+                        }}>
+                        <option value="">Choose...</option>
+                        <option value="yes">yes</option>
+                        <option value="no">no</option>
+                      </select>
+                    </div>
+                    <div className="flex justify-between my-4">
+                      <label htmlFor="" className="w-[150px]">Verified SMTP</label>
+                      <select name="" id=""
+                        className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
+                        value={queryPrams?.verifySMTP} onChange={ev => {
+                          setqueryPrams({ ...queryPrams, verifySMTP: ev.target.value })
+
+                        }}>
+                        <option value="">Choose...</option>
+                        <option value="yes">yes</option>
+                        <option value="no">no</option>
+                      </select>
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                  </div>
+
+
+                </Popover>
+              )}
+            </div>
           </div>
 
           <div className="gap-2 flex items-center flex-wrap">
-            <select
-              name=""
-              id=""
-              className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
-              value={queryPrams?.status}
-              onChange={(ev) => {
-                setqueryPrams({ ...queryPrams, status: ev.target.value });
 
-
-
-              }}>
-              <option value="">Status</option>
-              <option value="valid">Valid</option>
-              <option value="disposable">disposable</option>
-              <option value="invalidEmail">invalidEmail</option>
-              <option value="invalidDomain">invalidDomain</option>
-              <option value="syntaxNotValid">syntaxNotValid</option>
-            </select>
-            <select
-              name=""
-              id=""
-              className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
-              value={queryPrams?.safeToSend}
-              onChange={(ev) => {
-                setqueryPrams({ ...queryPrams, safeToSend: ev.target.value });
-              }}>
-              <option value="">Safe To Send</option>
-              <option value="yes">yes</option>
-              <option value="no">no</option>
-            </select>
-
-            <select
-              name=""
-              id=""
-              className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
-              value={queryPrams?.isRoleBasedEmail}
-              onChange={(ev) => {
-                setqueryPrams({
-                  ...queryPrams,
-                  isRoleBasedEmail: ev.target.value,
-                });
-              }}>
-              <option value="">Role Based</option>
-              <option value="yes">yes</option>
-              <option value="no">no</option>
-            </select>
-            <select
-              name=""
-              id=""
-              className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
-              value={queryPrams?.hasValidDomain}
-              onChange={(ev) => {
-                setqueryPrams({
-                  ...queryPrams,
-                  hasValidDomain: ev.target.value,
-                });
-              }}>
-              <option value="">Valid Domain</option>
-              <option value="1">yes</option>
-              <option value="0">no</option>
-            </select>
-            <select
-              name=""
-              id=""
-              className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
-              value={queryPrams?.isFreeEmailProvider}
-              onChange={(ev) => {
-                setqueryPrams({
-                  ...queryPrams,
-                  isFreeEmailProvider: ev.target.value,
-                });
-              }}>
-              <option value="">Free Email</option>
-              <option value="1">yes</option>
-              <option value="0">no</option>
-            </select>
-            {/* <select name="" id=""
-              className="border rounded-sm border-solid py-[3px] px-2 cursor-pointer"
-              value={queryPrams?.verifySMTP} onChange={ev => {
-                setqueryPrams({ ...queryPrams, verifySMTP: ev.target.value })
-
-              }}>
-              <option value="">Verified SMTP</option>
-              <option value="1">yes</option>
-              <option value="0">no</option>
-            </select> */}
           </div>
 
           <div className="gap-2 flex items-center">
