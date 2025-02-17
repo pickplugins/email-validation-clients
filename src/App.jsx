@@ -1,4 +1,4 @@
-import { useState, useEffect, Component } from "react";
+// import { useState, useEffect, Component } from "react";
 
 import { Routes, Route } from 'react-router-dom';
 import Credits from './pages/Credits';
@@ -9,13 +9,11 @@ import Orders from "./pages/Orders";
 import Tasks from "./pages/Tasks";
 import TaskDetail from "./pages/TaskDetail";
 import OrderDetail from "./pages/OrderDetail";
-import Products from "./pages/Products";
-import ProductDetail from "./pages/ProductDetail";
 import Subscriptions from "./pages/Subscriptions";
 import SubscriptionDetail from "./pages/SubscriptionDetail";
 import ApiKeys from "./pages/ApiKeys";
 import ValidationRequests from "./pages/ValidationRequests";
-import Home from './pages/Home';
+// import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
 import EditProfile from './pages/EditProfile';
 import PrivateRoute from './pages/PrivateRoute';
@@ -25,11 +23,11 @@ import AuthProvider from './components/AuthContext';
 
 import './index.css'
 
-function App(appData) {
+function App() {
 
 
-  var [userData, setuserData] = useState(null);
-  var [appData, setappData] = useState(window.appData);
+  // var [userData, setuserData] = useState(null);
+  // var [appData, setappData] = useState(window.appData);
 
 
 
@@ -132,22 +130,6 @@ function App(appData) {
           element={
             <PrivateRoute>
               <OrderDetail />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/products"
-          element={
-            <PrivateRoute>
-              <Products />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/products/:id"
-          element={
-            <PrivateRoute>
-              <ProductDetail />
             </PrivateRoute>
           }
         />

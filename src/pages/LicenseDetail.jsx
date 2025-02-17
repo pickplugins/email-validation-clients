@@ -1,9 +1,11 @@
 import { useParams } from "react-router-dom";
 import Layout from "../components/Layout";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { AuthContext } from "../components/AuthContext";
 
 function LicenseDetail({user}) {
   const { id } = useParams();
+  const { t } = useContext(AuthContext)
 
 
   var [appData, setappData] = useState(window.appData);
@@ -93,16 +95,16 @@ function LicenseDetail({user}) {
 
       <div>
 
-        <h3 className="text-xl my-5">Subscription </h3>
+        <h3 className="text-xl my-5">{t("Subscription")} </h3>
 
 
         <div className="bsubscription-0 bsubscription-b bsubscription-solid bsubscription-gray-200 flex gap-3 items-center">
-          <div className=" px-5 py-2 w-40 font-bold">Order</div>
+          <div className=" px-5 py-2 w-40 font-bold">{t("Order")}</div>
           <div className=""> <a href={`orders/${orderData?.id}`}>#{orderData?.id}</a></div>
 
         </div>
         <div className="bsubscription-0 bsubscription-b bsubscription-solid bsubscription-gray-200 flex gap-3 items-center">
-          <div className=" px-5 py-2 w-40 font-bold">Setup fee</div>
+          <div className=" px-5 py-2 w-40 font-bold">{t("Setup fee")}</div>
           <div className=""> {subscriptionData?.setup_fee}</div>
 
         </div>
@@ -110,37 +112,37 @@ function LicenseDetail({user}) {
 
 
         <div className="bsubscription-0 bsubscription-b bsubscription-solid bsubscription-gray-200 flex gap-3 items-center">
-          <div className=" px-5 py-2 w-40 font-bold">Total</div>
+          <div className=" px-5 py-2 w-40 font-bold">{t("Total")}</div>
           <div className=""> {subscriptionData?.total}</div>
 
         </div>
 
 
         <div className="bsubscription-0 bsubscription-b bsubscription-solid bsubscription-gray-200 flex gap-3 items-center ">
-          <div className=" px-5 py-2 w-40 font-bold">Billing Date</div>
+          <div className=" px-5 py-2 w-40 font-bold">{t("Billing Date")}</div>
 
           <div className=""> {subscriptionData?.billing_anchor}</div>
 
         </div>
         <div className="bsubscription-0 bsubscription-b bsubscription-solid bsubscription-gray-200 flex gap-3 items-center ">
-          <div className=" px-5 py-2 w-40 font-bold">Card Last Four</div>
+          <div className=" px-5 py-2 w-40 font-bold">{t("Card Last Four")}</div>
 
           <div className=""> {subscriptionData?.card_last_four}</div>
 
         </div>
         <div className="bsubscription-0 bsubscription-b bsubscription-solid bsubscription-gray-200 flex gap-3 items-center ">
-          <div className=" px-5 py-2 w-40 font-bold">Test Mode</div>
+          <div className=" px-5 py-2 w-40 font-bold">{t("Test Mode")}</div>
 
           <div className=""> {subscriptionData?.test_mode}</div>
 
         </div>
         <div className="bsubscription-0 bsubscription-b bsubscription-solid bsubscription-gray-200 flex gap-3 items-center ">
-          <div className=" px-5 py-2 w-40 font-bold">Status</div>
+          <div className=" px-5 py-2 w-40 font-bold">{t("Status")}</div>
 
           <div className=""> {subscriptionData?.status}</div>
         </div>
         <div className="bsubscription-0 bsubscription-b bsubscription-solid bsubscription-gray-200 flex gap-3 items-center ">
-          <div className=" px-5 py-2 w-40 font-bold">User Email</div>
+          <div className=" px-5 py-2 w-40 font-bold">{t("User Email")}</div>
 
           <div className=""> {subscriptionData?.user_email}</div>
         </div>

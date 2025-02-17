@@ -1,8 +1,9 @@
 import { useLocation } from "react-router-dom";
 import UserAccount from "../components/UserAccount";
 // import Notify from "../components/Notify";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link } from 'react-router-dom';
+import { AuthContext } from "./AuthContext";
 
 
 const GlobalHeader = () => {
@@ -17,17 +18,19 @@ const GlobalHeader = () => {
 
 	currentRoutes = currentRoutes.filter(function (e) { return e.replace(/(\r\n|\n|\r)/gm, "") });
 
+	const {t,changeLanguage} = useContext(AuthContext);
+
 
 	var routesArgs = {
 
-		products: { label: "Products", value: "products" },
+		products: { label: t("Products"), value: "products" },
 		dashboard: { label: "", value: "dashboard" },
-		orders: { label: "Orders", value: "orders" },
-		tasks: { label: "Tasks", value: "tasks" },
-		subscriptions: { label: "Subscriptions", value: "subscriptions" },
-		licenses: { label: "Licenses", value: "licenses" },
-		apiKeys: { label: "API Keys", value: "apiKeys" },
-		ValidationRequests: { label: "Validation Requests", value: "ValidationRequests" },
+		orders: { label: t("Orders"), value: "orders" },
+		tasks: { label: t("Tasks"), value: "tasks" },
+		subscriptions: { label: t("Subscriptions"), value: "subscriptions" },
+		licenses: { label: t("Licenses"), value: "licenses" },
+		apiKeys: { label: t("API Keys"), value: "apiKeys" },
+		ValidationRequests: { label: t("Validation Requests"), value: "ValidationRequests" },
 	}
 
 
@@ -57,7 +60,7 @@ const GlobalHeader = () => {
 	return (
 		<div className="flex justify-between flex-wrap bg-gray-700 p-3 px-5 gap-3 md:h-[70px]">
 			<div className="flex gap-2 items-center text-white">
-				<Link to="/dashboard">Dashboard</Link>
+				<Link to="/dashboard">{t("Dashboard")}</Link>
 
 				{currentRoutes.map((route, index) => {
 					return (
@@ -69,7 +72,10 @@ const GlobalHeader = () => {
 				})}
 
 			</div>
-
+<select onChange={(e) => { changeLanguage(e.target.value) }}>
+	<option value="en">English</option>
+	<option value="bn">Bangla</option>
+</select>
 			<div>
 				<UserAccount />
 				{/* <Notify notifications={notifications} /> */}

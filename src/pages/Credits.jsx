@@ -5,7 +5,7 @@ import Layout from "../components/Layout";
 import Popover from "../components/Popover";
 
 function Credits() {
-	const { userData, handleLogout } = useContext(AuthContext);
+	const { userData, handleLogout, t } = useContext(AuthContext);
 
 
 	var [appData, setappData] = useState(window.appData);
@@ -226,16 +226,16 @@ function Credits() {
 	}
 
 	var columns = {
-		check: { label: "Check" },
+		check: { label: t("Check") },
 		// id: { label: "ID" },
-		type: { label: "Type" },
-		amount: { label: "Amount" },
+		type: { label: t("Type") },
+		amount: { label: t("Amount") },
 
-		source: { label: "Source" },
-		username: { label: "User name" },
+		source: { label: t("Source") },
+		username: { label: t("User name") },
 		// userid: { label: "Userid" },
 		// status: { label: "Status" },
-		datetime: { label: "Datetime" },
+		datetime: { label: t("Datetime") },
 	};
 
 	// useEffect(() => {
@@ -312,13 +312,8 @@ function Credits() {
 		<Layout>
 			<div>
 				<div className=" p-4 ">
-
-
-
 					<div className="flex gap-3 items-center justify-between">
-
 						{userRoles?.includes("administrator") && (
-
 							<>
 								<div className="relative">
 									<button
@@ -326,7 +321,7 @@ function Credits() {
 										onClick={(ev) => {
 											setaddCredits({ ...addCredits, edit: !addCredits.edit });
 										}}>
-										Add
+										{t("Add")}
 									</button>
 									{addCredits.edit && (
 										<Popover className="top-full left-0 min-w-[400px] mt-2 bg-white px-4 py-3 rounded-sm grid grid-cols-2 gap-4 border border-gray-400">
@@ -336,7 +331,10 @@ function Credits() {
 												className="p-3 py-[5px]  bg-gray-400 border rounded-sm border-solid "
 												value={addCredits?.amount}
 												onChange={(ev) => {
-													setaddCredits({ ...addCredits, amount: ev.target.value });
+													setaddCredits({
+														...addCredits,
+														amount: ev.target.value,
+													});
 												}}
 											/>
 											<input
@@ -345,7 +343,10 @@ function Credits() {
 												className="p-3 py-[5px]  bg-gray-400 border rounded-sm border-solid "
 												value={addCredits?.userid}
 												onChange={(ev) => {
-													setaddCredits({ ...addCredits, userid: ev.target.value });
+													setaddCredits({
+														...addCredits,
+														userid: ev.target.value,
+													});
 												}}
 											/>
 											<select
@@ -354,11 +355,14 @@ function Credits() {
 												className=" rounded-sm border-solid border-2 border-blue-500 py-[5px] px-2 cursor-pointer"
 												value={addCredits?.type}
 												onChange={(ev) => {
-													setaddCredits({ ...addCredits, type: ev.target.value });
+													setaddCredits({
+														...addCredits,
+														type: ev.target.value,
+													});
 												}}>
-												<option value="">Type..</option>
-												<option value="credit">Credit</option>
-												<option value="debit">Debit</option>
+												<option value="">{t("Type..")}</option>
+												<option value="credit">{t("Credit")}</option>
+												<option value="debit">{t("Debit")}</option>
 											</select>
 											<select
 												name=""
@@ -366,15 +370,18 @@ function Credits() {
 												className=" rounded-sm border-solid border-2 border-blue-500 py-[5px] px-2 cursor-pointer"
 												value={addCredits?.source}
 												onChange={(ev) => {
-													setaddCredits({ ...addCredits, source: ev.target.value });
+													setaddCredits({
+														...addCredits,
+														source: ev.target.value,
+													});
 												}}>
-												<option value="">Source..</option>
-												<option value="instant">Instant</option>
-												<option value="daily">Daily</option>
-												<option value="API">API</option>
-												<option value="cron">Cron</option>
-												<option value="monthly">Monthly</option>
-												<option value="register">Register</option>
+												<option value="">{t("Source..")}</option>
+												<option value="instant">{t("Instant")}</option>
+												<option value="daily">{t("Daily")}</option>
+												<option value="API">{t("API")}</option>
+												<option value="cron">{t("Cron")}</option>
+												<option value="monthly">{t("Monthly")}</option>
+												<option value="register">{t("Register")}</option>
 											</select>
 											<button
 												onClick={(ev) => {
@@ -382,23 +389,19 @@ function Credits() {
 													setaddCredits({ ...addCredits, loading: true });
 												}}
 												className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
-												Submit
+												{t("Submit")}
 											</button>
 										</Popover>
 									)}
 								</div>
 
 								<div>
-									{addCredits.loading && <>Loading...</>}
-									{addCredits.errors && <>There is an error.</>}
-									{addCredits.success && <>Task Added.</>}
+									{addCredits.loading && <>{t("Loading...")}</>}
+									{addCredits.errors && <>{t("There is an error.")}</>}
+									{addCredits.success && <>{t("Task Added.")}</>}
 								</div>
 							</>
 						)}
-
-
-
-
 
 						<div className="flex items-center gap-2">
 							<select
@@ -409,9 +412,9 @@ function Credits() {
 								onChange={(ev) => {
 									setqueryPrams({ ...queryPrams, type: ev.target.value });
 								}}>
-								<option value="">Type..</option>
-								<option value="credit">Credit</option>
-								<option value="debit">Debit</option>
+								<option value="">{t("Type..")}</option>
+								<option value="credit">{t("Credit")}</option>
+								<option value="debit">{t("Debit")}</option>
 							</select>
 
 							{selectedRows.length > 0 && (
@@ -420,15 +423,11 @@ function Credits() {
 									onClick={(ev) => {
 										delete_credits();
 									}}>
-									Delete Credits
+									{t("Delete Credits")}
 								</div>
 							)}
 						</div>
-
 					</div>
-
-
-
 
 					<div></div>
 				</div>

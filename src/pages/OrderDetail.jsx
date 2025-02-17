@@ -1,9 +1,11 @@
 import { useParams } from "react-router-dom";
 import Layout from "../components/Layout";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { AuthContext } from "../components/AuthContext";
 
 function OrderDetail({ user }) {
   const { id } = useParams();
+  const { t } = useContext(AuthContext);
 
 
   var [appData, setappData] = useState(window.appData);
@@ -99,45 +101,45 @@ function OrderDetail({ user }) {
       <div className="p-5 grid grid-cols-2 gap-4">
         <div>
 
-          <h3 className="text-xl my-4">Order Details</h3>
+          <h3 className="text-xl my-4">{t("Order Details")}</h3>
 
 
           <div className="border-0 border-b border-solid border-gray-200 flex gap-3 items-center">
-            <div className=" px-5 py-2 w-40 font-bold">Status</div>
+            <div className=" px-5 py-2 w-40 font-bold">{t("Status")}</div>
             <div className=""> {orderData?.status}</div>
 
           </div>
           <div className="border-0 border-b border-solid border-gray-200 flex gap-3 items-center ">
-            <div className=" px-5 py-2 w-40 font-bold">Setup Fee</div>
+            <div className=" px-5 py-2 w-40 font-bold">{t("Setup fee")}</div>
 
             <div className=""> {orderData?.setup_fee}</div>
 
           </div>
           <div className="border-0 border-b border-solid border-gray-200 flex gap-3 items-center ">
-            <div className=" px-5 py-2 w-40 font-bold">Tax</div>
+            <div className=" px-5 py-2 w-40 font-bold">{t("Tax")}</div>
 
             <div className=""> {orderData?.tax_total}</div>
 
           </div>
           <div className="border-0 border-b border-solid border-gray-200 flex gap-3 items-center ">
-            <div className=" px-5 py-2 w-40 font-bold">Discount</div>
+            <div className=" px-5 py-2 w-40 font-bold">{t("Discount")}</div>
 
             <div className=""> {orderData?.discount_total}</div>
 
           </div>
           <div className="border-0 border-b border-solid border-gray-200 flex gap-3 items-center ">
-            <div className=" px-5 py-2 w-40 font-bold">Date</div>
+            <div className=" px-5 py-2 w-40 font-bold">{t("Date")}</div>
 
             <div className=""> {orderData?.datetime}</div>
           </div>
           <div className="border-0 border-b border-solid border-gray-200 flex gap-3 items-center ">
-            <div className=" px-5 py-2 w-40 font-bold" >Total</div>
+            <div className=" px-5 py-2 w-40 font-bold" >{t("Total")}</div>
 
             <div className=""> {orderData?.total}</div>
 
           </div>
           <div className="border-0 border-b border-solid border-gray-200 flex gap-3 items-center ">
-            <div className=" px-5 py-2 w-40 font-bold">Refunded_total</div>
+            <div className=" px-5 py-2 w-40 font-bold">{t("Refunded_total")}</div>
 
             <div className=""> {orderData?.refunded_total}</div>
           </div>
@@ -153,64 +155,64 @@ function OrderDetail({ user }) {
 
         <div>
 
-          <h3 className="text-xl my-5">Subscription </h3>
+          <h3 className="text-xl my-5">{t("Subscription")} </h3>
 
 
           <div className="border-0 border-b border-solid border-gray-200 flex gap-3 items-center">
-            <div className=" px-5 py-2 w-40 font-bold">Setup fee</div>
+            <div className=" px-5 py-2 w-40 font-bold">{t("Setup fee")}</div>
             <div className=""> {subscriptionData?.setup_fee}</div>
 
           </div>
           <div className="border-0 border-b border-solid border-gray-200 flex gap-3 items-center">
-            <div className=" px-5 py-2 w-40 font-bold">Total</div>
+            <div className=" px-5 py-2 w-40 font-bold">{t("Total")}</div>
             <div className=""> {subscriptionData?.total}</div>
 
           </div>
 
 
           <div className="border-0 border-b border-solid border-gray-200 flex gap-3 items-center ">
-            <div className=" px-5 py-2 w-40 font-bold">Billing Date</div>
+            <div className=" px-5 py-2 w-40 font-bold">{t("Billing Date")}</div>
 
             <div className=""> {subscriptionData?.billing_anchor}</div>
 
           </div>
           <div className="border-0 border-b border-solid border-gray-200 flex gap-3 items-center ">
-            <div className=" px-5 py-2 w-40 font-bold">Card Last Four</div>
+            <div className=" px-5 py-2 w-40 font-bold">{t('Card Last Four')}</div>
 
             <div className=""> {subscriptionData?.card_last_four}</div>
 
           </div>
           <div className="border-0 border-b border-solid border-gray-200 flex gap-3 items-center ">
-            <div className=" px-5 py-2 w-40 font-bold">Test Mode</div>
+            <div className=" px-5 py-2 w-40 font-bold">{t('Test Mode')}</div>
 
             <div className=""> {subscriptionData?.test_mode}</div>
 
           </div>
           <div className="border-0 border-b border-solid border-gray-200 flex gap-3 items-center ">
-            <div className=" px-5 py-2 w-40 font-bold">Status</div>
+            <div className=" px-5 py-2 w-40 font-bold">{t('Status')}</div>
 
             <div className=""> {subscriptionData?.status}</div>
           </div>
           <div className="border-0 border-b border-solid border-gray-200 flex gap-3 items-center ">
-            <div className=" px-5 py-2 w-40 font-bold">User Email</div>
+            <div className=" px-5 py-2 w-40 font-bold">{t('User Email')}</div>
 
             <div className=""> {subscriptionData?.user_email}</div>
           </div>
 
 
           <div className="border-0 border-b border-solid border-gray-200 flex gap-3 items-center ">
-            <div className=" px-5 py-2 w-40 font-bold" >Trial Ends at</div>
+            <div className=" px-5 py-2 w-40 font-bold" >{t('Trial Ends at')}</div>
 
             <div className=""> {subscriptionData?.trial_ends_at}</div>
 
           </div>
           <div className="border-0 border-b border-solid border-gray-200 flex gap-3 items-center ">
-            <div className=" px-5 py-2 w-40 font-bold">Renews at</div>
+            <div className=" px-5 py-2 w-40 font-bold">{t('Renews at')}</div>
 
             <div className=""> {subscriptionData?.renews_at}</div>
           </div>
           <div className="border-0 border-b border-solid border-gray-200 flex gap-3 items-center ">
-            <div className=" px-5 py-2 w-40 font-bold">Ends at</div>
+            <div className=" px-5 py-2 w-40 font-bold">{t('Ends at')}</div>
 
             <div className=""> {subscriptionData?.ends_at}</div>
           </div>
@@ -225,52 +227,52 @@ function OrderDetail({ user }) {
 
         <div className="hidden">
 
-          <h3 className="text-xl my-5">License </h3>
+          <h3 className="text-xl my-5">{t("License")} </h3>
 
 
           <div className="border-0 border-b border-solid border-gray-200 flex gap-3 items-center">
-            <div className=" px-5 py-2 w-40 font-bold">License Key</div>
+            <div className=" px-5 py-2 w-40 font-bold">{t("License Key")}</div>
             <div className=""> {licenseData?.license_key}</div>
 
           </div>
           <div className="border-0 border-b border-solid border-gray-200 flex gap-3 items-center ">
-            <div className=" px-5 py-2 w-40 font-bold">Activation Limit</div>
+            <div className=" px-5 py-2 w-40 font-bold">{t("Activation Limit")}</div>
 
             <div className=""> {licenseData?.activation_limit}</div>
 
           </div>
           <div className="border-0 border-b border-solid border-gray-200 flex gap-3 items-center ">
-            <div className=" px-5 py-2 w-40 font-bold">Instances Count</div>
+            <div className=" px-5 py-2 w-40 font-bold">{t("Instances Count")}</div>
 
             <div className=""> {licenseData?.instances_count}</div>
 
           </div>
           <div className="border-0 border-b border-solid border-gray-200 flex gap-3 items-center ">
-            <div className=" px-5 py-2 w-40 font-bold">Test Mode</div>
+            <div className=" px-5 py-2 w-40 font-bold">{t("Test Mode")}</div>
 
             <div className=""> {licenseData?.test_mode}</div>
 
           </div>
           <div className="border-0 border-b border-solid border-gray-200 flex gap-3 items-center ">
-            <div className=" px-5 py-2 w-40 font-bold">Status</div>
+            <div className=" px-5 py-2 w-40 font-bold">{t("Status")}</div>
 
             <div className=""> {licenseData?.status}</div>
           </div>
           <div className="border-0 border-b border-solid border-gray-200 flex gap-3 items-center ">
-            <div className=" px-5 py-2 w-40 font-bold">User Email</div>
+            <div className=" px-5 py-2 w-40 font-bold">{t("User Email")}</div>
 
             <div className=""> {licenseData?.user_email}</div>
           </div>
 
 
           <div className="border-0 border-b border-solid border-gray-200 flex gap-3 items-center ">
-            <div className=" px-5 py-2 w-40 font-bold" >Created at</div>
+            <div className=" px-5 py-2 w-40 font-bold" >{t("Created at")}</div>
 
             <div className=""> {licenseData?.created_at}</div>
 
           </div>
           <div className="border-0 border-b border-solid border-gray-200 flex gap-3 items-center ">
-            <div className=" px-5 py-2 w-40 font-bold">Expires at</div>
+            <div className=" px-5 py-2 w-40 font-bold">{t("Expires at")}</div>
 
             <div className=""> {licenseData?.expires_at}</div>
           </div>

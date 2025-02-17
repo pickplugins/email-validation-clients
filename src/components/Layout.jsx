@@ -11,9 +11,11 @@ const Layout = ({ children }) => {
 
 
 	return (
-		<div className={`flex max-w-screen min-h-screen`}>
-			<Sidebar />
-			<main className="flex-1 w-full">
+		<div className={`flex min-h-screen`}>
+			<div className="min-w-[56px]">
+				<Sidebar />
+			</div>
+			<main className="md:flex-1 w-[calc(100%-56px)] md:w-full">
 				<GlobalHeader />
 
 				<div className="">{children}</div>
