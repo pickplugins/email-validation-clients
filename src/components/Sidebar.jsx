@@ -51,7 +51,7 @@ const Sidebar = ({ user }) => {
 		<aside
 			className={`max-w-[300px]  border-r border-gray-800/50 bg-gray-200 text-gray-800 p-0 ${!navToggle && "lg:w-[300px]"
 				}`}>
-			<div className="bg-blue-700 p-3 text-white h-[70px]">
+			<div className="bg-blue-700 p-3 text-white h-[70px] block">
 				<div className="flex gap-3 items-center">
 					<div className="w-[30px]">
 						<svg
@@ -86,8 +86,8 @@ const Sidebar = ({ user }) => {
 									key={index}
 									to={`/${nav.value}`}
 									className={`${currentLocation == "/" + nav.value
-											? "bg-gray-200"
-											: "bg-white"
+										? "bg-gray-200"
+										: "bg-white"
 										} hover:bg-gray-200 text-blue-500 border-0 border-b border-solid border-gray-300 cursor-pointer px-4 py-2 flex items-center gap-2`}>
 									<span className="">{nav.icon}</span>{" "}
 									<span

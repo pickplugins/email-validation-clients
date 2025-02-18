@@ -2,7 +2,8 @@ import { useLocation } from "react-router-dom";
 import UserAccount from "../components/UserAccount";
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "./AuthContext";
-import ToggleContent from "../components/ToggleContent";
+import Spinner from "./Spinner";
+import ToggleContent from "./ToggleContent";
 
 
 const UserProfileEdit = ({ user }) => {
@@ -11,8 +12,13 @@ const UserProfileEdit = ({ user }) => {
 	// var [userData, setuserData] = useState(user);
 	var [editUserData, seteditUserData] = useState({ apiKeys: null });
 
+	const [loading, setloading] = useState(false);
+
+	console.log(editUserData);
+
 
 	function updateUserProfile() {
+		setloading(true);
 
 		// const token = localStorage.getItem("token");
 
@@ -44,7 +50,7 @@ const UserProfileEdit = ({ user }) => {
 
 				if (response.ok && response.status < 400) {
 					response.json().then((res) => {
-
+setloading(false);
 
 						setTimeout(() => {
 						}, 500);
@@ -89,10 +95,10 @@ const UserProfileEdit = ({ user }) => {
 
 
 
-						seteditUserData({ ...editUserData, ...res })
+						seteditUserData({ ...res })
 
 
-
+console.log(res)
 						setTimeout(() => {
 						}, 500);
 					});
@@ -525,16 +531,19 @@ const UserProfileEdit = ({ user }) => {
 							</div>
 
 							<div className="my-5">
-								<input
+								<button
 									type="submit"
-									value={t("Update")}
 									onClick={(ev) => {
 										ev.preventDefault();
 
 										updateUserProfile();
 									}}
-									className="p-2 hover:bg-gray-400 rounded-sm cursor-pointer px-4 bg-gray-600 text-white"
-								/>
+									className="p-2 flex items-center gap-2 hover:bg-gray-400 rounded-sm cursor-pointer px-4 bg-gray-600 text-white"
+								>{t("Update")}
+								{loading && (
+									<Spinner />
+								)}
+								</button>
 							</div>
 						</form>
 					</div>
@@ -630,12 +639,12 @@ const UserProfileEdit = ({ user }) => {
 								var pram = args[1]
 
 								return (
-									<ToggleContent title={apiKeysPrams[pramId].label}>
+									<ToggleContent key={pramId} title={apiKeysPrams[pramId]?.label}>
 
 										<div>
 
 
-											{Object.entries(pram).map(([item, value], i) => {
+											{pram && Object.entries(pram).map(([item, value], i) => {
 												return (
 													<div
 														className="pg-setting-input-text   mb-4"
@@ -643,50 +652,51 @@ const UserProfileEdit = ({ user }) => {
 														<label
 															htmlFor=""
 															className="font-medium text-slate-900  block">
-															{item === "apikey" && <>{("API Key")}</>}
+															{item === "apikey" && <>{t("API Key")}</>}
 															{item === "apiSecret" && (
-																<>{("API Secret")}</>
+																<>{t("API Secret")}</>
 															)}
-															{item === "username" && <>{("UserName")}</>}
+															{item === "username" && <>{t("UserName")}</>}
 															{item === "accountName" && (
-																<>{("Account Name")}</>
+																<>{t("Account Name")}</>
 															)}
-															{item === "pass" && <>{("Password")}</>}
+															{item === "pass" && <>{t("Password")}</>}
 															{item === "accountId" && (
-																<>{("Account Id")}</>
+																<>{t("Account Id")}</>
 															)}
 															{item === "subscriberId" && (
-																<>{("Subscriber Id")}</>
+																<>{t("Subscriber Id")}</>
 															)}
-															{item === "listId" && <>{("List Id")}</>}
-															{item === "apiToken" && <>{("API Token")}</>}
-															{item === "subdomain" && <>{("Subdomain")}</>}
-															{item === "phoneNumber" && <>{("Phone Number")}</>}
-															{item === "accountSid" && <>{("Account Sid")}</>}
-															{item === "authToken" && <>{("Auth Token")}</>}
-															{item === "email" && <>{("Email")}</>}
+															{item === "listId" && <>{t("List Id")}</>}
+															{item === "apiToken" && <>{t("API Token")}</>}
+															{item === "subdomain" && <>{t("Subdomain")}</>}
+															{item === "phoneNumber" && <>{t("Phone Number")}</>}
+															{item === "accountSid" && <>{t("Account Sid")}</>}
+															{item === "authToken" && <>{t("Auth Token")}</>}
+															{item === "email" && <>{t("Email")}</>}
 															{item === "accessToken" && (
-																<>{("Access Token")}</>
+																<>{t("Access Token")}</>
 															)}
 															{item === "campaignId" && (
-																<>{("Campaign Id")}</>
+																<>{t("Campaign Id")}</>
 															)}
 															{item === "apikeyPrivate" && (
-																<>{("Private Api Key")}</>
+																<>{t("Private Api Key")}</>
 															)}
 															{item === "apikeyPublic" && (
-																<>{("Public Api Key")}</>
+																<>{t("Public Api Key")}</>
 															)}
-															{item === "site_key" && <>{("Site Key")}</>}
-															{item === "dc" && <>{("DC")}</>}
+															{item === "site_key" && <>{t("Site Key")}</>}
+															{item === "dc" && <>{t("DC")}</>}
 															{item === "secret_key" && (
-																<>{("Secret Key")}</>
+																<>{t("Secret Key")}</>
 															)}
-															{item === "model" && <>{("Model")}</>}
+															{item === "model" && <>{t("Model")}</>}
 														</label>
 
-														<input type="text" className="border border-gray-400 border-solid px-2 py-1 rounded-sm w-full bg-gray-200" onChange={ev => {
+														<input type="text" value={editUserData.apiKeys[pramId][item]} className="border border-gray-400 border-solid px-2 py-1 rounded-sm w-full bg-gray-200" onChange={ev => {
 															var value = ev.target.value;
+															seteditUserData({ ...editUserData, apiKeys: { ...editUserData.apiKeys, [pramId]: { ...editUserData.apiKeys[pramId], [item]: value } } });
 														}} />
 													</div>
 												);

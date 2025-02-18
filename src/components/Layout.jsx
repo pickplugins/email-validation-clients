@@ -12,7 +12,7 @@ const Layout = ({ children }) => {
 
 	return (
 		<div className={`flex min-h-screen`}>
-			<div className="min-w-[56px]">
+			<div className="">
 				<Sidebar />
 			</div>
 			<main className="md:flex-1 w-[calc(100%-56px)] md:w-full">
