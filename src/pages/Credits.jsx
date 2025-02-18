@@ -228,7 +228,8 @@ function Credits() {
 	var columns = {
 		check: { label: t("Check") },
 		// id: { label: "ID" },
-		type: { label: t("Type") },
+		type: { label: t("Credit/Debit") },
+		credit_type: { label: t("Type") },
 		amount: { label: t("Amount") },
 
 		source: { label: t("Source") },
