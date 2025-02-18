@@ -92,7 +92,7 @@ const Register = () => {
 					<div>
 						<label htmlFor="" className="block">{t("Email")}</label>
 						<input
-							className="p-3 py-[5px] bg-gray-400 border rounded-sm border-solid w-full"
+							className="p-3 py-[5px]  border rounded-sm border-solid w-full"
 							type="email"
 							name="email"
 							placeholder={t("Email")}
@@ -105,7 +105,7 @@ const Register = () => {
 						<label htmlFor="" className="block">{t("Password")}</label>
 
 						<input
-							className="p-3 py-[5px] bg-gray-400 border rounded-sm border-solid w-full"
+							className="p-3 py-[5px]  border rounded-sm border-solid w-full"
 
 							type="password"
 							name="password"
@@ -115,7 +115,7 @@ const Register = () => {
 						/>
 					</div>
 					<button
-						className="p-3 py-[5px] bg-gray-700 text-white cursor-pointer border rounded-sm border-solid w-full flex gap-2 items-center justify-center"
+						className="p-3 py-[5px]  text-white cursor-pointer border rounded-sm border-solid w-full flex gap-2 items-center justify-center"
 
 						type="submit">{t("Register")} {logging && <Spinner />}</button>
 				</div>

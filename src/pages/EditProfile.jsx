@@ -18,7 +18,7 @@ const EditProfile = () => {
 	return (
 		<Layout>
 			{token ? (
-				<div className="bg-gray-200">
+				<div className="">
 					{userData && (
 						<div className="p-5">
 							<UserProfileEdit />

@@ -32,7 +32,7 @@ const Login = () => {
 							{t("User Name")}
 						</label>
 						<input
-							className="p-3 py-[5px] bg-gray-400 border rounded-sm border-solid w-full"
+							className="p-3 py-[5px]  border rounded-sm border-solid w-full"
 							type="text"
 							name="username"
 							placeholder="Username"
@@ -47,7 +47,7 @@ const Login = () => {
 						</label>
 
 						<input
-							className="p-3 py-[5px] bg-gray-400 border rounded-sm border-solid w-full"
+							className="p-3 py-[5px]  border rounded-sm border-solid w-full"
 							type="password"
 							name="password"
 							placeholder={t("Password")}
@@ -56,7 +56,7 @@ const Login = () => {
 						/>
 					</div>
 					<button
-						className="p-3 py-[5px] bg-gray-700 text-white cursor-pointer border rounded-sm border-solid w-full flex gap-2 items-center justify-center"
+						className="p-3 py-[5px]  text-white cursor-pointer border rounded-sm border-solid w-full flex gap-2 items-center justify-center"
 						type="submit">
 						{t("Login")} {logging && <Spinner />}
 					</button>

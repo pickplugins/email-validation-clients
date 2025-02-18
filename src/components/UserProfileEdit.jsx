@@ -1,19 +1,13 @@
-import { useLocation } from "react-router-dom";
-import UserAccount from "../components/UserAccount";
-import { useState, useEffect, useContext } from "react";
-import { AuthContext } from "./AuthContext";
+import { useContext, useEffect, useState } from "react";
 import ToggleContent from "../components/ToggleContent";
-
+import { AuthContext } from "./AuthContext";
 
 const UserProfileEdit = ({ user }) => {
-
 	const { token, userData, t } = useContext(AuthContext);
 	// var [userData, setuserData] = useState(user);
 	var [editUserData, seteditUserData] = useState({ apiKeys: null });
 
-
 	function updateUserProfile() {
-
 		// const token = localStorage.getItem("token");
 
 		if (!token) {
@@ -22,32 +16,29 @@ const UserProfileEdit = ({ user }) => {
 		var postData = {
 			id: userData.id,
 			userData: editUserData,
-
 		};
-
 
 		postData = JSON.stringify(postData);
 
-		fetch(appData.serverUrl + "wp-json/email-validation/v2/update_user_profile", {
-			method: "POST",
-			headers: {
-				'Content-Type': 'application/json',
-				'Authorization': `Bearer ${token}`
-			},
-			body: postData,
-		})
+		fetch(
+			appData.serverUrl + "wp-json/email-validation/v2/update_user_profile",
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+				body: postData,
+			}
+		)
 			.then((response) => {
-
 				if (!response.ok) {
-					throw new Error('Token validation failed');
+					throw new Error("Token validation failed");
 				}
 
 				if (response.ok && response.status < 400) {
 					response.json().then((res) => {
-
-
-						setTimeout(() => {
-						}, 500);
+						setTimeout(() => {}, 500);
 					});
 				}
 			})
@@ -55,22 +46,17 @@ const UserProfileEdit = ({ user }) => {
 				//this.saveAsStatus = 'error';
 				// handle the error
 			});
-
 	}
 
 	function getUserProfile() {
-
 		// const token = localStorage.getItem("token");
 
 		if (!token) {
 			throw new Error("No token found");
 		}
 
-
-
 		var postData = {
 			id: userData.id,
-
 		};
 
 		postData = JSON.stringify(postData);
@@ -78,23 +64,17 @@ const UserProfileEdit = ({ user }) => {
 		fetch(appData.serverUrl + "wp-json/email-validation/v2/get_user_profile", {
 			method: "POST",
 			headers: {
-				'Content-Type': 'application/json',
-				'Authorization': `Bearer ${token}`
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
 			},
 			body: postData,
 		})
 			.then((response) => {
 				if (response.ok && response.status < 400) {
 					response.json().then((res) => {
+						seteditUserData({ ...editUserData, ...res });
 
-
-
-						seteditUserData({ ...editUserData, ...res })
-
-
-
-						setTimeout(() => {
-						}, 500);
+						setTimeout(() => {}, 500);
 					});
 				}
 			})
@@ -102,7 +82,6 @@ const UserProfileEdit = ({ user }) => {
 				//this.saveAsStatus = 'error';
 				// handle the error
 			});
-
 	}
 
 	useEffect(() => {
@@ -111,10 +90,9 @@ const UserProfileEdit = ({ user }) => {
 
 	const updateUserPassword = () => {
 		console.log("Password Changed");
-	}
+	};
 
 	const apiKeysPrams = {
-
 		dropbox: {
 			id: "dropbox",
 			label: "Dropbox",
@@ -131,7 +109,6 @@ const UserProfileEdit = ({ user }) => {
 			},
 			isPro: true,
 		},
-
 
 		airtable: {
 			id: "airtable",
@@ -164,7 +141,6 @@ const UserProfileEdit = ({ user }) => {
 			isPro: true,
 		},
 
-
 		openAI: {
 			id: "openAI",
 			label: "openAI",
@@ -173,7 +149,6 @@ const UserProfileEdit = ({ user }) => {
 				model: "",
 			},
 			isPro: true,
-
 		},
 		acumbamail: {
 			id: "acumbamail",
@@ -377,13 +352,12 @@ const UserProfileEdit = ({ user }) => {
 		// },
 	};
 
-
 	return (
 		<div className="">
 			<div className="">
-				<div className="grid md:grid-cols-12 gap-5">
-					<div className="md:col-span-8 bg-white rounded-sm">
-						<form action="" className="p-5">
+				<div className="grid md:grid-cols-12">
+					<div className="md:col-span-8 border-r border-r-primary-900 dark:border-r-primary-100 p-5">
+						<form action="" className="">
 							<h3 className="mb-5 text-2xl">{t("General Information")}</h3>
 
 							<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -393,7 +367,7 @@ const UserProfileEdit = ({ user }) => {
 									</label>
 									<input
 										type="text"
-										className="border border-gray-400 border-solid px-2 py-1 rounded-sm w-full bg-gray-200"
+										className="border border-gray-400 border-solid px-2 py-1 rounded-sm w-full "
 										value={editUserData?.first_name}
 										onChange={(ev) => {
 											var value = ev.target.value;
@@ -408,7 +382,7 @@ const UserProfileEdit = ({ user }) => {
 									</label>
 									<input
 										type="text"
-										className="border border-gray-400 border-solid px-2 py-1 rounded-sm w-full bg-gray-200"
+										className="border border-gray-400 border-solid px-2 py-1 rounded-sm w-full "
 										value={editUserData?.last_name}
 										onChange={(ev) => {
 											var value = ev.target.value;
@@ -423,7 +397,7 @@ const UserProfileEdit = ({ user }) => {
 									<input
 										type="text"
 										disabled
-										className="border border-gray-400 border-solid px-2 py-1 rounded-sm w-full  bg-gray-200"
+										className="border border-gray-400 border-solid px-2 py-1 rounded-sm w-full  "
 										value={editUserData?.email}
 										onChange={(ev) => {
 											var value = ev.target.value;
@@ -438,7 +412,7 @@ const UserProfileEdit = ({ user }) => {
 									</label>
 									<input
 										type="text"
-										className="border border-gray-400 border-solid px-2 py-1 rounded-sm w-full bg-gray-200"
+										className="border border-gray-400 border-solid px-2 py-1 rounded-sm w-full "
 										value={editUserData?.phone}
 										onChange={(ev) => {
 											var value = ev.target.value;
@@ -457,7 +431,7 @@ const UserProfileEdit = ({ user }) => {
 									</label>
 									<input
 										type="text"
-										className="border border-gray-400 border-solid px-2 py-1 rounded-sm w-full bg-gray-200"
+										className="border border-gray-400 border-solid px-2 py-1 rounded-sm w-full "
 										value={editUserData?.address_1}
 										onChange={(ev) => {
 											var value = ev.target.value;
@@ -471,7 +445,7 @@ const UserProfileEdit = ({ user }) => {
 									</label>
 									<input
 										type="text"
-										className="border border-gray-400 border-solid px-2 py-1 rounded-sm w-full bg-gray-200"
+										className="border border-gray-400 border-solid px-2 py-1 rounded-sm w-full "
 										value={editUserData?.address_2}
 										onChange={(ev) => {
 											var value = ev.target.value;
@@ -486,7 +460,7 @@ const UserProfileEdit = ({ user }) => {
 									</label>
 									<input
 										type="text"
-										className="border border-gray-400 border-solid px-2 py-1 rounded-sm w-full bg-gray-200"
+										className="border border-gray-400 border-solid px-2 py-1 rounded-sm w-full "
 										value={editUserData?.zip_code}
 										onChange={(ev) => {
 											var value = ev.target.value;
@@ -500,7 +474,7 @@ const UserProfileEdit = ({ user }) => {
 									</label>
 									<input
 										type="text"
-										className="border border-gray-400 border-solid px-2 py-1 rounded-sm w-full bg-gray-200"
+										className="border border-gray-400 border-solid px-2 py-1 rounded-sm w-full "
 										value={editUserData?.city}
 										onChange={(ev) => {
 											var value = ev.target.value;
@@ -514,7 +488,7 @@ const UserProfileEdit = ({ user }) => {
 									</label>
 									<input
 										type="text"
-										className="border border-gray-400 border-solid px-2 py-1 rounded-sm w-full bg-gray-200"
+										className="border border-gray-400 border-solid px-2 py-1 rounded-sm w-full "
 										value={editUserData?.country}
 										onChange={(ev) => {
 											var value = ev.target.value;
@@ -538,7 +512,7 @@ const UserProfileEdit = ({ user }) => {
 							</div>
 						</form>
 					</div>
-					<div className="md:col-span-4 bg-white rounded-sm p-5">
+					<div className="md:col-span-4 p-5">
 						<h3 className="mb-5 text-2xl">{t("Change Password")}</h3>
 						<form className="grid grid-cols-1 gap-8">
 							<div>
@@ -547,7 +521,7 @@ const UserProfileEdit = ({ user }) => {
 								</label>
 								<input
 									type="password"
-									className="border border-gray-400 border-solid px-2 py-1 rounded-sm w-full bg-gray-200"
+									className="border border-gray-400 border-solid px-2 py-1 rounded-sm w-full "
 								/>
 							</div>
 							<div>
@@ -556,7 +530,7 @@ const UserProfileEdit = ({ user }) => {
 								</label>
 								<input
 									type="password"
-									className="border border-gray-400 border-solid px-2 py-1 rounded-sm w-full bg-gray-200"
+									className="border border-gray-400 border-solid px-2 py-1 rounded-sm w-full "
 								/>
 							</div>
 							<div>
@@ -565,7 +539,7 @@ const UserProfileEdit = ({ user }) => {
 								</label>
 								<input
 									type="password"
-									className="border border-gray-400 border-solid px-2 py-1 rounded-sm w-full bg-gray-200"
+									className="border border-gray-400 border-solid px-2 py-1 rounded-sm w-full "
 								/>
 							</div>
 							<input
@@ -580,133 +554,117 @@ const UserProfileEdit = ({ user }) => {
 							/>
 						</form>
 
-
 						<div className="my-5">
 							<h3 className="mb-5 text-2xl">{t("API Keys")}</h3>
 
-							<select name="" id="" className="border border-gray-400 border-solid px-2 py-1 rounded-sm w-full bg-gray-200 mb-5" onChange={ev => {
+							<select
+								name=""
+								id=""
+								className="border  border-solid px-2 py-1 rounded-sm w-full  mb-5"
+								onChange={(ev) => {
+									var value = ev.target.value;
+									console.log(value);
 
-								var value = ev.target.value;
-								console.log(value);
+									var apiKeys = editUserData.apiKeys;
+									var args = apiKeysPrams[value].args;
 
-								var apiKeys = editUserData.apiKeys;
-								var args = apiKeysPrams[value].args
+									console.log(args);
+									console.log(args);
 
-								console.log(args)
-								console.log(args)
+									if (apiKeys == undefined) {
+										apiKeys = {};
+									}
+									if (apiKeys[value] == undefined) {
+										apiKeys[value] = {};
+									}
 
-								if (apiKeys == undefined) {
-									apiKeys = {}
-								}
-								if (apiKeys[value] == undefined) {
-									apiKeys[value] = {}
-								}
+									apiKeys[value] = args;
 
-								apiKeys[value] = args
-
-								seteditUserData({ ...editUserData, apiKeys: apiKeys });
-
-
-
-							}}>
-
-								{Object.entries(apiKeysPrams).map(args => {
-
-									var key = args[1]
+									seteditUserData({ ...editUserData, apiKeys: apiKeys });
+								}}>
+								{Object.entries(apiKeysPrams).map((args) => {
+									var key = args[1];
 
 									return (
-										<option key={key.id} value={key.id}>{key.label}</option>
-									)
-
+										<option key={key.id} value={key.id}>
+											{key.label}
+										</option>
+									);
 								})}
-
 							</select>
 
+							{editUserData?.apiKeys != undefined &&
+								Object.entries(editUserData?.apiKeys).map((args) => {
+									var pramId = args[0];
+									var pram = args[1];
 
+									return (
+										<ToggleContent title={apiKeysPrams[pramId].label}>
+											<div>
+												{Object.entries(pram).map(([item, value], i) => {
+													return (
+														<div
+															className="pg-setting-input-text   mb-4"
+															key={i}>
+															<label
+																htmlFor=""
+																className="font-medium text-slate-900  block">
+																{item === "apikey" && <>{"API Key"}</>}
+																{item === "apiSecret" && <>{"API Secret"}</>}
+																{item === "username" && <>{"UserName"}</>}
+																{item === "accountName" && (
+																	<>{"Account Name"}</>
+																)}
+																{item === "pass" && <>{"Password"}</>}
+																{item === "accountId" && <>{"Account Id"}</>}
+																{item === "subscriberId" && (
+																	<>{"Subscriber Id"}</>
+																)}
+																{item === "listId" && <>{"List Id"}</>}
+																{item === "apiToken" && <>{"API Token"}</>}
+																{item === "subdomain" && <>{"Subdomain"}</>}
+																{item === "phoneNumber" && (
+																	<>{"Phone Number"}</>
+																)}
+																{item === "accountSid" && <>{"Account Sid"}</>}
+																{item === "authToken" && <>{"Auth Token"}</>}
+																{item === "email" && <>{"Email"}</>}
+																{item === "accessToken" && (
+																	<>{"Access Token"}</>
+																)}
+																{item === "campaignId" && <>{"Campaign Id"}</>}
+																{item === "apikeyPrivate" && (
+																	<>{"Private Api Key"}</>
+																)}
+																{item === "apikeyPublic" && (
+																	<>{"Public Api Key"}</>
+																)}
+																{item === "site_key" && <>{"Site Key"}</>}
+																{item === "dc" && <>{"DC"}</>}
+																{item === "secret_key" && <>{"Secret Key"}</>}
+																{item === "model" && <>{"Model"}</>}
+															</label>
 
-							{editUserData?.apiKeys != undefined && Object.entries(editUserData?.apiKeys).map(args => {
-
-								var pramId = args[0]
-								var pram = args[1]
-
-								return (
-									<ToggleContent title={apiKeysPrams[pramId].label}>
-
-										<div>
-
-
-											{Object.entries(pram).map(([item, value], i) => {
-												return (
-													<div
-														className="pg-setting-input-text   mb-4"
-														key={i}>
-														<label
-															htmlFor=""
-															className="font-medium text-slate-900  block">
-															{item === "apikey" && <>{("API Key")}</>}
-															{item === "apiSecret" && (
-																<>{("API Secret")}</>
-															)}
-															{item === "username" && <>{("UserName")}</>}
-															{item === "accountName" && (
-																<>{("Account Name")}</>
-															)}
-															{item === "pass" && <>{("Password")}</>}
-															{item === "accountId" && (
-																<>{("Account Id")}</>
-															)}
-															{item === "subscriberId" && (
-																<>{("Subscriber Id")}</>
-															)}
-															{item === "listId" && <>{("List Id")}</>}
-															{item === "apiToken" && <>{("API Token")}</>}
-															{item === "subdomain" && <>{("Subdomain")}</>}
-															{item === "phoneNumber" && <>{("Phone Number")}</>}
-															{item === "accountSid" && <>{("Account Sid")}</>}
-															{item === "authToken" && <>{("Auth Token")}</>}
-															{item === "email" && <>{("Email")}</>}
-															{item === "accessToken" && (
-																<>{("Access Token")}</>
-															)}
-															{item === "campaignId" && (
-																<>{("Campaign Id")}</>
-															)}
-															{item === "apikeyPrivate" && (
-																<>{("Private Api Key")}</>
-															)}
-															{item === "apikeyPublic" && (
-																<>{("Public Api Key")}</>
-															)}
-															{item === "site_key" && <>{("Site Key")}</>}
-															{item === "dc" && <>{("DC")}</>}
-															{item === "secret_key" && (
-																<>{("Secret Key")}</>
-															)}
-															{item === "model" && <>{("Model")}</>}
-														</label>
-
-														<input type="text" className="border border-gray-400 border-solid px-2 py-1 rounded-sm w-full bg-gray-200" onChange={ev => {
-															var value = ev.target.value;
-														}} />
-													</div>
-												);
-											})}
-
-										</div>
-
-									</ToggleContent>
-								)
-
-							})}
-
-
+															<input
+																type="text"
+																className="border border-gray-400 border-solid px-2 py-1 rounded-sm w-full "
+																onChange={(ev) => {
+																	var value = ev.target.value;
+																}}
+															/>
+														</div>
+													);
+												})}
+											</div>
+										</ToggleContent>
+									);
+								})}
 						</div>
-
 					</div>
 				</div>
 			</div>
 		</div>
 	);
-}
+};
 
-export default UserProfileEdit
+export default UserProfileEdit;

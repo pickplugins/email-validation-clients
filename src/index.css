@@ -45,5 +45,5 @@ input[type="submit"], button {
 }
 
 select {
-  @apply border-2 border-primary-300;
+  @apply border-2 border-primary-500;
 }
