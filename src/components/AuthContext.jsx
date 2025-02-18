@@ -1,12 +1,14 @@
 import React, { createContext, useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 // Create Context
 export const AuthContext = createContext(null); // Set default value to null
 
 const AuthProvider = ({ children }) => {
 	const navigate = useNavigate()
+	const { t, i18n } = useTranslation();
 	const [user, setUser] = useState(null);
 	const [error, setError] = useState(null);
 	var [userData, setuserData] = useState(null);
@@ -19,6 +21,7 @@ const AuthProvider = ({ children }) => {
 		setUser(null);
 		localStorage.removeItem("token");
 	};
+	const [lang, setlang] = useState("en");
 
 	const [theme, setTheme] = useState("light");
 	const toggleTheme = useCallback(() => {
@@ -34,6 +37,10 @@ const AuthProvider = ({ children }) => {
 			return newTheme;
 		});
 	}, []);
+	const changeLanguage = (lang) => {
+		i18n.changeLanguage(lang);
+		setlang(lang);
+	};
 
 	var appData = window.appData;
 	const handleLogout = () => {
@@ -150,6 +157,9 @@ const AuthProvider = ({ children }) => {
 				handleLogout,
 				navToggle,
 				setnavToggle,
+				t,
+				changeLanguage,
+				lang,
 				theme,
 				toggleTheme
 			}}>

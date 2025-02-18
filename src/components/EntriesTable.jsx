@@ -1,4 +1,4 @@
-import { Component, useEffect, useState } from "react";
+import { Component, useContext, useEffect, useState } from "react";
 
 import {
 	IconCheckbox,
@@ -8,8 +8,10 @@ import {
 } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import Spinner from "./Spinner";
+import { AuthContext } from "./AuthContext";
 
 function Html(props) {
+	const {t} = useContext(AuthContext);
 	if (!props.warn) {
 		return null;
 	}
@@ -21,7 +23,6 @@ function Html(props) {
 	var itemPath = props.itemPath;
 	var deleteRow = props.deleteRow;
 	var loading = props.loading;
-
 	var [queryPrams, setqueryPrams] = useState(props.queryPrams);
 	var [selectedRows, setselectedRows] = useState(props.selectedRows);
 	var [selectedAll, setselectedAll] = useState(false);
@@ -107,7 +108,7 @@ function Html(props) {
 						</>
 					)}
 
-					<div> {entries?.total} Items</div>
+					<div> {entries?.total} {t("Items")}</div>
 
 					<div>
 						{queryPrams?.page} / {entries?.maxPages}
@@ -121,8 +122,8 @@ function Html(props) {
 						onChange={(ev) => {
 							setqueryPrams({ ...queryPrams, order: ev.target.value });
 						}}>
-						<option value="DESC">DESC</option>
-						<option value="ASC">ASC</option>
+						<option value="DESC">{t("DESC")}</option>
+						<option value="ASC">{t("ASC")}</option>
 					</select>
 
 					<select
@@ -223,7 +224,7 @@ function Html(props) {
 						{entries == null && (
 							<tr>
 								<td colSpan={4} className="col-span-4 py-3">
-									No items found
+									{t("No items found")}
 								</td>
 							</tr>
 						)}
@@ -325,7 +326,7 @@ function Html(props) {
 												onClick={(ev) => {
 													deleteRow(entry.id);
 												}}>
-												Delete
+												{t("Delete")}
 											</span>
 										</td>
 									)}
@@ -385,7 +386,7 @@ function Html(props) {
 									</th>
 								);
 							})}
-							{deleteRow && <th>Delete</th>}
+							{deleteRow && <th>{t("Delete")}</th>}
 						</tr>
 					</thead>
 				</table>

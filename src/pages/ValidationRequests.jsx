@@ -1,8 +1,9 @@
 import Layout from "../components/Layout";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import EntriesTable from "../components/EntriesTable";
 import Spinner from "../components/Spinner";
 import { IconRefresh } from "@tabler/icons-react";
+import { AuthContext } from "../components/AuthContext";
 
 
 
@@ -21,13 +22,15 @@ function ValidationRequests() {
 
 	var [selectedRows, setselectedRows] = useState([]);
 
+	const { t, token } = useContext(AuthContext);
+
 
 	function onSelectRows(rows) {
 		setselectedRows(rows);
 	}
 
 	function delete_validation() {
-		const token = localStorage.getItem("token");
+		// const token = localStorage.getItem("token");
 
 		if (!token) {
 			throw new Error("No token found");
@@ -81,7 +84,7 @@ function ValidationRequests() {
 
 
 	function fetchPosts() {
-		const token = localStorage.getItem("token");
+		// const token = localStorage.getItem("token");
 
 		if (!token) {
 			throw new Error("No token found");
@@ -131,7 +134,7 @@ function ValidationRequests() {
 	}
 
 	function validateEmail() {
-		const token = localStorage.getItem("token");
+		// const token = localStorage.getItem("token");
 
 		if (!token) {
 			throw new Error("No token found");
@@ -195,77 +198,73 @@ function ValidationRequests() {
 
 
 	var validationPrams = {
-
-
 		status: {
-			"label": "Status",
-			"value": "status"
+			label: t("Status"),
+			value: "status",
 		},
-
 		safeToSend: {
-			"label": "Safe To Send",
-			"value": "safeToSend"
+			label: t("Safe To Send"),
+			value: "safeToSend",
 		},
 		isFreeEmailProvider: {
-			"label": "Free Email Provider",
-			"value": "isFreeEmailProvider"
+			label: t("Free Email Provider"),
+			value: "isFreeEmailProvider",
 		},
 		isInboxFull: {
-			"label": "Inbox Full",
-			"value": "isInboxFull"
+			label: t("Inbox Full"),
+			value: "isInboxFull",
 		},
 		isGibberishEmail: {
-			"label": "Gibberish Email",
-			"value": "isGibberishEmail"
+			label: t("Gibberish Email"),
+			value: "isGibberishEmail",
 		},
 		isSMTPBlacklisted: {
-			"label": "SMTP Blacklisted",
-			"value": "isSMTPBlacklisted"
+			label: t("SMTP Blacklisted"),
+			value: "isSMTPBlacklisted",
 		},
 		isDisposableDomain: {
-			"label": "Disposable Domain",
-			"value": "isDisposableDomain"
+			label: t("Disposable Domain"),
+			value: "isDisposableDomain",
 		},
-
-
 		isCatchAllDomain: {
-			"label": "Catch All Domain",
-			"value": "isCatchAllDomain"
+			label: t("Catch All Domain"),
+			value: "isCatchAllDomain",
 		},
 		isSyntaxValid: {
-			"label": "Syntax Valid",
-			"value": "isSyntaxValid"
+			label: t("Syntax Valid"),
+			value: "isSyntaxValid",
 		},
 		isValidEmail: {
-			"label": "Valid Email",
-			"value": "isValidEmail"
+			label: t("Valid Email"),
+			value: "isValidEmail",
 		},
 		hasValidDomain: {
-			"label": "Has Valid Domain",
-			"value": "hasValidDomain"
+			label: t("Has Valid Domain"),
+			value: "hasValidDomain",
 		},
 		isRoleBasedEmail: {
-			"label": "Role Based Email",
-			"value": "isRoleBasedEmail"
+			label: t("Role Based Email"),
+			value: "isRoleBasedEmail",
 		},
 		verifySMTP: {
-			"label": "Verify SMTP",
-			"value": "verifySMTP"
+			label: t("Verify SMTP"),
+			value: "verifySMTP",
 		},
 		checkDomainReputation: {
-			"label": "Domain Reputation",
-			"value": "checkDomainReputation"
+			label: t("Domain Reputation"),
+			value: "checkDomainReputation",
 		},
-	}
+	};
 
 	var columns = {
-		id: { label: "ID" },
-		username: { label: "User Name" },
-		email: { label: "Email" },
-		// apikeyid: { label: "API key" },
-		result: { label: "Result" },
-		datetime: { label: "Datetime" },
-	}
+		id: { label: t("ID") },
+		username: { label: t("User Name") },
+		email: { label: t("Email") },
+		// apikeyid: { label: t("API key") },
+		result: { label: t("Result") },
+		datetime: { label: t("Datetime") },
+	};
+
 	function onChangeQueryPrams(queryPrams) {
 		if (queryPrams) {
 			setqueryPrams(queryPrams)
@@ -284,7 +283,7 @@ function ValidationRequests() {
 							onClick={() => {
 								delete_validation();
 							}}>
-							Delete Items
+							{t("Delete Items")}
 						</div>
 					)}
 
@@ -308,7 +307,7 @@ function ValidationRequests() {
 				/>
 
 				<div className="p-5">
-					<div className="my-5 text-2xl font-bold">Single Validation</div>
+					<div className="my-5 text-2xl font-bold">{t("Single Validation")}</div>
 
 					<div className="flex gap-2 items-center">
 						<input
@@ -331,7 +330,7 @@ function ValidationRequests() {
 						</button>
 					</div>
 
-					{validateMailPrams.loading && <>Loading...</>}
+					{validateMailPrams.loading && <>{t("Loading...")}</>}
 
 					{validateMailPrams.result != null && (
 						<>
@@ -358,21 +357,21 @@ function ValidationRequests() {
 																	)}
 																	{id == "safeToSend" && (
 																		<>
-																			{value != "yes" && <> No</>}
-																			{value == "yes" && <> Yes</>}
+																			{value != "yes" && <> {t("No")}</>}
+																			{value == "yes" && <> {t("Yes")}</>}
 																		</>
 																	)}
 
 																	{id == "isGibberishEmail" && (
 																		<>
-																			{value != "yes" && <> No</>}
-																			{value == "yes" && <> Yes</>}
+																			{value != "yes" && <> {t("No")}</>}
+																			{value == "yes" && <> {t("Yes")}</>}
 																		</>
 																	)}
 																	{id == "isSMTPBlacklisted" && (
 																		<>
-																			{value != "yes" && <> No</>}
-																			{value == "yes" && <> Yes</>}
+																			{value != "yes" && <> {t("No")}</>}
+																			{value == "yes" && <> {t("Yes")}</>}
 																		</>
 																	)}
 
@@ -387,8 +386,8 @@ function ValidationRequests() {
 																		id == "isInboxFull" ||
 																		id == "isValidEmail") && (
 																			<>
-																				{value == "yes" && <> No</>}
-																				{value != "yes" && <> Yes</>}
+																				{value == "yes" && <> {t("No")}</>}
+																				{value != "yes" && <> {t("Yes")}</>}
 																			</>
 																		)}
 																</div>

@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import Layout from "../components/Layout";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { AuthContext } from "../components/AuthContext";
 
 function OrderDetail({ user }) {
   const { id } = useParams();
@@ -13,7 +14,7 @@ function OrderDetail({ user }) {
   var [subscriptionURLs, setsubscriptionURLs] = useState(null);
   var [orderData, setorderData] = useState(null);
 
-
+const { t, token } = useContext(AuthContext);
   useEffect(() => {
 
 
@@ -22,7 +23,7 @@ function OrderDetail({ user }) {
 
 
   function fetchPost() {
-    const token = localStorage.getItem("token");
+    // const token = localStorage.getItem("token");
 
     if (!token) {
       throw new Error("No token found");
@@ -98,25 +99,25 @@ function OrderDetail({ user }) {
 
       <div className="p-5">
 
-        <h3 className="text-xl my-5">Subscription </h3>
+        <h3 className="text-xl my-5">{t("Subscription")} </h3>
 
 
         <div className="flex gap-2 items-center my-5">
 
-          <a target="_blank" className="p-2 hover:bg-gray-400 rounded-sm cursor-pointer px-4 bg-gray-600 text-white" href={subscriptionURLs?.customer_portal}>Customer Portal</a>
-          <a target="_blank" className="p-2 hover:bg-gray-400 rounded-sm cursor-pointer px-4 bg-gray-600 text-white" href={subscriptionURLs?.customer_portal_update_subscription}>Update Subscription</a>
-          <a target="_blank" className="p-2 hover:bg-gray-400 rounded-sm cursor-pointer px-4 bg-gray-600 text-white" href={subscriptionURLs?.update_payment_method}>Update Payment Method</a>
+          <a target="_blank" className="p-2 hover:bg-gray-400 rounded-sm cursor-pointer px-4 bg-gray-600 text-white" href={subscriptionURLs?.customer_portal}>{t("Customer Portal")}</a>
+          <a target="_blank" className="p-2 hover:bg-gray-400 rounded-sm cursor-pointer px-4 bg-gray-600 text-white" href={subscriptionURLs?.customer_portal_update_subscription}>{t("Update Subscription")}</a>
+          <a target="_blank" className="p-2 hover:bg-gray-400 rounded-sm cursor-pointer px-4 bg-gray-600 text-white" href={subscriptionURLs?.update_payment_method}>{t("Update Payment Method")}</a>
 
         </div>
 
 
         <div className="bsubscription-0 bsubscription-b bsubscription-solid bsubscription-gray-200 flex gap-3 items-center">
-          <div className=" px-5 py-2 w-40 font-bold">Order</div>
+          <div className=" px-5 py-2 w-40 font-bold">{t("Order")}</div>
           <div className=""> <a href={`orders/${orderData?.id}`}>#{orderData?.id}</a></div>
 
         </div>
         <div className="bsubscription-0 bsubscription-b bsubscription-solid bsubscription-gray-200 flex gap-3 items-center">
-          <div className=" px-5 py-2 w-40 font-bold">Setup fee</div>
+          <div className=" px-5 py-2 w-40 font-bold">{t("Setup fee")}</div>
           <div className=""> {subscriptionData?.setup_fee}</div>
 
         </div>
@@ -124,55 +125,55 @@ function OrderDetail({ user }) {
 
 
         <div className="bsubscription-0 bsubscription-b bsubscription-solid bsubscription-gray-200 flex gap-3 items-center">
-          <div className=" px-5 py-2 w-40 font-bold">Total</div>
+          <div className=" px-5 py-2 w-40 font-bold">{t("Total")}</div>
           <div className=""> {subscriptionData?.total}</div>
 
         </div>
 
 
         <div className="bsubscription-0 bsubscription-b bsubscription-solid bsubscription-gray-200 flex gap-3 items-center ">
-          <div className=" px-5 py-2 w-40 font-bold">Billing Date</div>
+          <div className=" px-5 py-2 w-40 font-bold">{t("Billing Date")}</div>
 
           <div className=""> {subscriptionData?.billing_anchor}</div>
 
         </div>
         <div className="bsubscription-0 bsubscription-b bsubscription-solid bsubscription-gray-200 flex gap-3 items-center ">
-          <div className=" px-5 py-2 w-40 font-bold">Card Last Four</div>
+          <div className=" px-5 py-2 w-40 font-bold">{t("Card Last Four")}</div>
 
           <div className=""> {subscriptionData?.card_last_four}</div>
 
         </div>
         <div className="bsubscription-0 bsubscription-b bsubscription-solid bsubscription-gray-200 flex gap-3 items-center ">
-          <div className=" px-5 py-2 w-40 font-bold">Test Mode</div>
+          <div className=" px-5 py-2 w-40 font-bold">{t("Test Mode")} </div>
 
           <div className=""> {subscriptionData?.test_mode}</div>
 
         </div>
         <div className="bsubscription-0 bsubscription-b bsubscription-solid bsubscription-gray-200 flex gap-3 items-center ">
-          <div className=" px-5 py-2 w-40 font-bold">Status</div>
+          <div className=" px-5 py-2 w-40 font-bold">{t("Status")}</div>
 
           <div className=""> {subscriptionData?.status}</div>
         </div>
         <div className="bsubscription-0 bsubscription-b bsubscription-solid bsubscription-gray-200 flex gap-3 items-center ">
-          <div className=" px-5 py-2 w-40 font-bold">User Email</div>
+          <div className=" px-5 py-2 w-40 font-bold">{t("User Email")}</div>
 
           <div className=""> {subscriptionData?.user_email}</div>
         </div>
 
 
         <div className="bsubscription-0 bsubscription-b bsubscription-solid bsubscription-gray-200 flex gap-3 items-center ">
-          <div className=" px-5 py-2 w-40 font-bold" >Trial Ends at</div>
+          <div className=" px-5 py-2 w-40 font-bold" >{t("Trial Ends at")}</div>
 
           <div className=""> {subscriptionData?.trial_ends_at}</div>
 
         </div>
         <div className="bsubscription-0 bsubscription-b bsubscription-solid bsubscription-gray-200 flex gap-3 items-center ">
-          <div className=" px-5 py-2 w-40 font-bold">Renews at</div>
+          <div className=" px-5 py-2 w-40 font-bold">{t("Renews at")}</div>
 
           <div className=""> {subscriptionData?.renews_at}</div>
         </div>
         <div className="bsubscription-0 bsubscription-b bsubscription-solid bsubscription-gray-200 flex gap-3 items-center ">
-          <div className=" px-5 py-2 w-40 font-bold">Ends at</div>
+          <div className=" px-5 py-2 w-40 font-bold">{t("Ends at")}</div>
 
           <div className=""> {subscriptionData?.ends_at}</div>
         </div>

@@ -5,7 +5,7 @@ import Layout from "../components/Layout";
 import Popover from "../components/Popover";
 
 function Credits() {
-	const { userData, handleLogout } = useContext(AuthContext);
+	const { userData, handleLogout, t } = useContext(AuthContext);
 
 
 	var [appData, setappData] = useState(window.appData);
@@ -226,16 +226,16 @@ function Credits() {
 	}
 
 	var columns = {
-		check: { label: "Check" },
+		check: { label: t("Check") },
 		// id: { label: "ID" },
-		type: { label: "Type" },
-		amount: { label: "Amount" },
+		type: { label: t("Type") },
+		amount: { label: t("Amount") },
 
-		source: { label: "Source" },
-		username: { label: "User name" },
+		source: { label: t("Source") },
+		username: { label: t("User name") },
 		// userid: { label: "Userid" },
 		// status: { label: "Status" },
-		datetime: { label: "Datetime" },
+		datetime: { label: t("Datetime") },
 	};
 
 	// useEffect(() => {
@@ -252,16 +252,16 @@ function Credits() {
 			fetchPosts();
 		}
 	}
-	function delete_credit_entries() {
+	function delete_credits() {
 		// const token = localStorage.getItem("token");
 
 		if (!token) {
 			throw new Error("No token found");
 		}
 
-		if (queryPrams.page < 0) {
-			return;
-		}
+		// if (queryPrams.page < 0) {
+		// 	return;
+		// }
 
 		var postData = {
 			ids: selectedRows,
@@ -269,7 +269,7 @@ function Credits() {
 		postData = JSON.stringify(postData);
 		setloading(true);
 		fetch(
-			appData.serverUrl + "wp-json/email-validation/v2/delete_credit_entries",
+			appData.serverUrl + "wp-json/email-validation/v2/delete_credits",
 			{
 				method: "POST",
 				headers: {
@@ -312,111 +312,122 @@ function Credits() {
 		<Layout>
 			<div>
 				<div className=" p-4 ">
+					<div className="flex gap-3 items-center justify-between">
+						{userRoles?.includes("administrator") && (
+							<>
+								<div className="relative">
+									<button
+										className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer"
+										onClick={(ev) => {
+											setaddCredits({ ...addCredits, edit: !addCredits.edit });
+										}}>
+										{t("Add")}
+									</button>
+									{addCredits.edit && (
+										<Popover className="top-full left-0 min-w-[400px] mt-2 bg-white px-4 py-3 rounded-sm grid grid-cols-2 gap-4 border border-gray-400">
+											<input
+												type="text"
+												placeholder="100"
+												className="p-3 py-[5px]  bg-gray-400 border rounded-sm border-solid "
+												value={addCredits?.amount}
+												onChange={(ev) => {
+													setaddCredits({
+														...addCredits,
+														amount: ev.target.value,
+													});
+												}}
+											/>
+											<input
+												type="text"
+												placeholder="123"
+												className="p-3 py-[5px]  bg-gray-400 border rounded-sm border-solid "
+												value={addCredits?.userid}
+												onChange={(ev) => {
+													setaddCredits({
+														...addCredits,
+														userid: ev.target.value,
+													});
+												}}
+											/>
+											<select
+												name=""
+												id=""
+												className=" rounded-sm border-solid border-2 border-blue-500 py-[5px] px-2 cursor-pointer"
+												value={addCredits?.type}
+												onChange={(ev) => {
+													setaddCredits({
+														...addCredits,
+														type: ev.target.value,
+													});
+												}}>
+												<option value="">{t("Type..")}</option>
+												<option value="credit">{t("Credit")}</option>
+												<option value="debit">{t("Debit")}</option>
+											</select>
+											<select
+												name=""
+												id=""
+												className=" rounded-sm border-solid border-2 border-blue-500 py-[5px] px-2 cursor-pointer"
+												value={addCredits?.source}
+												onChange={(ev) => {
+													setaddCredits({
+														...addCredits,
+														source: ev.target.value,
+													});
+												}}>
+												<option value="">{t("Source..")}</option>
+												<option value="instant">{t("Instant")}</option>
+												<option value="daily">{t("Daily")}</option>
+												<option value="API">{t("API")}</option>
+												<option value="cron">{t("Cron")}</option>
+												<option value="monthly">{t("Monthly")}</option>
+												<option value="register">{t("Register")}</option>
+											</select>
+											<button
+												onClick={(ev) => {
+													createCredits();
+													setaddCredits({ ...addCredits, loading: true });
+												}}
+												className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
+												{t("Submit")}
+											</button>
+										</Popover>
+									)}
+								</div>
 
+								<div>
+									{addCredits.loading && <>{t("Loading...")}</>}
+									{addCredits.errors && <>{t("There is an error.")}</>}
+									{addCredits.success && <>{t("Task Added.")}</>}
+								</div>
+							</>
+						)}
 
-					{userRoles?.includes("administrator") && (
-						<div className="flex gap-3 items-center justify-between">
-							<div className="relative">
-								<button
-									className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer"
-									onClick={(ev) => {
-										setaddCredits({ ...addCredits, edit: !addCredits.edit });
-									}}>
-									Add
-								</button>
-								{addCredits.edit && (
-									<Popover className="top-full left-0 min-w-[400px] mt-2 bg-white px-4 py-3 rounded-sm grid grid-cols-2 gap-4 border border-gray-400">
-										<input
-											type="text"
-											placeholder="100"
-											className="p-3 py-[5px]  bg-gray-400 border rounded-sm border-solid "
-											value={addCredits?.amount}
-											onChange={(ev) => {
-												setaddCredits({ ...addCredits, amount: ev.target.value });
-											}}
-										/>
-										<input
-											type="text"
-											placeholder="123"
-											className="p-3 py-[5px]  bg-gray-400 border rounded-sm border-solid "
-											value={addCredits?.userid}
-											onChange={(ev) => {
-												setaddCredits({ ...addCredits, userid: ev.target.value });
-											}}
-										/>
-										<select
-											name=""
-											id=""
-											className=" rounded-sm border-solid border-2 border-blue-500 py-[5px] px-2 cursor-pointer"
-											value={addCredits?.type}
-											onChange={(ev) => {
-												setaddCredits({ ...addCredits, type: ev.target.value });
-											}}>
-											<option value="">Type..</option>
-											<option value="credit">Credit</option>
-											<option value="debit">Debit</option>
-										</select>
-										<select
-											name=""
-											id=""
-											className=" rounded-sm border-solid border-2 border-blue-500 py-[5px] px-2 cursor-pointer"
-											value={addCredits?.source}
-											onChange={(ev) => {
-												setaddCredits({ ...addCredits, source: ev.target.value });
-											}}>
-											<option value="">Source..</option>
-											<option value="instant">Instant</option>
-											<option value="daily">Daily</option>
-											<option value="API">API</option>
-											<option value="cron">Cron</option>
-											<option value="monthly">Monthly</option>
-											<option value="register">Register</option>
-										</select>
-										<button
-											onClick={(ev) => {
-												createCredits();
-												setaddCredits({ ...addCredits, loading: true });
-											}}
-											className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
-											Submit
-										</button>
-									</Popover>
-								)}
-							</div>
+						<div className="flex items-center gap-2">
+							<select
+								name=""
+								id=""
+								className=" rounded-sm border-solid border-2 border-blue-500 py-[5px] px-2 cursor-pointer"
+								value={queryPrams?.type}
+								onChange={(ev) => {
+									setqueryPrams({ ...queryPrams, type: ev.target.value });
+								}}>
+								<option value="">{t("Type..")}</option>
+								<option value="credit">{t("Credit")}</option>
+								<option value="debit">{t("Debit")}</option>
+							</select>
 
-							{addCredits.loading && <>Loading...</>}
-							{addCredits.errors && <>There is an error.</>}
-							{addCredits.success && <>Task Added.</>}
 							{selectedRows.length > 0 && (
 								<div
 									className="px-3 py-[5px] rounded-sm bg-red-600 hover:bg-red-500 text-white cursor-pointer"
 									onClick={(ev) => {
-										delete_credit_entries();
+										delete_credits();
 									}}>
-									Delete Tasks
+									{t("Delete Credits")}
 								</div>
 							)}
-
-
-							<div>
-								<select
-									name=""
-									id=""
-									className=" rounded-sm border-solid border-2 border-blue-500 py-[5px] px-2 cursor-pointer"
-									value={queryPrams?.type}
-									onChange={(ev) => {
-										setqueryPrams({ ...queryPrams, type: ev.target.value });
-									}}>
-									<option value="">Type..</option>
-									<option value="credit">Credit</option>
-									<option value="debit">Debit</option>
-								</select>
-							</div>
-
 						</div>
-					)}
-
-
+					</div>
 
 					<div></div>
 				</div>

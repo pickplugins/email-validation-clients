@@ -2,14 +2,17 @@ import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "./AuthContext";
 
-import { IconDatabaseSmile, IconMoodSad } from "@tabler/icons-react";
+import {
+	IconMoodSad, IconDatabaseSmile, IconShoppingCart
+} from "@tabler/icons-react";
 
 import { MoonIcon, SunIcon } from "./Icons";
+
 
 const UserAccount = () => {
 	const navigate = useNavigate();
 
-	const { userData, handleLogout, theme, toggleTheme, token } =
+	const { userData, handleLogout, theme, toggleTheme, token, t } =
 		useContext(AuthContext);
 	console.log(userData);
 
@@ -40,15 +43,17 @@ const UserAccount = () => {
 					<MoonIcon className={"fill-primary-400"} />
 				)}
 			</button>
-			<div className="flex items-center gap-3">
+			<div className="flex items-center gap-3 flex-wrap">
 				{/* <a href="https://isspammy.lemonsqueezy.com/buy/24f14039-0d6e-47c7-92ce-3d6a716f5d2d?embed=1" class="lemonsqueezy-button px-3 py-2 rounded-sm bg-amber-500 text-white cursor-pointer">Buy  Credits</a> */}
 
-				<a
-					href="https://pickplugins.lemonsqueezy.com/buy/62eb8580-ca3f-441f-8ef2-c1efe297e8e4?embed=1"
-					className="lemonsqueezy-button lemonsqueezy-button px-3 py-2 rounded-sm bg-amber-500 text-white cursor-pointer">
-					Buy Credits
-				</a>
-				<script src="https://assets.lemonsqueezy.com/lemon.js" defer></script>
+				<div className=" px-3 py-2 rounded-sm bg-amber-500 text-white cursor-pointer flex items-center gap-3">
+					<IconShoppingCart />
+					<a
+						href="https://pickplugins.lemonsqueezy.com/buy/62eb8580-ca3f-441f-8ef2-c1efe297e8e4?embed=1"
+						className="lemonsqueezy-button ">
+						{t("Buy Credits")}
+					</a>
+				</div>
 
 				{/* <div className="relative">
 					<div className="px-3 py-2 rounded-sm bg-amber-500 text-white cursor-pointer"
@@ -93,7 +98,7 @@ const UserAccount = () => {
 												<IconDatabaseSmile />
 											</span>
 										)}
-										<span>Credits: </span>
+										<span>{t("Credits")}: </span>
 										<span>{userData?.total_credit}</span> /
 										<span>{userData?.total_credit_used}</span>
 									</div>
@@ -101,14 +106,20 @@ const UserAccount = () => {
 										<div className="absolute shadow-lg border border-gray-200 z-[99] right-0 top-[100%] mt-2 bg-white p-2 w-[300px] rounded-sm">
 											<div className="p-3 ">
 												<ul>
-													<li>Total Credits: {userData?.total_credit}</li>
-													<li>Used by Task: {userData?.credit_used_cron}</li>
-													<li>Used by API: {userData?.credit_used_api}</li>
-													<li className="font-bold">
-														Total Used: {userData?.total_credit_used}
+													<li>
+														{t("Total Credits")}: {userData?.total_credit}
+													</li>
+													<li>
+														{t("Used by Task")}: {userData?.credit_used_cron}
+													</li>
+													<li>
+														{t("Used by API")}: {userData?.credit_used_api}
 													</li>
 													<li className="font-bold">
-														Reminaing Credits:{" "}
+														{t("Total Used")}: {userData?.total_credit_used}
+													</li>
+													<li className="font-bold">
+														{t("Remaining Credits")}:{" "}
 														{userData?.total_credit -
 															userData?.total_credit_used}
 													</li>
@@ -133,20 +144,22 @@ const UserAccount = () => {
 
 									{modal && (
 										<div className="absolute z-[99] shadow-lg border border-gray-200 right-0 top-[100%] bg-white p-3 w-[300px] rounded-sm">
-											<div className="mb-3">Welcome! {userData?.name}</div>
+											<div className="mb-3">
+												{t("Welcome")}! {userData?.name}
+											</div>
 
 											<div className="flex gap-3 items-center">
 												<Link
 													to={`/editprofile`}
 													className="p-2 inline hover:bg-blue-400 rounded-sm cursor-pointer px-4 bg-blue-600 text-white">
-													Edit Profile
+													{t("Edit Profile")}
 												</Link>
 												<div
 													className="p-2 inline hover:bg-blue-400 rounded-sm cursor-pointer px-4 bg-blue-600 text-white"
 													onClick={(ev) => {
 														handleLogout();
 													}}>
-													Log-out
+													{t("Logout")}
 												</div>
 											</div>
 										</div>
@@ -161,7 +174,7 @@ const UserAccount = () => {
 								onClick={(ev) => {
 									handleLogout();
 								}}>
-								Log-out
+								{t("Logout")}
 							</div>
 						)}
 					</>

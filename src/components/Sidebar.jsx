@@ -15,7 +15,7 @@ import { Link, useLocation } from "react-router-dom";
 import { AuthContext } from "./AuthContext";
 
 const Sidebar = ({ user }) => {
-	const { navToggle, setnavToggle } = useContext(AuthContext);
+	const { navToggle, setnavToggle, t } = useContext(AuthContext);
 	console.log(user);
 	var appData = window.appData;
 
@@ -26,20 +26,20 @@ const Sidebar = ({ user }) => {
 
 	var navs = [
 		// { label: "Products", value: "products" },
-		{ label: "Dashboard", value: "dashboard", icon: <IconDashboard /> },
-		{ label: "Tasks", value: "tasks", icon: <IconList /> },
-		{ label: "Orders", value: "orders", icon: <IconBasketCheck /> },
+		{ label: t("Dashboard"), value: "dashboard", icon: <IconDashboard /> },
+		{ label: t("Tasks"), value: "tasks", icon: <IconList /> },
+		{ label: t("Orders"), value: "orders", icon: <IconBasketCheck /> },
 		{
-			label: "Subscriptions",
+			label: t("Subscriptions"),
 			value: "subscriptions",
 			icon: <IconRotateRectangle />,
 		},
-		{ label: "Credits", value: "credits", icon: <IconCards /> },
+		{ label: t("Credits"), value: "credits", icon: <IconCards /> },
 		// { label: "CreditsLogs", value: "creditslogs", icon: <IconDatabaseEdit /> },
 		// { label: "Licenses", value: "licenses", icon: ""  },
-		{ label: "API Keys", value: "apiKeys", icon: <IconCloudDataConnection /> },
+		{ label: t("API Keys"), value: "apiKeys", icon: <IconCloudDataConnection /> },
 		{
-			label: "Validation Requests",
+			label: t("Validation Requests"),
 			value: "ValidationRequests",
 			icon: <IconBrandCitymapper />,
 		},
@@ -50,7 +50,7 @@ const Sidebar = ({ user }) => {
 	return (
 		<aside
 			className={`max-w-[300px]  border-r border-primary-800/50 dark:border-primary-200/50 bg-primary-100 dark:bg-primary-900 text-gray-800 p-0 ${
-				!navToggle && "w-[300px]"
+				!navToggle && "lg:w-[300px]"
 			}`}>
 			<div className=" p-3  h-[70px] bg-primary-800 text-primary-200 dark:bg-primary-200 dark:text-primary-800">
 				<div className="flex gap-3 items-center">
@@ -69,14 +69,18 @@ const Sidebar = ({ user }) => {
 						className={`${
 							navToggle ? "hidden" : "hidden md:block text-3xl"
 						} flex gap-3 justify-between items-center w-full`}>
+					<div
+						className={`${
+							navToggle ? "hidden" : "hidden md:block text-3xl"
+						} flex gap-3 justify-between items-center w-full`}>
 						<div className="flex gap-3 items-center">
 							<Link to={`/`}>IsSpammy</Link>
-							<span className="bg-blue-800 text-white rounded-sm px-3 py-1 inline text-[14px]">
-								Beta 1.0
-							</span>
+							<span className="bg-blue-800 text-white rounded-sm px-3 py-1 inline text-[14px]">{t("Beta 1.0")}</span>
+
 						</div>
 					</div>
 				</div>
+			</div>
 			</div>
 
 			{token ? (
@@ -116,12 +120,12 @@ const Sidebar = ({ user }) => {
 					<a
 						href={`/dashboard`}
 						className={`bg-gray-500 hover:bg-gray-500 border-0 border-b border-solid border-gray-300 cursor-pointer px-4 py-2 `}>
-						Dashboard
+						{t("Dashboard")}
 					</a>
 				</div>
 			)}
 		</aside>
-	);
-};
+	)
+}
 
 export default Sidebar;

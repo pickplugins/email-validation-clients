@@ -1,18 +1,23 @@
-import Layout from "../components/Layout";
-import { useState, useEffect } from "react";
-import EntriesTable from "../components/EntriesTable";
-import Spinner from "../components/Spinner";
 import { IconRefresh } from "@tabler/icons-react";
-
-
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../components/AuthContext";
+import EntriesTable from "../components/EntriesTable";
+import Layout from "../components/Layout";
 
 function Subscriptions({ user }) {
-
 	var [appData, setappData] = useState(window.appData);
 
 	var [subscriptionsData, setsubscriptionsData] = useState(null);
-	var [queryPrams, setqueryPrams] = useState({ keyword: "", page: 1, order: "DESC", limit: 10, first_date: "", last_date: "" });
+	var [queryPrams, setqueryPrams] = useState({
+		keyword: "",
+		page: 1,
+		order: "DESC",
+		limit: 10,
+		first_date: "",
+		last_date: "",
+	});
 
+	const { t, token } = useContext(AuthContext);
 
 	var [loading, setloading] = useState(false);
 
@@ -23,7 +28,7 @@ function Subscriptions({ user }) {
 	}
 
 	function delete_subscriptions() {
-		const token = localStorage.getItem("token");
+		// const token = localStorage.getItem("token");
 
 		if (!token) {
 			throw new Error("No token found");
@@ -38,14 +43,17 @@ function Subscriptions({ user }) {
 		};
 		postData = JSON.stringify(postData);
 		setloading(true);
-		fetch(appData.serverUrl + "wp-json/email-validation/v2/delete_subscriptions", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${token}`,
-			},
-			body: postData,
-		})
+		fetch(
+			appData.serverUrl + "wp-json/email-validation/v2/delete_subscriptions",
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+				body: postData,
+			}
+		)
 			.then((response) => {
 				if (!response.ok) {
 					throw new Error("Token validation failed");
@@ -75,9 +83,8 @@ function Subscriptions({ user }) {
 			});
 	}
 
-
 	function fetchPosts() {
-		const token = localStorage.getItem("token");
+		// const token = localStorage.getItem("token");
 
 		if (!token) {
 			throw new Error("No token found");
@@ -90,35 +97,33 @@ function Subscriptions({ user }) {
 
 		setloading(true);
 
-
 		fetch(appData.serverUrl + "wp-json/email-validation/v2/get_subscriptions", {
 			method: "POST",
 			headers: {
-				'Content-Type': 'application/json',
-				'Authorization': `Bearer ${token}`
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
 			},
 			body: postData,
 		})
 			.then((response) => {
-
 				if (!response.ok) {
-					throw new Error('Token validation failed');
+					throw new Error("Token validation failed");
 				}
 
 				if (response.ok && response.status < 400) {
 					response.json().then((res) => {
-
-
-
 						var posts = res?.posts;
 						var total = res?.total;
 						var max_pages = res?.max_pages;
 
-						setsubscriptionsData({ posts: posts, total: total, maxPages: max_pages })
+						setsubscriptionsData({
+							posts: posts,
+							total: total,
+							maxPages: max_pages,
+						});
 						setloading(false);
 
-						setTimeout(() => {
-						}, 500);
+						setTimeout(() => {}, 500);
 					});
 				}
 			})
@@ -126,7 +131,6 @@ function Subscriptions({ user }) {
 				//this.saveAsStatus = 'error';
 				// handle the error
 			});
-
 	}
 
 	// useEffect(() => {
@@ -137,28 +141,25 @@ function Subscriptions({ user }) {
 		fetchPosts();
 	}, [queryPrams]);
 
-
 	var columns = {
-		check: { label: "Check" },
-		id: { label: "ID" },
+		check: { label: t("Check") },
+		id: { label: t("ID") },
 		// order_id: { label: "Order id" },
-		user_name: { label: "User name" },
-		user_email: { label: "Email" },
+		user_name: { label: t("User name") },
+		user_email: { label: t("Email") },
 		// test_mode: { label: "Test Mode" },
-		trial_ends_at: { label: "Trial Ends" },
-		renews_at: { label: "Renews" },
-		total: { label: "Total" },
+		trial_ends_at: { label: t("Trial Ends") },
+		renews_at: { label: t("Renews") },
+		total: { label: t("Total") },
 
-		datetime: { label: "Datetime" },
-
-	}
+		datetime: { label: t("Datetime") },
+	};
 
 	function onChangeQueryPrams(queryPrams) {
 		if (queryPrams) {
-			setqueryPrams(queryPrams)
+			setqueryPrams(queryPrams);
 			fetchPosts();
 		}
-
 	}
 
 	return (
@@ -171,7 +172,7 @@ function Subscriptions({ user }) {
 							onClick={() => {
 								delete_subscriptions();
 							}}>
-							Delete Subscriptions
+							{t("Delete Subscriptions")}
 						</div>
 					)}
 
