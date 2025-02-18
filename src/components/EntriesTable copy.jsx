@@ -113,7 +113,7 @@ function Html(props) {
 
 			<table className="table-fixed w-full text-center border-collapse">
 				<thead>
-					<tr className="bg-gray-300 border border-solid border-gray-200">
+					<tr className="bg-gray-300 border border-primary-200">
 						{Object.entries(columns).map((args) => {
 							var columnIndex = args[0];
 							var columnData = args[1];
@@ -183,7 +183,7 @@ function Html(props) {
 						return (
 							<tr
 								key={index}
-								className="border-0 border-b border-solid border-gray-200">
+								className="border-0 border-b border-solid border-primary-200">
 								{Object.entries(columns).map((args) => {
 									var columnIndex = args[0];
 									var columnData = args[1];
@@ -194,7 +194,6 @@ function Html(props) {
 											className={`px-5 py-2 ${
 												columnIndex == "email" ? "text-left pl-5" : ""
 											} ${columnIndex == "title" ? "text-left pl-5" : ""}`}>
-											
 											{columnIndex == "title" && (
 												<div className="flex items-center gap-2">
 													{itemPath.length > 0 && (
@@ -268,7 +267,7 @@ function Html(props) {
 					})}
 				</tbody>
 				<thead>
-					<tr className="bg-gray-300 border border-solid border-gray-200">
+					<tr className="bg-gray-300 border border-solid border-primary-200">
 						{Object.entries(columns).map((args) => {
 							var columnIndex = args[0];
 							var columnData = args[1];

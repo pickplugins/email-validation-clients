@@ -11,8 +11,9 @@ const Layout = ({ children }) => {
 
 
 	return (
-		<div className={`flex min-h-screen bg-primary-200 dark:bg-primary-900 text-primary-900 dark:text-primary-100`}>
-			<div className="min-w-[56px]">
+		<div
+			className={`flex min-h-screen max-h-screen bg-primary-200 dark:bg-primary-950 text-primary-900 dark:text-primary-100 relative overflow-y-scroll`}>
+			<div className="sticky top-0 h-screen border-r border-primary-800/50 dark:border-primary-200/50">
 				<Sidebar />
 			</div>
 			<main className="md:flex-1 w-[calc(100%-56px)] md:w-full">

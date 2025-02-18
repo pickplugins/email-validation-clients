@@ -38,9 +38,12 @@ export default function ChartComponent({ entries }) {
     Object.entries(entries).map((args, index) => {
       labels.push(args[0])
       items.push({
-        label: args[0],
-        data: args[1],
-      })
+				label: args[0],
+				data: args[1],
+				backgroundColor: `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(
+					Math.random() * 255
+				)}, ${Math.floor(Math.random() * 255)}, 0.6)`,
+			});
 
     })
 

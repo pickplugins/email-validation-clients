@@ -1,29 +1,43 @@
-import Layout from "../components/Layout";
-import { useState, useEffect, useContext } from "react";
-import EntriesTable from "../components/EntriesTable";
-import Spinner from "../components/Spinner";
 import { IconRefresh } from "@tabler/icons-react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../components/AuthContext";
-
-
+import EntriesTable from "../components/EntriesTable";
+import Layout from "../components/Layout";
 
 function ValidationRequests() {
-
 	var [appData, setappData] = useState(window.appData);
 
 	var [requestData, setrequestData] = useState(null);
-	var [queryPrams, setqueryPrams] = useState({ keyword: "", page: 1, order: "DESC", limit: 10, first_date: "", last_date: "" });
-	var [validateMailPrams, setvalidateMailPrams] = useState({ email: '', apikey: 'lWl6^EDwPUbLsrqwPz0&Ki2^VO1038#dqJ1Nf4Ss', testType: "", result: {}, loading: false });
+	var [queryPrams, setqueryPrams] = useState({
+		keyword: "",
+		page: 1,
+		order: "DESC",
+		limit: 10,
+		first_date: "",
+		last_date: "",
+	});
+	var [validateMailPrams, setvalidateMailPrams] = useState({
+		email: "",
+		apikey: "lWl6^EDwPUbLsrqwPz0&Ki2^VO1038#dqJ1Nf4Ss",
+		testType: "",
+		result: {},
+		loading: false,
+	});
 
-
-	var [getApiKeyPrams, setgetApiKeyPrams] = useState({ adding: false, title: "", email: "public.nurhasan@gmail.com", domain: "", result: null, loading: false }); // Using the hook.
+	var [getApiKeyPrams, setgetApiKeyPrams] = useState({
+		adding: false,
+		title: "",
+		email: "public.nurhasan@gmail.com",
+		domain: "",
+		result: null,
+		loading: false,
+	}); // Using the hook.
 
 	var [loading, setloading] = useState(false);
 
 	var [selectedRows, setselectedRows] = useState([]);
 
 	const { t, token } = useContext(AuthContext);
-
 
 	function onSelectRows(rows) {
 		setselectedRows(rows);
@@ -82,7 +96,6 @@ function ValidationRequests() {
 			});
 	}
 
-
 	function fetchPosts() {
 		// const token = localStorage.getItem("token");
 
@@ -96,33 +109,32 @@ function ValidationRequests() {
 		postData = JSON.stringify(postData);
 		setloading(true);
 
-		fetch(appData.serverUrl + "wp-json/email-validation/v2/validation_requests", {
-			method: "POST",
-			headers: {
-				'Content-Type': 'application/json',
-				'Authorization': `Bearer ${token}`
-			},
-			body: postData,
-		})
+		fetch(
+			appData.serverUrl + "wp-json/email-validation/v2/validation_requests",
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+				body: postData,
+			}
+		)
 			.then((response) => {
-
 				if (!response.ok) {
-					throw new Error('Token validation failed');
+					throw new Error("Token validation failed");
 				}
 
 				if (response.ok && response.status < 400) {
 					response.json().then((res) => {
-
-
 						var posts = res?.posts;
 						var total = res?.total;
 						var max_pages = res?.max_pages;
 
-						setrequestData({ posts: posts, total: total, maxPages: max_pages })
+						setrequestData({ posts: posts, total: total, maxPages: max_pages });
 						setloading(false);
 
-						setTimeout(() => {
-						}, 500);
+						setTimeout(() => {}, 500);
 					});
 				}
 			})
@@ -130,7 +142,6 @@ function ValidationRequests() {
 				//this.saveAsStatus = 'error';
 				// handle the error
 			});
-
 	}
 
 	function validateEmail() {
@@ -144,33 +155,35 @@ function ValidationRequests() {
 			apikey: validateMailPrams.apikey,
 		};
 		postData = JSON.stringify(postData);
-		setvalidateMailPrams({ ...validateMailPrams, loading: true })
+		setvalidateMailPrams({ ...validateMailPrams, loading: true });
 
-		fetch(appData.serverUrl + "wp-json/email-validation/v2/validate_email_by_user", {
-			method: "POST",
-			mode: "cors",
-			headers: {
-				'Content-Type': 'application/json',
-				'Authorization': `Bearer ${token}`
-			},
-			body: postData,
-		})
+		fetch(
+			appData.serverUrl + "wp-json/email-validation/v2/validate_email_by_user",
+			{
+				method: "POST",
+				mode: "cors",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+				body: postData,
+			}
+		)
 			.then((response) => {
-
 				if (!response.ok) {
-					throw new Error('Token validation failed');
+					throw new Error("Token validation failed");
 				}
 
 				if (response.ok && response.status < 400) {
 					response.json().then((res) => {
-
 						//var result = JSON.parse(res);
-						setvalidateMailPrams({ ...validateMailPrams, result: res, loading: false })
+						setvalidateMailPrams({
+							...validateMailPrams,
+							result: res,
+							loading: false,
+						});
 
-
-
-						setTimeout(() => {
-						}, 500);
+						setTimeout(() => {}, 500);
 					});
 				}
 			})
@@ -178,14 +191,7 @@ function ValidationRequests() {
 				//this.saveAsStatus = 'error';
 				// handle the error
 			});
-
 	}
-
-
-
-
-
-
 
 	// useEffect(() => {
 	// 	fetchPosts();
@@ -194,8 +200,6 @@ function ValidationRequests() {
 	useEffect(() => {
 		fetchPosts();
 	}, [queryPrams]);
-
-
 
 	var validationPrams = {
 		status: {
@@ -267,10 +271,9 @@ function ValidationRequests() {
 
 	function onChangeQueryPrams(queryPrams) {
 		if (queryPrams) {
-			setqueryPrams(queryPrams)
+			setqueryPrams(queryPrams);
 			fetchPosts();
 		}
-
 	}
 
 	return (
@@ -307,7 +310,9 @@ function ValidationRequests() {
 				/>
 
 				<div className="p-5">
-					<div className="my-5 text-2xl font-bold">{t("Single Validation")}</div>
+					<div className="my-5 text-2xl font-bold">
+						{t("Single Validation")}
+					</div>
 
 					<div className="flex gap-2 items-center">
 						<input
@@ -347,10 +352,10 @@ function ValidationRequests() {
 												{validationPrams[id] != undefined && (
 													<>
 														<tr className=" " key={id}>
-															<td className="w-[250px] py-4 border-0 border-b border-solid border-gray-400">
+															<td className="w-[250px] py-4 border-0 border-b border-solid border-primary-400">
 																{validationPrams[id]?.label}
 															</td>
-															<td className="w-[250px] py-4  border-0 border-b border-solid border-gray-400">
+															<td className="w-[250px] py-4  border-0 border-b border-solid border-primary-400">
 																<div className="flex items-center">
 																	{id == "status" && (
 																		<>{JSON.stringify(value)}</>
@@ -385,11 +390,11 @@ function ValidationRequests() {
 																		id == "verifySMTP" ||
 																		id == "isInboxFull" ||
 																		id == "isValidEmail") && (
-																			<>
-																				{value == "yes" && <> {t("No")}</>}
-																				{value != "yes" && <> {t("Yes")}</>}
-																			</>
-																		)}
+																		<>
+																			{value == "yes" && <> {t("No")}</>}
+																			{value != "yes" && <> {t("Yes")}</>}
+																		</>
+																	)}
 																</div>
 															</td>
 														</tr>
@@ -409,5 +414,3 @@ function ValidationRequests() {
 }
 
 export default ValidationRequests;
-
-

@@ -4,13 +4,12 @@ import {
 	IconCards,
 	IconCloudDataConnection,
 	IconDashboard,
-	IconDatabaseEdit,
 	IconLayoutSidebarLeftCollapse,
 	IconLayoutSidebarRightCollapse,
 	IconList,
 	IconRotateRectangle,
 } from "@tabler/icons-react";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { AuthContext } from "./AuthContext";
 
@@ -37,7 +36,11 @@ const Sidebar = ({ user }) => {
 		{ label: t("Credits"), value: "credits", icon: <IconCards /> },
 		// { label: "CreditsLogs", value: "creditslogs", icon: <IconDatabaseEdit /> },
 		// { label: "Licenses", value: "licenses", icon: ""  },
-		{ label: t("API Keys"), value: "apiKeys", icon: <IconCloudDataConnection /> },
+		{
+			label: t("API Keys"),
+			value: "apiKeys",
+			icon: <IconCloudDataConnection />,
+		},
 		{
 			label: t("Validation Requests"),
 			value: "ValidationRequests",
@@ -49,10 +52,10 @@ const Sidebar = ({ user }) => {
 
 	return (
 		<aside
-			className={`max-w-[300px]  border-r border-primary-800/50 dark:border-primary-200/50 bg-primary-100 dark:bg-primary-900 text-gray-800 p-0 ${
+			className={`max-w-[300px]  bg-primary-100 dark:bg-primary-900 text-gray-800 p-0 ${
 				!navToggle && "lg:w-[300px]"
 			}`}>
-			<div className=" p-3  h-[70px] bg-primary-800 text-primary-200 dark:bg-primary-200 dark:text-primary-800">
+			<div className=" p-3  h-[70px] bg-primary-800 text-primary-200 dark:bg-primary-200 dark:text-primary-800 block">
 				<div className="flex gap-3 items-center">
 					<div className="w-[30px]">
 						<svg
@@ -69,18 +72,19 @@ const Sidebar = ({ user }) => {
 						className={`${
 							navToggle ? "hidden" : "hidden md:block text-3xl"
 						} flex gap-3 justify-between items-center w-full`}>
-					<div
-						className={`${
-							navToggle ? "hidden" : "hidden md:block text-3xl"
-						} flex gap-3 justify-between items-center w-full`}>
-						<div className="flex gap-3 items-center">
-							<Link to={`/`}>IsSpammy</Link>
-							<span className="bg-blue-800 text-white rounded-sm px-3 py-1 inline text-[14px]">{t("Beta 1.0")}</span>
-
+						<div
+							className={`${
+								navToggle ? "hidden" : "hidden md:block text-3xl"
+							} flex gap-3 justify-between items-center w-full`}>
+							<div className="flex gap-3 items-center">
+								<Link to={`/`}>IsSpammy</Link>
+								<span className="bg-blue-800 text-white rounded-sm px-3 py-1 inline text-[14px]">
+									{t("Beta 1.0")}
+								</span>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
 			</div>
 
 			{token ? (
@@ -95,7 +99,7 @@ const Sidebar = ({ user }) => {
 										currentLocation == "/" + nav.value
 											? "bg-primary-800 !text-primary-200 dark:bg-primary-200 dark:!text-primary-800 "
 											: ""
-									} hover:bg-primary-800  text-primary-800 hover:text-primary-200  dark:hover:bg-primary-200 dark:text-primary-200 dark:hover:text-primary-800 border-0 border-b border-solid border-gray-300 cursor-pointer px-4 py-2 flex items-center gap-2`}>
+									} hover:bg-primary-800  text-primary-800 hover:text-primary-200  dark:hover:bg-primary-200 dark:text-primary-200 dark:hover:text-primary-800 border-0 border-b border-solid border-primary-300 cursor-pointer px-4 py-2 flex items-center gap-2`}>
 									<span className="">{nav.icon}</span>{" "}
 									<span
 										className={`${navToggle ? "hidden" : "hidden md:block"}`}>
@@ -119,13 +123,13 @@ const Sidebar = ({ user }) => {
 				<div className="flex flex-col">
 					<a
 						href={`/dashboard`}
-						className={`bg-gray-500 hover:bg-gray-500 border-0 border-b border-solid border-gray-300 cursor-pointer px-4 py-2 `}>
+						className={`bg-gray-500 hover:bg-gray-500 border-0 border-b border-solid border-primary-300 cursor-pointer px-4 py-2 `}>
 						{t("Dashboard")}
 					</a>
 				</div>
 			)}
 		</aside>
-	)
-}
+	);
+};
 
 export default Sidebar;

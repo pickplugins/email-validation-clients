@@ -145,7 +145,7 @@ function Html(props) {
 						className="
 					flex items-center gap-3">
 						<div
-							className="px-3 py-[5px] rounded-sm bg-primary-600 hover:bg-primary-500 text-primary-100 dark:text-primary-800 cursor-pointer"
+							className="px-3 py-[5px] rounded-sm bg-primary-600 hover:bg-primary-500 text-primary-100 cursor-pointer"
 							onClick={(ev) => {
 								var page = queryPrams.page;
 								if (page == 1) return;
@@ -154,7 +154,7 @@ function Html(props) {
 							<IconArrowNarrowLeftDashed />
 						</div>
 						<div
-							className="p-3 py-[5px] rounded-sm bg-primary-600 hover:bg-primary-500 text-primary-100 dark:text-primary-800 cursor-pointer"
+							className="p-3 py-[5px] rounded-sm bg-primary-600 hover:bg-primary-500 text-primary-100 cursor-pointer"
 							onClick={(ev) => {
 								var page = queryPrams.page + 1;
 								if (page > entries?.maxPages) return;
@@ -232,7 +232,7 @@ function Html(props) {
 							return (
 								<tr
 									key={index}
-									className="border-0 border-b border-b-gray-200 dark:bg-primary-600">
+									className="border-0 border-b border-b-gray-200 dark:bg-primary-900">
 									{Object.entries(columns).map((args) => {
 										var columnIndex = args[0];
 										var columnData = args[1];

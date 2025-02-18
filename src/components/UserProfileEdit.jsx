@@ -1,13 +1,18 @@
 import { useContext, useEffect, useState } from "react";
-import ToggleContent from "../components/ToggleContent";
 import { AuthContext } from "./AuthContext";
+import Spinner from "./Spinner";
+import ToggleContent from "./ToggleContent";
 
 const UserProfileEdit = ({ user }) => {
 	const { token, userData, t } = useContext(AuthContext);
 	// var [userData, setuserData] = useState(user);
 	var [editUserData, seteditUserData] = useState({ apiKeys: null });
+	const [loading, setloading] = useState(false);
+
+	console.log(editUserData);
 
 	function updateUserProfile() {
+		setloading(true);
 		// const token = localStorage.getItem("token");
 
 		if (!token) {
@@ -38,6 +43,7 @@ const UserProfileEdit = ({ user }) => {
 
 				if (response.ok && response.status < 400) {
 					response.json().then((res) => {
+						setloading(false);
 						setTimeout(() => {}, 500);
 					});
 				}
@@ -72,8 +78,7 @@ const UserProfileEdit = ({ user }) => {
 			.then((response) => {
 				if (response.ok && response.status < 400) {
 					response.json().then((res) => {
-						seteditUserData({ ...editUserData, ...res });
-
+						seteditUserData({ ...res });
 						setTimeout(() => {}, 500);
 					});
 				}
@@ -367,7 +372,7 @@ const UserProfileEdit = ({ user }) => {
 									</label>
 									<input
 										type="text"
-										className="border border-gray-400 border-solid px-2 py-1 rounded-sm w-full "
+										className="border border-primary-400 border-solid px-2 py-1 rounded-sm w-full "
 										value={editUserData?.first_name}
 										onChange={(ev) => {
 											var value = ev.target.value;
@@ -382,7 +387,7 @@ const UserProfileEdit = ({ user }) => {
 									</label>
 									<input
 										type="text"
-										className="border border-gray-400 border-solid px-2 py-1 rounded-sm w-full "
+										className="border border-primary-400 border-solid px-2 py-1 rounded-sm w-full "
 										value={editUserData?.last_name}
 										onChange={(ev) => {
 											var value = ev.target.value;
@@ -397,7 +402,7 @@ const UserProfileEdit = ({ user }) => {
 									<input
 										type="text"
 										disabled
-										className="border border-gray-400 border-solid px-2 py-1 rounded-sm w-full  "
+										className="border border-primary-400 border-solid px-2 py-1 rounded-sm w-full  "
 										value={editUserData?.email}
 										onChange={(ev) => {
 											var value = ev.target.value;
@@ -412,7 +417,7 @@ const UserProfileEdit = ({ user }) => {
 									</label>
 									<input
 										type="text"
-										className="border border-gray-400 border-solid px-2 py-1 rounded-sm w-full "
+										className="border border-primary-400 border-solid px-2 py-1 rounded-sm w-full "
 										value={editUserData?.phone}
 										onChange={(ev) => {
 											var value = ev.target.value;
@@ -431,7 +436,7 @@ const UserProfileEdit = ({ user }) => {
 									</label>
 									<input
 										type="text"
-										className="border border-gray-400 border-solid px-2 py-1 rounded-sm w-full "
+										className="border border-primary-400 border-solid px-2 py-1 rounded-sm w-full "
 										value={editUserData?.address_1}
 										onChange={(ev) => {
 											var value = ev.target.value;
@@ -445,7 +450,7 @@ const UserProfileEdit = ({ user }) => {
 									</label>
 									<input
 										type="text"
-										className="border border-gray-400 border-solid px-2 py-1 rounded-sm w-full "
+										className="border border-primary-400 border-solid px-2 py-1 rounded-sm w-full "
 										value={editUserData?.address_2}
 										onChange={(ev) => {
 											var value = ev.target.value;
@@ -460,7 +465,7 @@ const UserProfileEdit = ({ user }) => {
 									</label>
 									<input
 										type="text"
-										className="border border-gray-400 border-solid px-2 py-1 rounded-sm w-full "
+										className="border border-primary-400 border-solid px-2 py-1 rounded-sm w-full "
 										value={editUserData?.zip_code}
 										onChange={(ev) => {
 											var value = ev.target.value;
@@ -474,7 +479,7 @@ const UserProfileEdit = ({ user }) => {
 									</label>
 									<input
 										type="text"
-										className="border border-gray-400 border-solid px-2 py-1 rounded-sm w-full "
+										className="border border-primary-400 border-solid px-2 py-1 rounded-sm w-full "
 										value={editUserData?.city}
 										onChange={(ev) => {
 											var value = ev.target.value;
@@ -488,7 +493,7 @@ const UserProfileEdit = ({ user }) => {
 									</label>
 									<input
 										type="text"
-										className="border border-gray-400 border-solid px-2 py-1 rounded-sm w-full "
+										className="border border-primary-400 border-solid px-2 py-1 rounded-sm w-full "
 										value={editUserData?.country}
 										onChange={(ev) => {
 											var value = ev.target.value;
@@ -499,16 +504,17 @@ const UserProfileEdit = ({ user }) => {
 							</div>
 
 							<div className="my-5">
-								<input
+								<button
 									type="submit"
-									value={t("Update")}
 									onClick={(ev) => {
 										ev.preventDefault();
 
 										updateUserProfile();
 									}}
-									className="p-2 hover:bg-gray-400 rounded-sm cursor-pointer px-4 bg-gray-600 text-white"
-								/>
+									className="p-2 flex items-center gap-2 hover:bg-gray-400 rounded-sm cursor-pointer px-4 bg-gray-600 text-white">
+									{t("Update")}
+									{loading && <Spinner />}
+								</button>
 							</div>
 						</form>
 					</div>
@@ -521,7 +527,7 @@ const UserProfileEdit = ({ user }) => {
 								</label>
 								<input
 									type="password"
-									className="border border-gray-400 border-solid px-2 py-1 rounded-sm w-full "
+									className="border border-primary-400 border-solid px-2 py-1 rounded-sm w-full "
 								/>
 							</div>
 							<div>
@@ -530,7 +536,7 @@ const UserProfileEdit = ({ user }) => {
 								</label>
 								<input
 									type="password"
-									className="border border-gray-400 border-solid px-2 py-1 rounded-sm w-full "
+									className="border border-primary-400 border-solid px-2 py-1 rounded-sm w-full "
 								/>
 							</div>
 							<div>
@@ -539,7 +545,7 @@ const UserProfileEdit = ({ user }) => {
 								</label>
 								<input
 									type="password"
-									className="border border-gray-400 border-solid px-2 py-1 rounded-sm w-full "
+									className="border border-primary-400 border-solid px-2 py-1 rounded-sm w-full "
 								/>
 							</div>
 							<input
@@ -599,62 +605,80 @@ const UserProfileEdit = ({ user }) => {
 									var pram = args[1];
 
 									return (
-										<ToggleContent title={apiKeysPrams[pramId].label}>
+										<ToggleContent
+											key={pramId}
+											title={apiKeysPrams[pramId]?.label}>
 											<div>
-												{Object.entries(pram).map(([item, value], i) => {
-													return (
-														<div
-															className="pg-setting-input-text   mb-4"
-															key={i}>
-															<label
-																htmlFor=""
-																className="font-medium text-slate-900  block">
-																{item === "apikey" && <>{"API Key"}</>}
-																{item === "apiSecret" && <>{"API Secret"}</>}
-																{item === "username" && <>{"UserName"}</>}
-																{item === "accountName" && (
-																	<>{"Account Name"}</>
-																)}
-																{item === "pass" && <>{"Password"}</>}
-																{item === "accountId" && <>{"Account Id"}</>}
-																{item === "subscriberId" && (
-																	<>{"Subscriber Id"}</>
-																)}
-																{item === "listId" && <>{"List Id"}</>}
-																{item === "apiToken" && <>{"API Token"}</>}
-																{item === "subdomain" && <>{"Subdomain"}</>}
-																{item === "phoneNumber" && (
-																	<>{"Phone Number"}</>
-																)}
-																{item === "accountSid" && <>{"Account Sid"}</>}
-																{item === "authToken" && <>{"Auth Token"}</>}
-																{item === "email" && <>{"Email"}</>}
-																{item === "accessToken" && (
-																	<>{"Access Token"}</>
-																)}
-																{item === "campaignId" && <>{"Campaign Id"}</>}
-																{item === "apikeyPrivate" && (
-																	<>{"Private Api Key"}</>
-																)}
-																{item === "apikeyPublic" && (
-																	<>{"Public Api Key"}</>
-																)}
-																{item === "site_key" && <>{"Site Key"}</>}
-																{item === "dc" && <>{"DC"}</>}
-																{item === "secret_key" && <>{"Secret Key"}</>}
-																{item === "model" && <>{"Model"}</>}
-															</label>
+												{pram &&
+													Object.entries(pram).map(([item, value], i) => {
+														return (
+															<div
+																className="pg-setting-input-text   mb-4"
+																key={i}>
+																<label
+																	htmlFor=""
+																	className="font-medium text-slate-900  block">
+																	{item === "apikey" && <>{"API Key"}</>}
+																	{item === "apiSecret" && <>{"API Secret"}</>}
+																	{item === "username" && <>{"UserName"}</>}
+																	{item === "accountName" && (
+																		<>{"Account Name"}</>
+																	)}
+																	{item === "pass" && <>{"Password"}</>}
+																	{item === "accountId" && <>{"Account Id"}</>}
+																	{item === "subscriberId" && (
+																		<>{"Subscriber Id"}</>
+																	)}
+																	{item === "listId" && <>{"List Id"}</>}
+																	{item === "apiToken" && <>{"API Token"}</>}
+																	{item === "subdomain" && <>{"Subdomain"}</>}
+																	{item === "phoneNumber" && (
+																		<>{"Phone Number"}</>
+																	)}
+																	{item === "accountSid" && (
+																		<>{"Account Sid"}</>
+																	)}
+																	{item === "authToken" && <>{"Auth Token"}</>}
+																	{item === "email" && <>{"Email"}</>}
+																	{item === "accessToken" && (
+																		<>{"Access Token"}</>
+																	)}
+																	{item === "campaignId" && (
+																		<>{"Campaign Id"}</>
+																	)}
+																	{item === "apikeyPrivate" && (
+																		<>{"Private Api Key"}</>
+																	)}
+																	{item === "apikeyPublic" && (
+																		<>{"Public Api Key"}</>
+																	)}
+																	{item === "site_key" && <>{"Site Key"}</>}
+																	{item === "dc" && <>{"DC"}</>}
+																	{item === "secret_key" && <>{"Secret Key"}</>}
+																	{item === "model" && <>{"Model"}</>}
+																</label>
 
-															<input
-																type="text"
-																className="border border-gray-400 border-solid px-2 py-1 rounded-sm w-full "
-																onChange={(ev) => {
-																	var value = ev.target.value;
-																}}
-															/>
-														</div>
-													);
-												})}
+																<input
+																	type="text"
+																	value={editUserData.apiKeys[pramId][item]}
+																	className="border border-primary-400 border-solid px-2 py-1 rounded-sm w-full bg-gray-200"
+																	onChange={(ev) => {
+																		var value = ev.target.value;
+																		seteditUserData({
+																			...editUserData,
+																			apiKeys: {
+																				...editUserData.apiKeys,
+																				[pramId]: {
+																					...editUserData.apiKeys[pramId],
+																					[item]: value,
+																				},
+																			},
+																		});
+																	}}
+																/>
+															</div>
+														);
+													})}
 											</div>
 										</ToggleContent>
 									);

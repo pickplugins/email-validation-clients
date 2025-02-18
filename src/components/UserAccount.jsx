@@ -3,11 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "./AuthContext";
 
 import {
-	IconMoodSad, IconDatabaseSmile, IconShoppingCart
+	IconDatabaseSmile,
+	IconMoodSad,
+	IconShoppingCart,
 } from "@tabler/icons-react";
 
 import { MoonIcon, SunIcon } from "./Icons";
-
 
 const UserAccount = () => {
 	const navigate = useNavigate();
@@ -28,7 +29,7 @@ const UserAccount = () => {
 	}, [hasCredit]);
 
 	return (
-		<div className=" flex items-center gap-4">
+		<div className=" flex items-center flex-wrap gap-4">
 			{/* {JSON.stringify(userData)} */}
 			<button
 				onClick={toggleTheme}
@@ -62,7 +63,7 @@ const UserAccount = () => {
 						}}
 					>Buy Credits</div>
 					{buyCreditsPrams.show && (
-						<Popover className="top-full w-[500px] right-0 mt-2 bg-white px-4 py-3 rounded-sm border border-gray-200 text-gray-700 text-left">
+						<Popover className="top-full w-[500px] right-0 mt-2 bg-white px-4 py-3 rounded-sm border border-primary-200 text-gray-700 text-left">
 
 							<div className="flex gap-3 items-center">
 
@@ -79,11 +80,11 @@ const UserAccount = () => {
 				{token ? (
 					<>
 						{userData && (
-							<div className="flex items-center gap-4">
+							<div className="flex items-center flex-wrap gap-4">
 								<div className="relative">
 									<div
-										className={`flex gap-3 text-white items-center ${
-											hasCredit ? "bg-gray-600" : "bg-red-400 "
+										className={`flex gap-3 text-primary-200 items-center ${
+											hasCredit ? "bg-primary-600" : "bg-red-400 "
 										}  px-3 py-2 rounded-sm`}
 										onClick={() => {
 											setCreditShow(!creditShow);
@@ -103,7 +104,7 @@ const UserAccount = () => {
 										<span>{userData?.total_credit_used}</span>
 									</div>
 									{creditShow && (
-										<div className="absolute shadow-lg border border-gray-200 z-[99] right-0 top-[100%] mt-2 bg-white p-2 w-[300px] rounded-sm">
+										<div className="absolute shadow-lg z-[99] right-0 top-[100%] mt-2 bg-primary-600 text-primary-200 p-2 w-[300px] rounded-sm">
 											<div className="p-3 ">
 												<ul>
 													<li>
@@ -131,7 +132,7 @@ const UserAccount = () => {
 
 								<div title={userData?.name} className=" relative">
 									<div
-										className="w-10 h-10 rounded-full overflow-hidden border border-gray-500 cursor-pointer "
+										className="w-10 h-10 rounded-full overflow-hidden border border-primary-500 cursor-pointer "
 										onClick={(ev) => {
 											setmodal(!modal);
 										}}>
@@ -143,7 +144,7 @@ const UserAccount = () => {
 									</div>
 
 									{modal && (
-										<div className="absolute z-[99] shadow-lg border border-gray-200 right-0 top-[100%] bg-white p-3 w-[300px] rounded-sm">
+										<div className="absolute z-[99] shadow-lg mt-1 right-0 top-[100%] bg-primary-600 text-primary-200 p-3 w-[300px] rounded-sm">
 											<div className="mb-3">
 												{t("Welcome")}! {userData?.name}
 											</div>
