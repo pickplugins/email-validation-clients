@@ -21,9 +21,11 @@ const AuthProvider = ({ children }) => {
 		setUser(null);
 		localStorage.removeItem("token");
 	};
+	const [lang, setlang] = useState("en");
 
 	const changeLanguage = (lang) => {
 		i18n.changeLanguage(lang);
+		setlang(lang);
 	};
 
 	var appData = window.appData;
@@ -143,6 +145,7 @@ const AuthProvider = ({ children }) => {
 				setnavToggle,
 				t,
 				changeLanguage,
+				lang
 			}}>
 			{children}
 		</AuthContext.Provider>
