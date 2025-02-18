@@ -70,19 +70,22 @@ const GlobalHeader = () => {
 					);
 				})}
 			</div>
-			<select
-				onChange={(e) => {
-					changeLanguage(e.target.value);
-				}}
-				value={lang}>
-				<option value="en">English</option>
-				<option value="bn">Bangla</option>
-				<option value="hi">Hindi</option>
-				<option value="zh">Chinese</option>
-				<option value="ja">Japanese</option>
-				<option value="es">Spanish</option>
-			</select>
-			<div>
+
+			<div className="flex items-center gap-2">
+				<select
+					onChange={(e) => {
+						changeLanguage(e.target.value);
+					}}
+					value={lang}
+					className="text-white border-0 bg-amazon-600 px-2 py-[6px] rounded-sm"
+				>
+					<option value="en">English</option>
+					<option value="bn">Bangla</option>
+					<option value="hi">Hindi</option>
+					<option value="zh">Chinese</option>
+					<option value="ja">Japanese</option>
+					<option value="es">Spanish</option>
+				</select>
 				<UserAccount />
 				{/* <Notify notifications={notifications} /> */}
 			</div>

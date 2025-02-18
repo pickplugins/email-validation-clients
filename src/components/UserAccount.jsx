@@ -68,9 +68,8 @@ const UserAccount = () => {
 							<div className="flex items-center gap-4">
 								<div className="relative">
 									<div
-										className={`flex gap-3 text-white items-center ${
-											hasCredit ? "bg-gray-600" : "bg-red-400 "
-										}  px-3 py-2 rounded-sm`}
+										className={`flex gap-3 text-white items-center ${hasCredit ? "bg-gray-600" : "bg-red-400 "
+											}  px-3 py-2 rounded-sm`}
 										onClick={() => {
 											setCreditShow(!creditShow);
 										}}>
