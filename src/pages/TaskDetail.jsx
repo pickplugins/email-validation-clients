@@ -12,582 +12,582 @@ import Spinner from "../components/Spinner";
 import Tab from "../components/Tab";
 import Tabs from "../components/Tabs";
 import {
-  IconRefresh, IconTableExport, IconChartHistogram, IconFilterCog
+	IconRefresh, IconTableExport, IconChartHistogram, IconFilterCog
 } from "@tabler/icons-react";
 function TaskDetail({ user }) {
-  const { id } = useParams();
-
-  const { token, t } = useContext(AuthContext);
-  var [appData, setappData] = useState(window.appData);
-  var [currentObject, setcurrentObject] = useState(null);
-
-  var [queryPrams, setqueryPrams] = useState({
-    keyword: "",
-    page: 1,
-    order: "DESC",
-    limit: 10,
-    first_date: "",
-    last_date: "",
-  });
-
-
-  var [addEntries, setaddEntries] = useState({
-    emails: "",
-    edit: false,
-    loading: false,
-    success: false,
-    errors: false,
-  });
-
-  var [addFiltersPrams, setaddFiltersPrams] = useState({ show: false });
-  var [showExport, setshowExport] = useState(false);
-  var [reportsPrams, setreportsPrams] = useState({ show: false });
-
-  var [tasksEntries, settasksEntries] = useState(null);
-  var [loading, setloading] = useState(false);
-  var [selectedRows, setselectedRows] = useState([]);
-  const [showSetting, setshowSetting] = useState(false);
-  const [csvUploadPrams, setcsvUploadPrams] = useState(null);
-
-  function fetchPosts() {
-    // const token = localStorage.getItem("token");
-
-    if (!token) {
-      throw new Error("No token found");
-    }
-    var postData = {
-      task_id: id,
-      limit: queryPrams.limit,
-      page: queryPrams.page,
-      order: queryPrams.order,
-      status: queryPrams.status,
-      safeToSend: queryPrams.safeToSend,
-      isSyntaxValid: queryPrams.isSyntaxValid,
-      isValidEmail: queryPrams.isValidEmail,
-      hasValidDomain: queryPrams.hasValidDomain,
-      isDisposableDomain: queryPrams.isDisposableDomain,
-      isInboxFull: queryPrams.isInboxFull,
-      isFreeEmailProvider: queryPrams.isFreeEmailProvider,
-      isGibberishEmail: queryPrams.isGibberishEmail,
-      checkDomainReputation: queryPrams.checkDomainReputation,
-      isSMTPBlacklisted: queryPrams.isSMTPBlacklisted,
-      isRoleBasedEmail: queryPrams.isRoleBasedEmail,
-      isCatchAllDomain: queryPrams.isCatchAllDomain,
-      verifySMTP: queryPrams.verifySMTP,
-    };
-    postData = JSON.stringify(postData);
-
-    setloading(true);
-
-    fetch(appData.serverUrl + "wp-json/email-validation/v2/get_tasks_entries", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: postData,
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Token validation failed");
-        }
-        if (response.status == 429) {
-          setloading(false);
-
-          throw new Error("Too Many Requests");
-        }
-
-        if (response.ok && response.status < 400) {
-          response.json().then((res) => {
-            var posts = res?.posts;
-            var total = res?.total;
-            var max_pages = res?.max_pages;
-
-            settasksEntries({
-              posts: posts,
-              total: total,
-              maxPages: max_pages,
-            });
-
-            setloading(false);
-
-            setTimeout(() => { }, 500);
-          });
-        }
-      })
-      .catch((_error) => {
-        //this.saveAsStatus = 'error';
-        // handle the error
-      });
-  }
-
-  function addTaskEntries() {
-    // const token = localStorage.getItem("token");
-
-    if (!token) {
-      throw new Error("No token found");
-    }
-
-    setloading(true);
-
-    var postData = {
-      task_id: id,
-      emails: addEntries.emails,
-    };
-    postData = JSON.stringify(postData);
-
-    fetch(appData.serverUrl + "wp-json/email-validation/v2/add_tasks_entries", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: postData,
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Token validation failed");
-        }
-
-        if (response.ok && response.status < 400) {
-          response.json().then((res) => {
-            // var posts = res?.posts;
-            // var total = res?.total;
-            // var max_pages = res?.max_pages;
-
-            // settasksEntries({ posts: posts, total: total, maxPages: max_pages })
-            setloading(false);
-
-            fetchPosts();
-            setTimeout(() => {
-              setaddEntries({
-                ...addEntries,
-                emails: "",
-                edit: !addEntries.edit,
-              });
-            }, 500);
-          });
-        }
-      })
-      .catch((_error) => {
-        //this.saveAsStatus = 'error';
-        // handle the error
-      });
-  }
-  function addTaskEntriesCSV() {
-    // const token = localStorage.getItem("token");
-
-    if (!token) {
-      throw new Error("No token found");
-    }
-
-    setloading(true);
-
-    var postData = {
-      task_id: id,
-      emails: csvUploadPrams.emails,
-    };
-    postData = JSON.stringify(postData);
-
-    fetch(appData.serverUrl + "wp-json/email-validation/v2/add_tasks_entries", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: postData,
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Token validation failed");
-        }
-
-        if (response.ok && response.status < 400) {
-          response.json().then((res) => {
-            // var posts = res?.posts;
-            // var total = res?.total;
-            // var max_pages = res?.max_pages;
-
-            // settasksEntries({ posts: posts, total: total, maxPages: max_pages })
-            setloading(false);
-
-            fetchPosts();
-            setTimeout(() => {
-              setcsvUploadPrams({
-                ...csvUploadPrams,
-                emails: "",
-
-              });
-            }, 500);
-          });
-        }
-      })
-      .catch((_error) => {
-        //this.saveAsStatus = 'error';
-        // handle the error
-      });
-  }
-
-  function delete_tasks_entries() {
-    // const token = localStorage.getItem("token");
-
-    if (!token) {
-      throw new Error("No token found");
-    }
-
-    if (queryPrams.page < 0) {
-      return;
-    }
-
-    var postData = {
-      ids: selectedRows,
-    };
-    postData = JSON.stringify(postData);
-    setloading(true);
-    fetch(
-      appData.serverUrl + "wp-json/email-validation/v2/delete_tasks_entries",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: postData,
-      }
-    )
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Token validation failed");
-        }
-
-        if (response.ok && response.status < 400) {
-          response.json().then((res) => {
-            var errors = res?.errors;
-            var success = res?.success;
-
-            setloading(false);
-
-            fetchPosts();
-
-            // setaddTask({ ...addTask, loading: false, errors: errors, success: success })
-
-            // setTimeout(() => {
-            // 	setaddTask({ ...addTask, title: "", success: null, errors: null })
-
-            // }, 3000);
-          });
-        }
-      })
-      .catch((_error) => {
-        //this.saveAsStatus = 'error';
-        // handle the error
-      });
-  }
-  function get_current_object() {
-    // const token = localStorage.getItem("token");
-
-    if (!token) {
-      throw new Error("No token found");
-    }
-
-    if (queryPrams.page < 0) {
-      return;
-    }
-
-    var postData = {
-      id: id,
-    };
-    postData = JSON.stringify(postData);
-    setloading(true);
-    fetch(
-      appData.serverUrl + "wp-json/email-validation/v2/get_task",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: postData,
-      }
-    )
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Token validation failed");
-        }
-
-        if (response.ok && response.status < 400) {
-          response.json().then((res) => {
-            var errors = res?.errors;
-            var success = res?.success;
-
-
-            setloading(false);
-            setcurrentObject(res)
-            // fetchPosts();
-
-            // setaddTask({ ...addTask, loading: false, errors: errors, success: success })
-
-            // setTimeout(() => {
-            // 	setaddTask({ ...addTask, title: "", success: null, errors: null })
-
-            // }, 3000);
-          });
-        }
-      })
-      .catch((_error) => {
-        //this.saveAsStatus = 'error';
-        // handle the error
-      });
-  }
-  function update_current_object() {
-    // const token = localStorage.getItem("token");
-
-    if (!token) {
-      throw new Error("No token found");
-    }
-
-    // if (currentObject.id < 0) {
-    //   return;
-    // }
-
-    var postData = currentObject;
-    postData = JSON.stringify(postData);
-    setloading(true);
-    fetch(
-      appData.serverUrl + "wp-json/email-validation/v2/update_task",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: postData,
-      }
-    )
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Token validation failed");
-        }
-
-        if (response.ok && response.status < 400) {
-          response.json().then((res) => {
-            var errors = res?.errors;
-            var success = res?.success;
-
-
-            setloading(false);
-            //setcurrentObject(res)
-            // fetchPosts();
-
-            // setaddTask({ ...addTask, loading: false, errors: errors, success: success })
-
-            // setTimeout(() => {
-            // 	setaddTask({ ...addTask, title: "", success: null, errors: null })
-
-            // }, 3000);
-          });
-        }
-      })
-      .catch((_error) => {
-        //this.saveAsStatus = 'error';
-        // handle the error
-      });
-  }
-
-
-
-
-  function email_export() {
-    // const token = localStorage.getItem("token");
-
-    if (!token) {
-      throw new Error("No token found");
-    }
-
-    setloading(true);
-
-    var postData = {
-      task_id: id,
-      queryPrams: queryPrams,
-    };
-    postData = JSON.stringify(postData);
-
-    fetch(appData.serverUrl + "wp-json/email-validation/v2/email_export", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: postData,
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Token validation failed");
-        }
-
-        if (response.ok && response.status < 400) {
-          response.json().then((res) => {
-            var success = res?.success;
-            var file = res?.file;
-
-            if (success) {
-              window.location.href = file;
-            }
-
-            // var total = res?.total;
-            // var max_pages = res?.max_pages;
-
-            // settasksEntries({ posts: posts, total: total, maxPages: max_pages })
-            setloading(false);
-
-            fetchPosts();
-            setTimeout(() => { }, 500);
-          });
-        }
-      })
-      .catch((_error) => {
-        //this.saveAsStatus = 'error';
-        // handle the error
-      });
-  }
-
-
-  function get_task_report() {
-    // const token = localStorage.getItem("token");
-
-    if (!token) {
-      throw new Error("No token found");
-    }
-
-    setloading(true);
-
-    var postData = {
-      id: id,
-    };
-    postData = JSON.stringify(postData);
-
-    fetch(appData.serverUrl + "wp-json/email-validation/v2/get_task_report", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: postData,
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Token validation failed");
-        }
-
-        if (response.ok && response.status < 400) {
-          response.json().then((res) => {
-            //var success = res?.success;
-            //var file = res?.file;
-            console.log("get_task_report")
-            console.log(res)
-            setreportsPrams({ ...reportsPrams, ...res })
-
-            // var total = res?.total;
-            // var max_pages = res?.max_pages;
-
-            // settasksEntries({ posts: posts, total: total, maxPages: max_pages })
-            setloading(false);
-
-            //fetchPosts();
-            setTimeout(() => { }, 500);
-          });
-        }
-      })
-      .catch((_error) => {
-        //this.saveAsStatus = 'error';
-        // handle the error
-      });
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // useEffect(() => {
-  // 	fetchPosts();
-  // }, []);
-
-  useEffect(() => {
-    fetchPosts();
-    get_task_report()
-  }, [id]);
-
-
-
-
-  var columns = {
-    check: { label: t("Check") },
-    // id: { label: "ID" },
-    email: { label: t("Email") },
-    status: { label: t("Progress") },
-    result: { label: t("Result") },
-    // datetime: { label: "Datetime" },
-  };
-
-  useEffect(() => {
-    fetchPosts();
-  }, [queryPrams]);
-  useEffect(() => {
-    get_current_object();
-
-  }, []);
-
-  function onChangeQueryPrams(args) {
-    if (args) {
-      setqueryPrams({ ...queryPrams, ...args });
-      //fetchPosts();
-    }
-  }
-
-  function onSelectRows(rows) {
-    setselectedRows(rows);
-  }
-
-
-  function parseCSV(csvText) {
-    const rows = csvText.split("\n").map(row => row.split(","));
-    // document.getElementById('output').textContent = JSON.stringify(rows, null, 2);
-  }
-
-  function extractEmails(csvText) {
-    const rows = csvText.trim().split("\n").map(row => row.split(","));
-    const headers = rows[0]; // First row as header
-    const emailIndex = headers.findIndex(header => header.toLowerCase().includes("email"));
-
-    if (emailIndex === -1) {
-      document.getElementById("output").textContent = "No 'email' column found!";
-      return;
-    }
-
-    // Extract emails from subsequent rows
-    const emails = rows.slice(1).map(row => row[emailIndex]).filter(email => email);
-
-    setcsvUploadPrams({ ...csvUploadPrams, emails: emails.join("\n") });
-
-
-    //document.getElementById("output").textContent = "Extracted Emails:\n" + emails.join("\n");
-  }
-
-  return (
+	const { id } = useParams();
+
+	const { token, t } = useContext(AuthContext);
+	var [appData, setappData] = useState(window.appData);
+	var [currentObject, setcurrentObject] = useState(null);
+
+	var [queryPrams, setqueryPrams] = useState({
+		keyword: "",
+		page: 1,
+		order: "DESC",
+		limit: 10,
+		first_date: "",
+		last_date: "",
+	});
+
+
+	var [addEntries, setaddEntries] = useState({
+		emails: "",
+		edit: false,
+		loading: false,
+		success: false,
+		errors: false,
+	});
+
+	var [addFiltersPrams, setaddFiltersPrams] = useState({ show: false });
+	var [showExport, setshowExport] = useState(false);
+	var [reportsPrams, setreportsPrams] = useState({ show: false });
+
+	var [tasksEntries, settasksEntries] = useState(null);
+	var [loading, setloading] = useState(false);
+	var [selectedRows, setselectedRows] = useState([]);
+	const [showSetting, setshowSetting] = useState(false);
+	const [csvUploadPrams, setcsvUploadPrams] = useState(null);
+
+	function fetchPosts() {
+		// const token = localStorage.getItem("token");
+
+		if (!token) {
+			throw new Error("No token found");
+		}
+		var postData = {
+			task_id: id,
+			limit: queryPrams.limit,
+			page: queryPrams.page,
+			order: queryPrams.order,
+			status: queryPrams.status,
+			safeToSend: queryPrams.safeToSend,
+			isSyntaxValid: queryPrams.isSyntaxValid,
+			isValidEmail: queryPrams.isValidEmail,
+			hasValidDomain: queryPrams.hasValidDomain,
+			isDisposableDomain: queryPrams.isDisposableDomain,
+			isInboxFull: queryPrams.isInboxFull,
+			isFreeEmailProvider: queryPrams.isFreeEmailProvider,
+			isGibberishEmail: queryPrams.isGibberishEmail,
+			checkDomainReputation: queryPrams.checkDomainReputation,
+			isSMTPBlacklisted: queryPrams.isSMTPBlacklisted,
+			isRoleBasedEmail: queryPrams.isRoleBasedEmail,
+			isCatchAllDomain: queryPrams.isCatchAllDomain,
+			verifySMTP: queryPrams.verifySMTP,
+		};
+		postData = JSON.stringify(postData);
+
+		setloading(true);
+
+		fetch(appData.serverUrl + "wp-json/email-validation/v2/get_tasks_entries", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+			body: postData,
+		})
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error("Token validation failed");
+				}
+				if (response.status == 429) {
+					setloading(false);
+
+					throw new Error("Too Many Requests");
+				}
+
+				if (response.ok && response.status < 400) {
+					response.json().then((res) => {
+						var posts = res?.posts;
+						var total = res?.total;
+						var max_pages = res?.max_pages;
+
+						settasksEntries({
+							posts: posts,
+							total: total,
+							maxPages: max_pages,
+						});
+
+						setloading(false);
+
+						setTimeout(() => { }, 500);
+					});
+				}
+			})
+			.catch((_error) => {
+				//this.saveAsStatus = 'error';
+				// handle the error
+			});
+	}
+
+	function addTaskEntries() {
+		// const token = localStorage.getItem("token");
+
+		if (!token) {
+			throw new Error("No token found");
+		}
+
+		setloading(true);
+
+		var postData = {
+			task_id: id,
+			emails: addEntries.emails,
+		};
+		postData = JSON.stringify(postData);
+
+		fetch(appData.serverUrl + "wp-json/email-validation/v2/add_tasks_entries", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+			body: postData,
+		})
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error("Token validation failed");
+				}
+
+				if (response.ok && response.status < 400) {
+					response.json().then((res) => {
+						// var posts = res?.posts;
+						// var total = res?.total;
+						// var max_pages = res?.max_pages;
+
+						// settasksEntries({ posts: posts, total: total, maxPages: max_pages })
+						setloading(false);
+
+						fetchPosts();
+						setTimeout(() => {
+							setaddEntries({
+								...addEntries,
+								emails: "",
+								edit: !addEntries.edit,
+							});
+						}, 500);
+					});
+				}
+			})
+			.catch((_error) => {
+				//this.saveAsStatus = 'error';
+				// handle the error
+			});
+	}
+	function addTaskEntriesCSV() {
+		// const token = localStorage.getItem("token");
+
+		if (!token) {
+			throw new Error("No token found");
+		}
+
+		setloading(true);
+
+		var postData = {
+			task_id: id,
+			emails: csvUploadPrams.emails,
+		};
+		postData = JSON.stringify(postData);
+
+		fetch(appData.serverUrl + "wp-json/email-validation/v2/add_tasks_entries", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+			body: postData,
+		})
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error("Token validation failed");
+				}
+
+				if (response.ok && response.status < 400) {
+					response.json().then((res) => {
+						// var posts = res?.posts;
+						// var total = res?.total;
+						// var max_pages = res?.max_pages;
+
+						// settasksEntries({ posts: posts, total: total, maxPages: max_pages })
+						setloading(false);
+
+						fetchPosts();
+						setTimeout(() => {
+							setcsvUploadPrams({
+								...csvUploadPrams,
+								emails: "",
+
+							});
+						}, 500);
+					});
+				}
+			})
+			.catch((_error) => {
+				//this.saveAsStatus = 'error';
+				// handle the error
+			});
+	}
+
+	function delete_tasks_entries() {
+		// const token = localStorage.getItem("token");
+
+		if (!token) {
+			throw new Error("No token found");
+		}
+
+		if (queryPrams.page < 0) {
+			return;
+		}
+
+		var postData = {
+			ids: selectedRows,
+		};
+		postData = JSON.stringify(postData);
+		setloading(true);
+		fetch(
+			appData.serverUrl + "wp-json/email-validation/v2/delete_tasks_entries",
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+				body: postData,
+			}
+		)
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error("Token validation failed");
+				}
+
+				if (response.ok && response.status < 400) {
+					response.json().then((res) => {
+						var errors = res?.errors;
+						var success = res?.success;
+
+						setloading(false);
+
+						fetchPosts();
+
+						// setaddTask({ ...addTask, loading: false, errors: errors, success: success })
+
+						// setTimeout(() => {
+						// 	setaddTask({ ...addTask, title: "", success: null, errors: null })
+
+						// }, 3000);
+					});
+				}
+			})
+			.catch((_error) => {
+				//this.saveAsStatus = 'error';
+				// handle the error
+			});
+	}
+	function get_current_object() {
+		// const token = localStorage.getItem("token");
+
+		if (!token) {
+			throw new Error("No token found");
+		}
+
+		if (queryPrams.page < 0) {
+			return;
+		}
+
+		var postData = {
+			id: id,
+		};
+		postData = JSON.stringify(postData);
+		setloading(true);
+		fetch(
+			appData.serverUrl + "wp-json/email-validation/v2/get_task",
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+				body: postData,
+			}
+		)
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error("Token validation failed");
+				}
+
+				if (response.ok && response.status < 400) {
+					response.json().then((res) => {
+						var errors = res?.errors;
+						var success = res?.success;
+
+
+						setloading(false);
+						setcurrentObject(res)
+						// fetchPosts();
+
+						// setaddTask({ ...addTask, loading: false, errors: errors, success: success })
+
+						// setTimeout(() => {
+						// 	setaddTask({ ...addTask, title: "", success: null, errors: null })
+
+						// }, 3000);
+					});
+				}
+			})
+			.catch((_error) => {
+				//this.saveAsStatus = 'error';
+				// handle the error
+			});
+	}
+	function update_current_object() {
+		// const token = localStorage.getItem("token");
+
+		if (!token) {
+			throw new Error("No token found");
+		}
+
+		// if (currentObject.id < 0) {
+		//   return;
+		// }
+
+		var postData = currentObject;
+		postData = JSON.stringify(postData);
+		setloading(true);
+		fetch(
+			appData.serverUrl + "wp-json/email-validation/v2/update_task",
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+				body: postData,
+			}
+		)
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error("Token validation failed");
+				}
+
+				if (response.ok && response.status < 400) {
+					response.json().then((res) => {
+						var errors = res?.errors;
+						var success = res?.success;
+
+
+						setloading(false);
+						//setcurrentObject(res)
+						// fetchPosts();
+
+						// setaddTask({ ...addTask, loading: false, errors: errors, success: success })
+
+						// setTimeout(() => {
+						// 	setaddTask({ ...addTask, title: "", success: null, errors: null })
+
+						// }, 3000);
+					});
+				}
+			})
+			.catch((_error) => {
+				//this.saveAsStatus = 'error';
+				// handle the error
+			});
+	}
+
+
+
+
+	function email_export() {
+		// const token = localStorage.getItem("token");
+
+		if (!token) {
+			throw new Error("No token found");
+		}
+
+		setloading(true);
+
+		var postData = {
+			task_id: id,
+			queryPrams: queryPrams,
+		};
+		postData = JSON.stringify(postData);
+
+		fetch(appData.serverUrl + "wp-json/email-validation/v2/email_export", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+			body: postData,
+		})
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error("Token validation failed");
+				}
+
+				if (response.ok && response.status < 400) {
+					response.json().then((res) => {
+						var success = res?.success;
+						var file = res?.file;
+
+						if (success) {
+							window.location.href = file;
+						}
+
+						// var total = res?.total;
+						// var max_pages = res?.max_pages;
+
+						// settasksEntries({ posts: posts, total: total, maxPages: max_pages })
+						setloading(false);
+
+						fetchPosts();
+						setTimeout(() => { }, 500);
+					});
+				}
+			})
+			.catch((_error) => {
+				//this.saveAsStatus = 'error';
+				// handle the error
+			});
+	}
+
+
+	function get_task_report() {
+		// const token = localStorage.getItem("token");
+
+		if (!token) {
+			throw new Error("No token found");
+		}
+
+		setloading(true);
+
+		var postData = {
+			id: id,
+		};
+		postData = JSON.stringify(postData);
+
+		fetch(appData.serverUrl + "wp-json/email-validation/v2/get_task_report", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+			body: postData,
+		})
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error("Token validation failed");
+				}
+
+				if (response.ok && response.status < 400) {
+					response.json().then((res) => {
+						//var success = res?.success;
+						//var file = res?.file;
+						console.log("get_task_report")
+						console.log(res)
+						setreportsPrams({ ...reportsPrams, ...res })
+
+						// var total = res?.total;
+						// var max_pages = res?.max_pages;
+
+						// settasksEntries({ posts: posts, total: total, maxPages: max_pages })
+						setloading(false);
+
+						//fetchPosts();
+						setTimeout(() => { }, 500);
+					});
+				}
+			})
+			.catch((_error) => {
+				//this.saveAsStatus = 'error';
+				// handle the error
+			});
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	// useEffect(() => {
+	// 	fetchPosts();
+	// }, []);
+
+	useEffect(() => {
+		fetchPosts();
+		get_task_report()
+	}, [id]);
+
+
+
+
+	var columns = {
+		check: { label: t("Check") },
+		// id: { label: "ID" },
+		email: { label: t("Email") },
+		status: { label: t("Progress") },
+		result: { label: t("Result") },
+		// datetime: { label: "Datetime" },
+	};
+
+	useEffect(() => {
+		fetchPosts();
+	}, [queryPrams]);
+	useEffect(() => {
+		get_current_object();
+
+	}, []);
+
+	function onChangeQueryPrams(args) {
+		if (args) {
+			setqueryPrams({ ...queryPrams, ...args });
+			//fetchPosts();
+		}
+	}
+
+	function onSelectRows(rows) {
+		setselectedRows(rows);
+	}
+
+
+	function parseCSV(csvText) {
+		const rows = csvText.split("\n").map(row => row.split(","));
+		// document.getElementById('output').textContent = JSON.stringify(rows, null, 2);
+	}
+
+	function extractEmails(csvText) {
+		const rows = csvText.trim().split("\n").map(row => row.split(","));
+		const headers = rows[0]; // First row as header
+		const emailIndex = headers.findIndex(header => header.toLowerCase().includes("email"));
+
+		if (emailIndex === -1) {
+			document.getElementById("output").textContent = "No 'email' column found!";
+			return;
+		}
+
+		// Extract emails from subsequent rows
+		const emails = rows.slice(1).map(row => row[emailIndex]).filter(email => email);
+
+		setcsvUploadPrams({ ...csvUploadPrams, emails: emails.join("\n") });
+
+
+		//document.getElementById("output").textContent = "Extracted Emails:\n" + emails.join("\n");
+	}
+
+	return (
 		<Layout user={user}>
 			<div className="flex-1">
 				<div className="flex justify-between flex-wrap gap-4 p-4 ">
-					<div className="flex gap-3 items-center">
+					<div className="flex gap-2 items-center">
 						<div className="relative">
 							<button
 								className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer"
@@ -676,15 +676,15 @@ Each Mail Per Line.
 							)}
 						</div>
 
-						<div>
-							{addEntries.loading && (
-								<>
-									<Spinner />
-								</>
-							)}
-							{addEntries.errors && <>{t("There is an error.")}</>}
-							{addEntries.success && <>{t("Task Added.")}</>}
-						</div>
+
+						{addEntries.loading && (
+							<div>
+								<Spinner />
+							</div>
+						)}
+						{addEntries.errors && <div>{t("There is an error.")}</div>}
+						{addEntries.success && <div>{t("Task Added.")}</div>}
+
 
 						<div className="relative">
 							<button
@@ -931,9 +931,8 @@ Each Mail Per Line.
 								<IconTableExport />
 							</button>
 							<div
-								className={`absolute top-full right-0 bg-white mt-2 px-4 py-3 ${
-									showExport ? "" : "hidden"
-								}`}>
+								className={`absolute top-full right-0 bg-white mt-2 px-4 py-3 ${showExport ? "" : "hidden"
+									}`}>
 								<button
 									className="text-nowrap cursor-pointer px-3 py-[5px] w-full rounded-sm bg-gray-600 hover:bg-gray-500 text-white mt-2"
 									onClick={() => {

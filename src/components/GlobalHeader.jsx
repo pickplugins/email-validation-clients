@@ -56,7 +56,7 @@ const GlobalHeader = () => {
 	// }, [notifications]);
 
 	return (
-		<div className="flex justify-between flex-wrap bg-gray-700 p-3 px-5 gap-3 md:h-[70px]">
+		<div className="flex justify-between flex-wrap bg-gray-700 p-3 px-5 gap-3 lg:h-[70px] h-auto">
 			<div className="flex gap-2 items-center text-white">
 				<Link to="/dashboard">{t("Dashboard")}</Link>
 
@@ -71,13 +71,13 @@ const GlobalHeader = () => {
 				})}
 			</div>
 
-			<div className="flex items-center gap-2">
+			<div className="flex items-center gap-2 flex-wrap">
 				<select
 					onChange={(e) => {
 						changeLanguage(e.target.value);
 					}}
 					value={lang}
-					className="text-white border-0 bg-amazon-600 px-2 py-[6px] rounded-sm"
+					className="text-white border-2 !border-amazon-400 bg-amazon-600 px-2 py-[6px] rounded-sm"
 				>
 					<option value="en">English</option>
 					<option value="bn">Bangla</option>

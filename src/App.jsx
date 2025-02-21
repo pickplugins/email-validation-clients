@@ -12,7 +12,9 @@ import OrderDetail from "./pages/OrderDetail";
 import Subscriptions from "./pages/Subscriptions";
 import SubscriptionDetail from "./pages/SubscriptionDetail";
 import ApiKeys from "./pages/ApiKeys";
+import ApiKeysDetails from "./pages/ApiKeysDetails";
 import ValidationRequests from "./pages/ValidationRequests";
+import Spammers from "./pages/Spammers";
 // import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
 import EditProfile from './pages/EditProfile';
@@ -52,6 +54,14 @@ function App() {
           }
         />
         <Route
+          path="/apikeys/:id"
+          element={
+            <PrivateRoute>
+              <ApiKeysDetails />
+            </PrivateRoute>
+          }
+        />
+        <Route
           path="/editprofile"
           element={
             <PrivateRoute>
@@ -60,10 +70,18 @@ function App() {
           }
         />
         <Route
-          path="/validationrequests"
+          path="/apirequests"
           element={
             <PrivateRoute>
               <ValidationRequests />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/spammers"
+          element={
+            <PrivateRoute>
+              <Spammers />
             </PrivateRoute>
           }
         />
@@ -101,6 +119,7 @@ function App() {
             </PrivateRoute>
           }
         />
+
         <Route
           path="/orders"
           element={

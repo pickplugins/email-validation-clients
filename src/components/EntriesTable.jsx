@@ -11,7 +11,7 @@ import Spinner from "./Spinner";
 import { AuthContext } from "./AuthContext";
 
 function Html(props) {
-	const {t} = useContext(AuthContext);
+	const { t } = useContext(AuthContext);
 	if (!props.warn) {
 		return null;
 	}
@@ -117,7 +117,7 @@ function Html(props) {
 					<select
 						name=""
 						id=""
-						className=" rounded-sm border-solid border-2 border-blue-500 py-[3px] px-2 cursor-pointer"
+						className=" rounded-sm border-solid border-2 border-blue-600 py-[4px] px-2 cursor-pointer"
 						value={queryPrams?.order}
 						onChange={(ev) => {
 							setqueryPrams({ ...queryPrams, order: ev.target.value });
@@ -129,7 +129,7 @@ function Html(props) {
 					<select
 						name=""
 						id=""
-						className="border-2 border-blue-500 rounded-sm border-solid py-[3px] px-2 cursor-pointer"
+						className="border-2 border-blue-700 rounded-sm border-solid py-[4px] px-2 cursor-pointer"
 						value={queryPrams?.limit}
 						onChange={(ev) => {
 							setqueryPrams({ ...queryPrams, limit: ev.target.value });

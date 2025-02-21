@@ -90,7 +90,7 @@ function Tasks({ user }) {
 						//setqueryPrams({ ...queryPrams, loading: false })
 						setloading(false);
 
-						setTimeout(() => {}, 500);
+						setTimeout(() => { }, 500);
 					});
 				}
 			})
@@ -289,7 +289,7 @@ function Tasks({ user }) {
 		<Layout user={user}>
 			<div>
 				<div className="flex justify-between p-4 ">
-					<div className="flex gap-3 flex-wrap items-center">
+					<div className="flex gap-2 flex-wrap items-center">
 						<button
 							className="px-3 py-[5px] rounded-sm bg-blue-600 hover:bg-blue-500 text-white cursor-pointer"
 							onClick={(ev) => {
@@ -321,7 +321,7 @@ function Tasks({ user }) {
 							</>
 						)}
 
-						{addTask.loading && (	
+						{addTask.loading && (
 							<>
 								<Spinner />
 							</>
