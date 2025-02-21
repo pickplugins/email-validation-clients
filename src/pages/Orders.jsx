@@ -162,7 +162,9 @@ function Orders({ user }) {
 
 	}
 
-
+	function onRefreshRequest(rows) {
+		fetchPosts();
+	}
 
 	useEffect(() => {
 		//checkUser();
@@ -183,13 +185,7 @@ function Orders({ user }) {
 						</div>
 					)}
 
-					<button
-						onClick={() => {
-							fetchPosts();
-						}}
-						className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
-						<IconRefresh />
-					</button>
+
 				</div>
 				<EntriesTable
 					queryPrams={queryPrams}
@@ -200,6 +196,8 @@ function Orders({ user }) {
 					loading={loading}
 					selectedRows={selectedRows}
 					onSelectRows={onSelectRows}
+					onRefreshRequest={onRefreshRequest}
+
 				/>
 			</div>
 		</Layout>

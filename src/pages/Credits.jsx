@@ -3,7 +3,9 @@ import { AuthContext } from "../components/AuthContext";
 import EntriesTable from "../components/EntriesTable";
 import Layout from "../components/Layout";
 import Popover from "../components/Popover";
-
+import {
+	IconPlus,
+} from "@tabler/icons-react";
 function Credits() {
 	const { userData, handleLogout, t } = useContext(AuthContext);
 
@@ -318,11 +320,11 @@ function Credits() {
 							<>
 								<div className="relative">
 									<button
-										className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer"
+										className="flex gap-2 "
 										onClick={(ev) => {
 											setaddCredits({ ...addCredits, edit: !addCredits.edit });
 										}}>
-										{t("Add")}
+										<IconPlus />	{t("Add")}
 									</button>
 									{addCredits.edit && (
 										<Popover className="top-full left-0 min-w-[400px] mt-2 bg-white px-4 py-3 rounded-sm grid grid-cols-2 gap-4 border border-gray-400">

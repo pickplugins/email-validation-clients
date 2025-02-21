@@ -273,6 +273,10 @@ function ValidationRequests() {
 
 	}
 
+	function onRefreshRequest(rows) {
+		fetchPosts();
+	}
+
 	return (
 		<Layout>
 			<div>
@@ -287,13 +291,7 @@ function ValidationRequests() {
 						</div>
 					)}
 
-					<button
-						onClick={() => {
-							fetchPosts();
-						}}
-						className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
-						<IconRefresh />
-					</button>
+
 				</div>
 				<EntriesTable
 					queryPrams={queryPrams}
@@ -304,6 +302,8 @@ function ValidationRequests() {
 					loading={loading}
 					selectedRows={selectedRows}
 					onSelectRows={onSelectRows}
+					onRefreshRequest={onRefreshRequest}
+
 				/>
 
 				<div className="p-5">
@@ -322,7 +322,7 @@ function ValidationRequests() {
 							}}
 						/>
 						<button
-							className="p-3 py-[5px] bg-gray-600 text-white cursor-pointer rounded-sm"
+							className=""
 							onClick={(ev) => {
 								validateEmail();
 							}}>

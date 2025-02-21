@@ -4,6 +4,10 @@ import { AuthContext } from "../components/AuthContext";
 import EntriesTable from "../components/EntriesTable";
 import Layout from "../components/Layout";
 import Spinner from "../components/Spinner";
+import {
+	IconPlus,
+} from "@tabler/icons-react";
+
 
 function Tasks({ user }) {
 	const { token, t } = useContext(AuthContext);
@@ -281,6 +285,10 @@ function Tasks({ user }) {
 		setselectedRows(rows);
 	}
 
+	function onRefreshRequest(rows) {
+		fetchPosts();
+	}
+
 	useEffect(() => {
 		//checkUser();
 	}, []);
@@ -291,11 +299,11 @@ function Tasks({ user }) {
 				<div className="flex justify-between p-4 ">
 					<div className="flex gap-2 flex-wrap items-center">
 						<button
-							className="px-3 py-[5px] rounded-sm bg-blue-600 hover:bg-blue-500 text-white cursor-pointer"
+							className=" flex gap-2    "
 							onClick={(ev) => {
 								setaddTask({ ...addTask, edit: !addTask.edit });
 							}}>
-							{t("Add")}
+							<IconPlus /> {t("Add")}
 						</button>
 
 						{addTask.edit && (
@@ -315,7 +323,7 @@ function Tasks({ user }) {
 										createtask();
 										setaddTask({ ...addTask, loading: true });
 									}}
-									className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
+									className="">
 									{t("Submit")}
 								</button>
 							</>
@@ -359,13 +367,7 @@ function Tasks({ user }) {
 							</div>
 						)}
 
-						<button
-							onClick={(ev) => {
-								fetchPosts();
-							}}
-							className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
-							<IconRefresh />
-						</button>
+
 					</div>
 				</div>
 
@@ -378,6 +380,8 @@ function Tasks({ user }) {
 					loading={loading}
 					selectedRows={selectedRows}
 					onSelectRows={onSelectRows}
+					onRefreshRequest={onRefreshRequest}
+
 				/>
 			</div>
 		</Layout>

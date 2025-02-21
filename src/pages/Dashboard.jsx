@@ -119,70 +119,78 @@ const Dashboard = () => {
 				</div>
 			)}
 			{userData && (
-				<div className="p-5">
+				<div className="p-10">
 
-					<div className=" grid gap-4 xl:grid-cols-5 md:grid-cols-3 sm:grid-cols-1 text-white">
-						<div className="bg-blue-500 p-3 rounded-sm">
+					<div className=" grid gap-4 xl:grid-cols-5 md:grid-cols-3 sm:grid-cols-1 ">
+						<div className="bg-white shadow-sm border border-gray-200 p-3 rounded-sm">
 							<div className="flex items-center gap-3">
-								<div className="w-[50px]">
+								<div className="w-[50px] text-gray-400">
 									<IconClipboardList size="40" />
 								</div>
 								<div>
 									<div className="text-md">{t("Total Task")}</div>
-									<div className="text-3xl">{statsData?.total_task}</div>
+									<div className="text-xl font-bold text-gray-600">{statsData?.total_task}</div>
 								</div>
 							</div>
 						</div>
-						<div className="bg-blue-500 p-3 rounded-sm">
+						<div className="bg-white shadow-sm border border-gray-200  p-3 rounded-sm">
 							<div className="flex items-center gap-3">
-								<div className="w-[50px]">
+								<div className="w-[50px] text-gray-400">
 									<IconMailSpark size="40" />
 								</div>
 								<div>
 									<div className="text-md">{t("Total Email Validated")}</div>
-									<div className="text-3xl">{statsData?.total_email_validated}</div>
+									<div className="text-xl font-bold text-gray-600">{statsData?.total_email_validated}</div>
 								</div>
 							</div>
 						</div>
-						<div className="bg-blue-500 p-3 rounded-sm">
+						<div className="bg-white shadow-sm border border-gray-200  p-3 rounded-sm">
 							<div className="flex items-center gap-3">
-								<div className="w-[50px]">
+								<div className="w-[50px] text-gray-400">
 									<IconCloudDataConnection size="40" />
 								</div>
 								<div>
 									<div className="text-md">{t("Total API Keys")}</div>
-									<div className="text-3xl">{statsData?.total_api_keys}</div>
+									<div className="text-xl font-bold text-gray-600">{statsData?.total_api_keys}</div>
 								</div>
 							</div>
 						</div>
-						<div className="bg-blue-500 p-3 rounded-sm">
+						<div className="bg-white shadow-sm border border-gray-200  p-3 rounded-sm">
 							<div className="flex items-center gap-3">
-								<div className="w-[50px]">
+								<div className="w-[50px] text-gray-400">
 									<IconBasketCheck size="40" />
 								</div>
 								<div>
 									<div className="text-md">{t("Total Orders")}</div>
-									<div className="text-3xl">{statsData?.total_orders}</div>
+									<div className="text-xl font-bold text-gray-600">{statsData?.total_orders}</div>
 								</div>
 							</div>
 						</div>
-						<div className="bg-blue-500 p-3 rounded-sm">
+						<div className="bg-white shadow-sm border border-gray-200  p-3 rounded-sm">
 							<div className="flex items-center gap-3">
-								<div className="w-[50px]">
+								<div className="w-[50px] text-gray-400 ">
 									<IconCalculator size="40" />
 								</div>
 								<div>
 									<div className="text-md">{t("Total Credits Used")}</div>
-									<div className="text-3xl">{statsData?.count_total_credit_used?.cron + statsData?.count_total_credit_used?.api}</div>
+									<div className="text-xl font-bold text-gray-600">{parseInt(statsData?.count_total_credit_used?.cron) + parseInt(statsData?.count_total_credit_used?.api)}</div>
 								</div>
 							</div>
 						</div>
 					</div>
 
-					<div>
-						<div className="text-3xl mt-5">{t("Last 7 Days Stats")}</div>
+					<div className="grid grid-cols-12 gap-4 my-8">
+						<div className=" col-span-9  bg-white shadow-sm border border-gray-200  p-3 rounded-sm">
+							<div className="text-2xl ">{t("Last 7 Days Stats")}</div>
 
-						<ChartComponent entries={chartEntries} />
+							<div className="p-5">
+								<ChartComponent entries={chartEntries} />
+							</div>
+						</div>
+
+						<div className="col-span-3 bg-white shadow-sm border border-gray-200  p-3 rounded-sm">
+							FIters
+						</div>
 					</div>
 				</div>
 			)}
