@@ -31,5 +31,5 @@ input[type="submit"], button {
 }
 
 select {
-  @apply border-2 border-blue-300;
+  @apply border-2 border-blue-500;
 }

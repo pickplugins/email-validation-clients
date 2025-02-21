@@ -251,7 +251,7 @@ function ApiKeys() {
 
 	var columns = {
 		check: { label: t("Check") },
-		// id: { label: "ID" },
+		id: { label: "ID" },
 		title: { label: t("Title") },
 		apikey: { label: t("API key") },
 		status: { label: t("Status") },
@@ -364,7 +364,7 @@ function ApiKeys() {
 					queryPrams={queryPrams}
 					columns={columns}
 					entries={apiKeysData}
-					itemPath={""}
+					itemPath={"apikeys"}
 					onChange={onChangeQueryPrams}
 					loading={loading}
 					selectedRows={selectedRows}
