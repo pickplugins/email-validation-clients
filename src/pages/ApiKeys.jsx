@@ -342,7 +342,7 @@ function ApiKeys() {
 											createApiKey();
 											setaddApiKey({ ...addApiKey, loading: true });
 										}}
-										className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
+										className="">
 										{t("Submit")}
 									</button>
 								</>

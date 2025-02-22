@@ -59,7 +59,7 @@ const Sidebar = ({ user }) => {
 				}`}>
 			<div className="bg-white px-5 py-3  h-[70px] block mb-5">
 				<div className="flex gap-3 items-center">
-					<div className="w-[30px]   sm:block xl:hidden">
+					<div className={`  ${navToggle ? "" : "hidden "}  `}>
 
 
 						<img src="/logo-shape.png" alt="" />
@@ -124,10 +124,10 @@ const Sidebar = ({ user }) => {
 
 				</>
 			) : (
-				<div className="flex flex-col">
+				<div className="flex flex-col px-5">
 					<a
 						href={`/dashboard`}
-						className={`bg-gray-500 hover:bg-gray-500 border-0 border-b border-solid border-gray-300 cursor-pointer px-4 py-2 `}>
+						className={`bg-amazon-600 text-white  hover:bg-amazon-600 hover:text-white mb-2 rounded-sm  text-gray-500 border-0  border-solid border-gray-300 cursor-pointer px-4 py-2 flex items-center gap-2 `}>
 						{t("Dashboard")}
 					</a>
 				</div>

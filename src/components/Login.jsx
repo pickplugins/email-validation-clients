@@ -8,7 +8,7 @@ import { AuthContext } from "./AuthContext";
 
 const Login = () => {
 	const navigate = useNavigate();
-	const {user, setUser, handleLogin, logging, t} = useContext(AuthContext);
+	const { user, setUser, handleLogin, logging, t } = useContext(AuthContext);
 	// const [user, setUser] = useState({ username: "", password: "" });
 	const [error, setError] = useState("");
 	const [token, setToken] = useState("");
@@ -18,7 +18,7 @@ const Login = () => {
 		setUser({ ...user, [e.target.name]: e.target.value });
 	};
 
-	
+
 
 
 
@@ -56,7 +56,7 @@ const Login = () => {
 						/>
 					</div>
 					<button
-						className="p-3 py-[5px] bg-gray-700 text-white cursor-pointer border rounded-sm border-solid w-full flex gap-2 items-center justify-center"
+						className="p-3 py-[5px]  text-white cursor-pointer border rounded-sm border-solid w-full flex gap-2 items-center justify-center"
 						type="submit">
 						{t("Login")} {logging && <Spinner />}
 					</button>

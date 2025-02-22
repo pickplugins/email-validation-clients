@@ -590,7 +590,7 @@ function TaskDetail({ user }) {
 					<div className="flex gap-2 items-center">
 						<div className="relative">
 							<button
-								className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer"
+								className=""
 								onClick={(ev) => {
 									setaddEntries({ ...addEntries, edit: !addEntries.edit });
 								}}>
@@ -621,7 +621,7 @@ Each Mail Per Line.
 												onClick={(ev) => {
 													addTaskEntries();
 												}}
-												className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
+												className="">
 												{t("Submit")}
 											</button>
 										</Tab>
@@ -631,7 +631,7 @@ Each Mail Per Line.
 											<div className="my-4">
 												<input
 													type="file"
-													className="p-3 bg-blue-100  py-[5px]  border-2 w-full cursor-pointer border-blue-500 rounded-sm border-solid "
+													className=""
 													value={""}
 													onChange={(ev) => {
 														const file = ev.target.files[0];
@@ -666,7 +666,7 @@ Each Mail Per Line.
 													onClick={(ev) => {
 														addTaskEntriesCSV();
 													}}
-													className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
+													className="">
 													Submit
 												</button>
 											</div>
@@ -688,7 +688,7 @@ Each Mail Per Line.
 
 						<div className="relative">
 							<button
-								className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer"
+								className=""
 								onClick={(ev) => {
 									setaddFiltersPrams({
 										...addFiltersPrams,
@@ -924,29 +924,34 @@ Each Mail Per Line.
 					<div className="gap-2 flex items-center">
 						<div className="relative">
 							<button
-								className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer"
+								className="flex gap-2 items-center"
 								onClick={() => {
 									setshowExport(!showExport);
 								}}>
 								<IconTableExport />
+
+								<span>Export</span>
+
 							</button>
 							<div
-								className={`absolute top-full right-0 bg-white mt-2 px-4 py-3 ${showExport ? "" : "hidden"
+								className={`absolute top-full right-0 bg-white mt-2 px-4 py-3 w-[200px] rounded-sm shadow-sm ${showExport ? "" : "hidden"
 									}`}>
-								<button
-									className="text-nowrap cursor-pointer px-3 py-[5px] w-full rounded-sm bg-gray-600 hover:bg-gray-500 text-white mt-2"
-									onClick={() => {
-										email_export();
-									}}>
-									{t("Export All")}
-								</button>
-								<button
-									className="text-nowrap cursor-pointer px-3 py-[5px] w-full rounded-sm bg-gray-600 hover:bg-gray-500 text-white mt-2"
-									onClick={() => {
-										email_export();
-									}}>
-									{t("Export Selected")}
-								</button>
+								<div className="flex flex-col gap-2">
+									<button
+										className=""
+										onClick={() => {
+											email_export();
+										}}>
+										{t("Export All")}
+									</button>
+									<button
+										className=""
+										onClick={() => {
+											email_export();
+										}}>
+										{t("Export Selected")}
+									</button>
+								</div>
 							</div>
 						</div>
 
@@ -954,7 +959,7 @@ Each Mail Per Line.
 							onClick={(ev) => {
 								fetchPosts();
 							}}
-							className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
+							className="">
 							<IconRefresh />
 						</button>
 						<div className="relative">
@@ -965,7 +970,7 @@ Each Mail Per Line.
 										show: !reportsPrams?.show,
 									});
 								}}
-								className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
+								className="">
 								<IconChartHistogram />
 							</button>
 
@@ -973,7 +978,7 @@ Each Mail Per Line.
 								<Popover className="top-full w-[500px] right-0 mt-2 bg-white px-4 py-3 rounded-sm border border-gray-200 text-gray-700 text-left">
 									<div className="flex items-center mb-4 gap-3">
 										<div
-											className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer"
+											className=""
 											onClick={(ev) => {
 												get_task_report();
 											}}>
@@ -1037,7 +1042,7 @@ Each Mail Per Line.
 								{t("Delete Selected")}
 							</div>
 						)}
-						<button className=" relative px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
+						<button className=" relative ">
 							<div
 								onClick={() => {
 									setshowSetting(!showSetting);

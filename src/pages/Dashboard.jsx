@@ -105,7 +105,7 @@ const Dashboard = () => {
 	return (
 		<Layout>
 			{!userData && (
-				<div className="grid grid-cols-2 md:grid-cols-1 gap-20 w-[1200px] px-10 mx-auto mt-10">
+				<div className="grid xl:grid-cols-2 md:grid-cols-1 gap-20 w-[1200px] px-10 mx-auto mt-10">
 					<div>
 						<h2 className="my-5 text-2xl">{t("Register")}</h2>
 

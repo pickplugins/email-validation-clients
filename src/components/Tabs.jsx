@@ -15,8 +15,8 @@ const Spinner = ({ tabs, children }) => {
         {tabs.map((tab, index) => (
           <div
             key={index}
-            className={`py-2 px-4 text-sm text-white bg-blue-400 font-medium focus:outline-none transition-all cursor-pointer ${activeTab === index
-              ? "border-b-2 border-blue-500 bg-blue-500 "
+            className={`py-2 px-4 text-sm text-white bg-amazon-400 font-medium focus:outline-none transition-all cursor-pointer ${activeTab === index
+              ? " bg-amazon-600 "
               : " "
               }`}
             onClick={() => setActiveTab(index)}
