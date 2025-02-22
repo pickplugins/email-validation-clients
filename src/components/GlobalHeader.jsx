@@ -4,6 +4,7 @@ import UserAccount from "../components/UserAccount";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "./AuthContext";
+import { IconMenu } from "@tabler/icons-react";
 
 const GlobalHeader = () => {
 	// var [notifications, setnotifications] = useState([]);
@@ -17,7 +18,7 @@ const GlobalHeader = () => {
 		return e.replace(/(\r\n|\n|\r)/gm, "");
 	});
 
-	const { t, changeLanguage, lang } = useContext(AuthContext);
+	const { t, changeLanguage, navToggle, setnavToggle, lang } = useContext(AuthContext);
 
 	var routesArgs = {
 		products: { label: t("Products"), value: "products" },
@@ -56,7 +57,12 @@ const GlobalHeader = () => {
 	// }, [notifications]);
 
 	return (
-		<div className="flex justify-between flex-wrap bg-gray-200 border-b border-gray-400 p-3 px-5 gap-3 lg:h-[70px] h-auto">
+		<div className="flex gap-4 flex-wrap bg-gray-200 border-b border-gray-400 p-3 px-5 gap-3 lg:h-[70px] h-auto">
+			<button
+				onClick={() => setnavToggle(!navToggle)}
+				className="block md:hidden p-2 hover:bg-primary-100/10 rounded-lg">
+				<IconMenu className="h-6 w-6 text-primary-400" />
+			</button>
 			<div className="flex gap-2 items-center text-gray-500">
 				<Link to="/dashboard">{t("Dashboard")}</Link>
 
@@ -71,14 +77,13 @@ const GlobalHeader = () => {
 				})}
 			</div>
 
-			<div className="flex items-center gap-2 flex-wrap">
+			{/* <div className="flex items-center gap-2 flex-wrap">
 				<select
 					onChange={(e) => {
 						changeLanguage(e.target.value);
 					}}
 					value={lang}
-					className="!text-white  bg-amazon-600 hover:bg-amazon-500 !py-[7px] "
-				>
+					className="!text-white  bg-amazon-600 hover:bg-amazon-500 !py-[7px] ">
 					<option value="en">English</option>
 					<option value="bn">Bangla</option>
 					<option value="hi">Hindi</option>
@@ -87,8 +92,8 @@ const GlobalHeader = () => {
 					<option value="es">Spanish</option>
 				</select>
 				<UserAccount />
-				{/* <Notify notifications={notifications} /> */}
-			</div>
+				<Notify notifications={notifications} />
+			</div> */}
 		</div>
 	);
 };
