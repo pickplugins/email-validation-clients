@@ -4,6 +4,9 @@ import EntriesTable from "../components/EntriesTable";
 import { AuthContext } from "../components/AuthContext";
 import Popover from "../components/Popover";
 import { IconCopy, IconX } from "@tabler/icons-react";
+import {
+	IconPlus,
+} from "@tabler/icons-react";
 
 
 
@@ -278,6 +281,10 @@ function ApiKeys() {
 
 	}
 
+	function onRefreshRequest(rows) {
+		fetchPosts();
+	}
+
 	function onSelectRows(rows) {
 		// console.log(rows);
 		setselectedRows(rows);
@@ -313,11 +320,11 @@ function ApiKeys() {
 					<div className="flex gap-3 items-center justify-between">
 						<div className="flex gap-3 flex-wrap items-center">
 							<button
-								className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer"
+								className="flex gap-2"
 								onClick={(ev) => {
 									setaddApiKey({ ...addApiKey, edit: !addApiKey.edit });
 								}}>
-								{t("Add")}
+								<IconPlus /> {t("Add")}
 							</button>
 							{addApiKey.edit && (
 								<>
@@ -335,7 +342,7 @@ function ApiKeys() {
 											createApiKey();
 											setaddApiKey({ ...addApiKey, loading: true });
 										}}
-										className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
+										className="">
 										{t("Submit")}
 									</button>
 								</>
@@ -369,6 +376,8 @@ function ApiKeys() {
 					loading={loading}
 					selectedRows={selectedRows}
 					onSelectRows={onSelectRows}
+					onRefreshRequest={onRefreshRequest}
+
 				/>
 			</div>
 		</Layout>

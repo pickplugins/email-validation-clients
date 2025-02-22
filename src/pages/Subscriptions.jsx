@@ -26,6 +26,9 @@ function Subscriptions({ user }) {
 	function onSelectRows(rows) {
 		setselectedRows(rows);
 	}
+	function onRefreshRequest(rows) {
+		fetchPosts();
+	}
 
 	function delete_subscriptions() {
 		// const token = localStorage.getItem("token");
@@ -123,7 +126,7 @@ function Subscriptions({ user }) {
 						});
 						setloading(false);
 
-						setTimeout(() => {}, 500);
+						setTimeout(() => { }, 500);
 					});
 				}
 			})
@@ -176,13 +179,7 @@ function Subscriptions({ user }) {
 						</div>
 					)}
 
-					<button
-						onClick={() => {
-							fetchPosts();
-						}}
-						className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer">
-						<IconRefresh />
-					</button>
+
 				</div>
 
 				<EntriesTable
@@ -194,6 +191,7 @@ function Subscriptions({ user }) {
 					loading={loading}
 					selectedRows={selectedRows}
 					onSelectRows={onSelectRows}
+					onRefreshRequest={onRefreshRequest}
 				/>
 			</div>
 		</Layout>

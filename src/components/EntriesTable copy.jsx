@@ -88,7 +88,7 @@ function Html(props) {
 					</select>
 
 					<div
-						className="px-3 py-[5px] rounded-sm bg-gray-600 hover:bg-gray-500 text-white cursor-pointer"
+						className=""
 						onClick={(ev) => {
 							var page = queryPrams.page;
 							if (page == 1) return;
@@ -121,11 +121,9 @@ function Html(props) {
 							return (
 								<th
 									key={columnIndex}
-									className={`px-5 py-2 ${
-										columnIndex == "check" ? "w-12 " : ""
-									} ${columnIndex == "id" ? "w-20 " : ""} ${
-										columnIndex == "email" ? "text-left pl-5" : ""
-									} ${columnIndex == "title" ? "text-left pl-5" : ""}`}>
+									className={`px-5 py-2 ${columnIndex == "check" ? "w-12 " : ""
+										} ${columnIndex == "id" ? "w-20 " : ""} ${columnIndex == "email" ? "text-left pl-5" : ""
+										} ${columnIndex == "title" ? "text-left pl-5" : ""}`}>
 									{columnIndex == "check" && (
 										<div
 											onClick={(ev) => {
@@ -158,9 +156,8 @@ function Html(props) {
 									)}
 									{columnIndex != "check" && (
 										<span
-											className={`${
-												columnIndex == "email" ? "text-left pl-5" : ""
-											}`}>
+											className={`${columnIndex == "email" ? "text-left pl-5" : ""
+												}`}>
 											{columnData.label}
 										</span>
 									)}
@@ -191,10 +188,9 @@ function Html(props) {
 									return (
 										<td
 											key={columnIndex}
-											className={`px-5 py-2 ${
-												columnIndex == "email" ? "text-left pl-5" : ""
-											} ${columnIndex == "title" ? "text-left pl-5" : ""}`}>
-											
+											className={`px-5 py-2 ${columnIndex == "email" ? "text-left pl-5" : ""
+												} ${columnIndex == "title" ? "text-left pl-5" : ""}`}>
+
 											{columnIndex == "title" && (
 												<div className="flex items-center gap-2">
 													{itemPath.length > 0 && (
@@ -211,9 +207,8 @@ function Html(props) {
 											)}
 											{columnIndex != "title" && (
 												<span
-													className={`${
-														columnIndex == "email" ? "text-left pl-5" : ""
-													} break-all`}>
+													className={`${columnIndex == "email" ? "text-left pl-5" : ""
+														} break-all`}>
 													{entry[columnIndex]}
 												</span>
 											)}
@@ -276,13 +271,11 @@ function Html(props) {
 							return (
 								<th
 									key={columnIndex}
-									className={`px-5 py-2 ${
-										columnIndex == "email" ? "text-left pl-5" : ""
-									} ${columnIndex == "title" ? "text-left pl-5" : ""}`}>
+									className={`px-5 py-2 ${columnIndex == "email" ? "text-left pl-5" : ""
+										} ${columnIndex == "title" ? "text-left pl-5" : ""}`}>
 									<span
-										className={`${
-											columnIndex == "email" ? "text-left pl-5" : ""
-										}`}>
+										className={`${columnIndex == "email" ? "text-left pl-5" : ""
+											}`}>
 										{columnData.label}
 									</span>
 								</th>

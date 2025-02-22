@@ -56,8 +56,8 @@ const GlobalHeader = () => {
 	// }, [notifications]);
 
 	return (
-		<div className="flex justify-between flex-wrap bg-gray-700 p-3 px-5 gap-3 lg:h-[70px] h-auto">
-			<div className="flex gap-2 items-center text-white">
+		<div className="flex justify-between flex-wrap bg-gray-200 border-b border-gray-400 p-3 px-5 gap-3 lg:h-[70px] h-auto">
+			<div className="flex gap-2 items-center text-gray-500">
 				<Link to="/dashboard">{t("Dashboard")}</Link>
 
 				{currentRoutes.map((route, index) => {
@@ -77,7 +77,7 @@ const GlobalHeader = () => {
 						changeLanguage(e.target.value);
 					}}
 					value={lang}
-					className="text-white border-2 !border-amazon-400 bg-amazon-600 px-2 py-[6px] rounded-sm"
+					className="!text-white  bg-amazon-600 hover:bg-amazon-500 !py-[7px] "
 				>
 					<option value="en">English</option>
 					<option value="bn">Bangla</option>
