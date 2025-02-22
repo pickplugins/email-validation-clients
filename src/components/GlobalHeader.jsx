@@ -57,27 +57,29 @@ const GlobalHeader = () => {
 	// }, [notifications]);
 
 	return (
-		<div className="flex gap-4 flex-wrap bg-gray-200 border-b border-gray-400 p-3 px-5 gap-3 lg:h-[70px] h-auto">
-			<button
-				onClick={() => setnavToggle(!navToggle)}
-				className="block md:hidden p-2 hover:bg-primary-100/10 rounded-lg">
-				<IconMenu className="h-6 w-6 text-primary-400" />
-			</button>
-			<div className="flex gap-2 items-center text-gray-500">
-				<Link to="/dashboard">{t("Dashboard")}</Link>
+		<div className="flex gap-4 flex-wrap justify-between items-center bg-gray-200 border-b border-gray-400 p-3 px-5  lg:h-[70px] h-auto">
+			<div className="flex items-center gap-2">
+				<button
+					onClick={() => setnavToggle(!navToggle)}
+					className="block md:hidden p-2 hover:bg-primary-100/10 rounded-lg">
+					<IconMenu className="h-6 w-6 text-primary-400" />
+				</button>
+				<div className="flex gap-2 items-center justify-between text-gray-500">
+					<Link to="/dashboard">{t("Dashboard")}</Link>
 
-				{currentRoutes.map((route, index) => {
-					return (
-						<Link key={`index-${index}`} to={`/${route}`}>
-							{" "}
-							/{" "}
-							{routesArgs[route] == undefined ? route : routesArgs[route].label}
-						</Link>
-					);
-				})}
+					{currentRoutes.map((route, index) => {
+						return (
+							<Link key={`index-${index}`} to={`/${route}`}>
+								{" "}
+								/{" "}
+								{routesArgs[route] == undefined ? route : routesArgs[route].label}
+							</Link>
+						);
+					})}
+				</div>
 			</div>
 
-			{/* <div className="flex items-center gap-2 flex-wrap">
+			<div className="">
 				<select
 					onChange={(e) => {
 						changeLanguage(e.target.value);
@@ -91,9 +93,9 @@ const GlobalHeader = () => {
 					<option value="ja">Japanese</option>
 					<option value="es">Spanish</option>
 				</select>
-				<UserAccount />
-				<Notify notifications={notifications} />
-			</div> */}
+				{/* <UserAccount /> */}
+				{/* <Notify notifications={notifications} /> */}
+			</div>
 		</div>
 	);
 };

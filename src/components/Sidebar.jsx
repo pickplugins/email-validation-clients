@@ -7,6 +7,8 @@ import {
 	IconList,
 	IconRotateRectangle,
 	IconX,
+	IconLayoutSidebarLeftCollapse,
+	IconLayoutSidebarRightCollapse
 } from "@tabler/icons-react";
 import { useContext, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
@@ -75,9 +77,8 @@ const Sidebar = ({ user }) => {
 	return (
 		<aside
 			className={`max-w-[300px]  flex flex-col h-screen  text-gray-800 px-5 py-5 fixed md:static inset-y-0 left-0 z-50 transform bg-white transition-transform duration-200 ease-in-out md:transform-none
-					${navToggle ? "translate-x-0" : "-translate-x-full"} ${
-						!navToggle && "lg:w-[300px] "
-					}`}>
+					${navToggle ? "translate-x-0" : "-translate-x-full"} ${!navToggle && "lg:w-[300px] "
+				}`}>
 			<div className="bg-white pb-3 block mb-5 border-b relative">
 				<button
 					onClick={() => setnavToggle(!navToggle)}
@@ -98,7 +99,7 @@ const Sidebar = ({ user }) => {
 						</div>
 					</div>
 				</div>
-				<select
+				{/* <select
 					onChange={(e) => {
 						changeLanguage(e.target.value);
 					}}
@@ -110,7 +111,7 @@ const Sidebar = ({ user }) => {
 					<option value="zh">Chinese</option>
 					<option value="ja">Japanese</option>
 					<option value="es">Spanish</option>
-				</select>
+				</select> */}
 			</div>
 
 			{token ? (
@@ -121,11 +122,10 @@ const Sidebar = ({ user }) => {
 								<Link
 									key={index}
 									to={`/${nav.value}`}
-									className={`${
-										currentLocation == "/" + nav.value
-											? "bg-amazon-600 text-white"
-											: "bg-white"
-									} hover:bg-amazon-600 hover:text-white mb-2 rounded-sm  text-gray-500 border-0  border-solid border-gray-300 cursor-pointer px-4 py-2 flex items-center gap-2`}>
+									className={`${currentLocation == "/" + nav.value
+										? "bg-amazon-600 text-white"
+										: "bg-white"
+										} hover:bg-amazon-600 hover:text-white mb-2 rounded-sm  text-gray-500 border-0  border-solid border-gray-300 cursor-pointer px-4 py-2 flex items-center gap-2`}>
 									<span className="">{nav.icon}</span>{" "}
 									<span
 									// className={`${navToggle ? "hidden" : "hidden md:block"}`}

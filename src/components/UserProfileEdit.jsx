@@ -50,7 +50,7 @@ const UserProfileEdit = ({ user }) => {
 
 				if (response.ok && response.status < 400) {
 					response.json().then((res) => {
-setloading(false);
+						setloading(false);
 
 						setTimeout(() => {
 						}, 500);
@@ -98,7 +98,7 @@ setloading(false);
 						seteditUserData({ ...res })
 
 
-console.log(res)
+						console.log(res)
 						setTimeout(() => {
 						}, 500);
 					});
@@ -538,11 +538,11 @@ console.log(res)
 
 										updateUserProfile();
 									}}
-									className="p-2 flex items-center gap-2 hover:bg-gray-400 rounded-sm cursor-pointer px-4 bg-gray-600 text-white"
+									className=""
 								>{t("Update")}
-								{loading && (
-									<Spinner />
-								)}
+									{loading && (
+										<Spinner />
+									)}
 								</button>
 							</div>
 						</form>
@@ -585,7 +585,7 @@ console.log(res)
 
 									updateUserPassword();
 								}}
-								className="p-2 hover:bg-gray-400 rounded-sm cursor-pointer px-4 bg-gray-600 text-white"
+								className=""
 							/>
 						</form>
 

@@ -69,9 +69,8 @@ const Accounts = () => {
 							<div className="flex items-center gap-4 flex-wrap">
 								<div className="relative">
 									<div
-										className={`flex gap-3 text-white items-center ${
-											hasCredit ? "bg-gray-600" : "bg-red-400 "
-										}  px-3 py-2 rounded-sm`}
+										className={`flex gap-3 text-white items-center ${hasCredit ? "bg-gray-600" : "bg-red-400 "
+											}  px-3 py-2 rounded-sm`}
 										onClick={() => {
 											setCreditShow(!creditShow);
 										}}>
@@ -138,11 +137,11 @@ const Accounts = () => {
 											<div className="flex gap-3 items-center">
 												<Link
 													to={`/editprofile`}
-													className="p-2 inline hover:bg-blue-400 rounded-sm cursor-pointer px-4 bg-blue-600 text-white">
+													className="p-2 inline hover:bg-amazon-400 rounded-sm cursor-pointer px-4 bg-amazon-600 text-white">
 													{t("Edit Profile")}
 												</Link>
 												<div
-													className="p-2 inline hover:bg-blue-400 rounded-sm cursor-pointer px-4 bg-blue-600 text-white"
+													className="p-2 inline hover:bg-amazon-400 rounded-sm cursor-pointer px-4 bg-amazon-600 text-white"
 													onClick={(ev) => {
 														handleLogout();
 													}}>

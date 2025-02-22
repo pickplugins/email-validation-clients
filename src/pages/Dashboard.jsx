@@ -16,8 +16,8 @@ import {
 	IconDashboard,
 	IconCalculator,
 	IconLayoutSidebarLeftCollapse,
-	IconLayoutSidebarRightCollapse,
-	IconRotateRectangle,
+	IconFilterEdit,
+	IconDeviceDesktopAnalytics,
 } from "@tabler/icons-react";
 import { useTranslation } from "react-i18next";
 const Dashboard = () => {
@@ -27,7 +27,7 @@ const Dashboard = () => {
 	var [appData, setappData] = useState(window.appData);
 	var [queryPrams, setqueryPrams] = useState({ keyword: "", page: 1, order: "DESC", limit: 10, first_date: "", last_date: "" });
 	var [loading, setloading] = useState(false);
-	var [chartEntries, setchartEntries] = useState([]);
+	var [chartData, setchartData] = useState([]);
 	var [statsData, setstatsData] = useState({});
 
 	useEffect(() => {
@@ -76,7 +76,9 @@ const Dashboard = () => {
 					response.json().then((res) => {
 
 						console.log(res)
-						setchartEntries(res.items)
+						setchartData({ labels: res.labels, datasets: res.datasets })
+
+
 						setloading(false);
 
 
@@ -181,15 +183,21 @@ const Dashboard = () => {
 
 					<div className="grid grid-cols-12 gap-4 my-8">
 						<div className=" col-span-9  bg-white shadow-sm border border-gray-200  p-3 rounded-sm">
-							<div className="text-2xl ">{t("Last 7 Days Stats")}</div>
+							<div className="text-2xl flex gap-3 items-center">
+
+								<IconDeviceDesktopAnalytics />
+								{t("Last 7 Days Stats")}</div>
 
 							<div className="p-5">
-								<ChartComponent entries={chartEntries} />
+								<ChartComponent chartData={chartData} />
 							</div>
 						</div>
 
 						<div className="col-span-3 bg-white shadow-sm border border-gray-200  p-3 rounded-sm">
-							FIters
+							<div className="text-2xl flex gap-3 items-center">
+
+								<IconFilterEdit />
+								{t("Filters")}</div>
 						</div>
 					</div>
 				</div>

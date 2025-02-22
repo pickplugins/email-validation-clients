@@ -6,7 +6,7 @@ const ToggleContent = ({ title, children }) => {
   return (
     <div className="w-full max-w-md mx-auto  overflow-hidden mb-1">
       <div
-        className="w-full flex justify-between items-center p-3 bg-blue-600 hover:bg-blue-500 cursor-pointer text-white"
+        className="w-full flex justify-between items-center p-3 bg-amazon-600 rounded-sm hover:bg-amazon-500 cursor-pointer text-white"
         onClick={() => setIsOpen(!isOpen)}
       >
         <span className="font-medium">{title}</span>

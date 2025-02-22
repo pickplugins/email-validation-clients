@@ -12,7 +12,7 @@ import Spinner from "../components/Spinner";
 import Tab from "../components/Tab";
 import Tabs from "../components/Tabs";
 import {
-	IconRefresh, IconTableExport, IconChartHistogram, IconFilterCog
+	IconRefresh, IconTableExport, IconChartHistogram, IconFilterCog, IconPlayerPlay, IconPlayerPause, IconCircleDashedCheck, IconLoader3
 } from "@tabler/icons-react";
 function TaskDetail({ user }) {
 	const { id } = useParams();
@@ -339,7 +339,7 @@ function TaskDetail({ user }) {
 				// handle the error
 			});
 	}
-	function update_current_object() {
+	function update_current_object(properties) {
 		// const token = localStorage.getItem("token");
 
 		if (!token) {
@@ -350,8 +350,14 @@ function TaskDetail({ user }) {
 		//   return;
 		// }
 
-		var postData = currentObject;
-		postData = JSON.stringify(postData);
+		//var postData = currentObject;
+
+		properties = { id: currentObject.id, ...properties }
+		console.log(properties);
+
+		setcurrentObject({ ...currentObject, ...properties });
+
+		var postData = JSON.stringify(properties);
 		setloading(true);
 		fetch(
 			appData.serverUrl + "wp-json/email-validation/v2/update_task",
@@ -919,9 +925,130 @@ Each Mail Per Line.
 						</div>
 					</div>
 
-					<div className="gap-2 flex items-center flex-wrap"></div>
+					<div className="gap-2 flex items-center flex-wrap">
+
+						{/* {JSON.stringify(currentObject)} */}
+
+					</div>
 
 					<div className="gap-2 flex items-center">
+
+						{currentObject?.status == 'running' && (
+							<>
+								<button
+									className="flex gap-2 items-center"
+									onClick={() => {
+
+									}}>
+									<span className="animate-spin"><IconLoader3 /></span>
+									<span>Running</span>
+								</button>
+
+								<button
+									className="flex gap-2 items-center"
+									onClick={() => {
+										update_current_object({ status: 'paused' })
+									}}>
+									<IconPlayerPause />
+									<span>Pause</span>
+								</button>
+
+							</>
+						)}
+						{currentObject?.status == 'pending' && (
+							<button
+								className="flex gap-2 items-center"
+								onClick={() => {
+									update_current_object({ status: 'running' })
+								}}>
+								<IconPlayerPlay />
+								<span>Run</span>
+							</button>
+						)}
+						{currentObject?.status == 'completed' && (
+							<button
+								className="flex gap-2 items-center"
+								onClick={() => {
+									//update_current_object({ status: 'running' })
+								}}>
+								<IconCircleDashedCheck />
+								<span>Completed</span>
+							</button>
+						)}
+						{currentObject?.status == 'paused' && (
+							<button
+								className="flex gap-2 items-center"
+								onClick={() => {
+									update_current_object({ status: 'running' })
+								}}>
+								<IconPlayerPlay />
+								<span>Run</span>
+							</button>
+						)}
+
+
+
+
+
+
+						{/* 
+						<button
+							className="flex gap-2 items-center"
+							onClick={() => {
+								update_current_object({ status: 'pending' })
+							}}>
+
+
+
+							{currentObject?.status == 'pending' && (
+								<>
+									<IconPlayerPlay />
+									<span>Run</span>
+								</>
+							)}
+							{currentObject?.status == 'completed' && (
+								<>
+									<IconCircleDashedCheck />
+									<span>Completed</span>
+								</>
+							)}
+						</button>
+
+
+
+
+						<button
+							className="flex gap-2 items-center"
+							onClick={() => {
+								setshowExport(!showExport);
+							}}>
+							<IconPlayerPause />
+							<span>Run</span>
+
+						</button>
+						<button
+							className="flex gap-2 items-center"
+							onClick={() => {
+								setshowExport(!showExport);
+							}}>
+							<IconCircleDashedCheck />
+							<span>Completed</span>
+
+						</button>
+						<button
+							className="flex gap-2 items-center"
+							onClick={() => {
+								setshowExport(!showExport);
+							}}>
+							<IconLoader3 />
+							<span>Running</span>
+
+						</button> */}
+
+
+
+
+
 						<div className="relative">
 							<button
 								className="flex gap-2 items-center"
