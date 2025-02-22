@@ -11,11 +11,11 @@ const Layout = ({ children }) => {
 
 
 	return (
-		<div className={`flex min-h-screen`}>
+		<div className={`flex min-h-screen w-screen`}>
 			<div className="border-r border-gray-400">
 				<Sidebar />
 			</div>
-			<main className="md:flex-1 w-[calc(100%-56px)] md:w-full bg-gray-100">
+			<main className="flex-1 bg-gray-100">
 				<GlobalHeader />
 
 				<div className="">{children}</div>
